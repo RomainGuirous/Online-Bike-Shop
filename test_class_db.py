@@ -11,4 +11,6 @@ mon_enreg.set_field('description', 'Ceci est un nouveau produit.')
 mon_enreg.set_field('price', 123)
 mon_enreg.save_record()
 
+ma_connexion.delete_record('Product', {'product_Id' : 1})
+
 ma_connexion.commit()
