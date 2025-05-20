@@ -4,6 +4,7 @@
 from database import create_connection, close_connection
 from config import DB_FILE
 import faker as fk
+from config import NBR_USERS, NBR_PRODUCTS, NBR_SPETECH, NBR_ORDERS
 
 # region add product
 
@@ -154,7 +155,7 @@ def add_spetech_data(spetech_data: dict) -> None:
 # region faker user
 
 
-def generate_fake_user(nbr_users: int) -> list[dict[str, str]]:
+def generate_fake_user(nbr_users: int = NBR_USERS) -> list[dict[str, str]]:
     """
     Generate fake user data using the Faker library.
 
@@ -179,7 +180,9 @@ def generate_fake_user(nbr_users: int) -> list[dict[str, str]]:
 # region faker product
 
 
-def generate_fake_product(nbr_product: int, nbr_spetech: int) -> list[dict[str, str]]:
+def generate_fake_product(
+    nbr_product: int = NBR_PRODUCTS, nbr_spetech: int = NBR_SPETECH
+) -> list[dict[str, str]]:
     """
     Generate fake product data using the Faker library.
 
@@ -207,7 +210,9 @@ def generate_fake_product(nbr_product: int, nbr_spetech: int) -> list[dict[str, 
 # region faker order
 
 
-def generate_fake_order(nbr_orders: int, nbr_user: int) -> list[dict[str, str]]:
+def generate_fake_order(
+    nbr_orders: int = NBR_ORDERS, nbr_user: int = NBR_USERS
+) -> list[dict[str, str]]:
     """
     Generate fake order data using the Faker library.
 
@@ -233,7 +238,7 @@ def generate_fake_order(nbr_orders: int, nbr_user: int) -> list[dict[str, str]]:
 # region faker spetech
 
 
-def generate_fake_spetech(nbr_spetech: int) -> list[dict[str, str]]:
+def generate_fake_spetech(nbr_spetech: int = NBR_SPETECH) -> list[dict[str, str]]:
     """
     Generate fake specifications data using the Faker library.
 
