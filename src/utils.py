@@ -1,8 +1,9 @@
 # utility functions for the application
-# add bike data to the database
+# database import
 
 from database import create_connection, close_connection
 from config import DB_FILE
+
 
 def add_bike_data(bike_data: dict) -> None:
     conn = create_connection(DB_FILE)

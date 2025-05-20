@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class ProductBase(BaseModel):
     product_id: int = Field(..., description="Unique identifier for the product")
     name: str = Field(..., description="Name of the product")
