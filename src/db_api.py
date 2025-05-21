@@ -95,13 +95,13 @@ class DBTableRecord:
             sql = f"INSERT INTO {self.table} ("
             comma = ''
             for field_name in self.__fields:
-                if not((field_name in self.__pk_list) and (self.__fields[field_name] == 'AUTO')):
+                if not((field_name in self.__pk_list) and (self.__fields[field_name] is None)):
                     sql += f"{comma}{field_name}"
                     comma = ', '
             sql += ") values ("
             comma = ''
             for field_name in self.__fields:
-                if not((field_name in self.__pk_list) and (self.__fields[field_name] == 'AUTO')):
+                if not((field_name in self.__pk_list) and (self.__fields[field_name] is None)):
                     sql += f"{comma}:{field_name}"
                     comma = ', '
             sql += ")"
@@ -119,5 +119,6 @@ class DBTableRecord:
                     sql += f"{and_keyword}{field_name} = :{field_name}"
                     and_keyword = ' AND '
         cursor = self.__db_connection.new_cursor()
+        cursor.execute(sql, self.__fields)
         cursor.close()
         self.__is_new = False
