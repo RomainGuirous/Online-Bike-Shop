@@ -26,7 +26,14 @@ class DBConnection:
         return DBTableRecord(self, table_name, primary_keys, is_new)
 
     def delete_record(self, table_name: str, primary_keys: dict)-> None:
-        pass
+        if not primary_keys:
+            raise Exception('Record deletion error : unknown primary key value')
+        sql = f"DELETE FROM {table_name} WHERE "
+        and_keyword = ''
+        for field_name in primary_keys:
+            sql += f"{and_keyword}{field_name} = :{field_name}"
+            and_keyword = ' AND '
+        self.new_cursor().execute(sql, primary_keys)
 
 class DBTableRecord:
     
