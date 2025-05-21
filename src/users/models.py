@@ -12,11 +12,3 @@ class User(UserBase):
             first_name=first_name,
             last_name=last_name
         )
-        
-user = User(
-    user_id=1,
-    username="john_doe",
-    email="john@example.com",
-    first_name="John",
-    last_name="Doe"
-)

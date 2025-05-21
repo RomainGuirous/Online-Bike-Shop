@@ -1,10 +1,11 @@
 import streamlit as st
 from streamlit_card import card
-
+    
 st.set_page_config(page_title="Catalogue",
                     page_icon="📚",
                    )
 
+    
 cols = st.columns(2)
 
 for i in range(10):

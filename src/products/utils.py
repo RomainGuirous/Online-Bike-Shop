@@ -37,9 +37,9 @@ def get_product_list(db_connection: DBConnection, product_id: int = None) -> lis
             "product_id": row[0],
             "name": row[1],
             "description": row[2],
-            "technical_details": row[3],
-            "price": row[4],
-            "picture": row[5]
+            "price": row[3],
+            "picture": row[4],
+            "spetech": row[5],
         }
         products.append(product)
     return products
