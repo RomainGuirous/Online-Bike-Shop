@@ -1,5 +1,4 @@
 from src.db_api import DBConnection
-from src.users.schemas import User
 
 from src.utils import (
     generate_fake_orderhead,
@@ -55,9 +54,3 @@ injection_faker("SpeTech", spetech_data)
 
 
 # ma_connexion.delete_record('Product', {'product_Id' : 1})
-
-# mon_nouvel_utilisateur = User(ma_connexion, True)
-# mon_nouvel_utilisateur.first_name = 'Toto'
-# mon_nouvel_utilisateur.last_name = 'AZERTY'
-# mon_nouvel_utilisateur.save_to_db()
-ma_connexion.commit()
