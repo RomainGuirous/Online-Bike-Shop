@@ -1,9 +1,3 @@
--- If exists, drop the tables
-DROP TABLE IF EXISTS OrderDetail;
-DROP TABLE IF EXISTS OrderHead;
-DROP TABLE IF EXISTS Product;
-DROP TABLE IF EXISTS User;
-
 CREATE TABLE IF NOT EXISTS User(
    user_id INTEGER,
    first_name TEXT NOT NULL,
