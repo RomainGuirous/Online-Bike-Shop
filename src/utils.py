@@ -1,9 +1,16 @@
 # utility functions for the application
 # add bike data to the database
 
-from database import create_connection, close_connection
-from config import DB_FILE
+from .database import create_connection, close_connection
 import faker as fk
+from .config import (
+    DB_FILE,
+    NBR_USERS,
+    NBR_PRODUCTS,
+    NBR_SPETECH,
+    NBR_ORDERS,
+    NBR_ORDERDETAIL,
+)
 
 # region add product
 
@@ -154,7 +161,7 @@ def add_spetech_data(spetech_data: dict) -> None:
 # region faker user
 
 
-def generate_fake_user(nbr_users: int) -> list[dict[str, str]]:
+def generate_fake_user(nbr_users: int = NBR_USERS) -> list[dict[str, str]]:
     """
     Generate fake user data using the Faker library.
 
@@ -168,8 +175,8 @@ def generate_fake_user(nbr_users: int) -> list[dict[str, str]]:
     fake_users = []
     for _ in range(nbr_users):
         user = {
-            "first_name": fake.name(),
-            "last_name": fake.name(),
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
             "email": fake.email(),
         }
         fake_users.append(user)
@@ -179,7 +186,9 @@ def generate_fake_user(nbr_users: int) -> list[dict[str, str]]:
 # region faker product
 
 
-def generate_fake_product(nbr_product: int, nbr_spetech: int) -> list[dict[str, str]]:
+def generate_fake_product(
+    nbr_product: int = NBR_PRODUCTS, nbr_spetech: int = NBR_SPETECH
+) -> list[dict[str, str]]:
     """
     Generate fake product data using the Faker library.
 
@@ -194,11 +203,11 @@ def generate_fake_product(nbr_product: int, nbr_spetech: int) -> list[dict[str, 
     fake_products = []
     for _ in range(nbr_product):
         product = {
-            "product_name": fake.space_object_name(),
-            "description": fake.text(),
-            "price": fake.pyint() + "€",
+            "product_name": fake.word(),
+            "product_description": fake.text(),
+            "price": f"{fake.pyint()}€",
             "picture": fake.url(),
-            "septech_id": fake.pyint(1, nbr_spetech),
+            "spetech_id": fake.pyint(1, nbr_spetech),
         }
         fake_products.append(product)
     return fake_products
@@ -207,7 +216,9 @@ def generate_fake_product(nbr_product: int, nbr_spetech: int) -> list[dict[str, 
 # region faker order
 
 
-def generate_fake_order(nbr_orders: int, nbr_user: int) -> list[dict[str, str]]:
+def generate_fake_orderhead(
+    nbr_orders: int = NBR_ORDERS, nbr_user: int = NBR_USERS
+) -> list[dict[str, str]]:
     """
     Generate fake order data using the Faker library.
 
@@ -222,7 +233,7 @@ def generate_fake_order(nbr_orders: int, nbr_user: int) -> list[dict[str, str]]:
     fake_orders = []
     for _ in range(nbr_orders):
         order = {
-            "date": fake.date(),
+            "orderhead_date": fake.date(),
             "quantity": fake.pyint(),
             "user_id": fake.pyint(1, nbr_user),
         }
@@ -233,7 +244,7 @@ def generate_fake_order(nbr_orders: int, nbr_user: int) -> list[dict[str, str]]:
 # region faker spetech
 
 
-def generate_fake_spetech(nbr_spetech: int) -> list[dict[str, str]]:
+def generate_fake_spetech(nbr_spetech: int = NBR_SPETECH) -> list[dict[str, str]]:
     """
     Generate fake specifications data using the Faker library.
 
@@ -248,11 +259,40 @@ def generate_fake_spetech(nbr_spetech: int) -> list[dict[str, str]]:
     frame_sizes = ["S", "M", "L", "XL"]
     for _ in range(nbr_spetech):
         spetech = {
-            "type": fake.name(),
+            "spetech_type": fake.name(),
             "color": fake.color(),
-            "weight": fake.pyfloat(),
+            "spetech_weight": fake.pyfloat(),
             "brand": fake.company(),
             "frame_size": frame_sizes[fake.pyint(0, len(frame_sizes) - 1)],
         }
         fake_spetech.append(spetech)
     return fake_spetech
+
+
+# region fake orderdetai
+
+
+def generate_fake_orderdetail(
+    nbr_orderdetail: int = NBR_ORDERDETAIL,
+    nbr_order: int = NBR_ORDERS,
+    nbr_product: int = NBR_PRODUCTS,
+) -> list[dict[str, str]]:
+    """
+    Generate fake specifications data using the Faker library.
+
+    Args:
+        nbr_spetech (int): The number of fake specifications to generate.
+
+    Returns:
+        list: A list of dictionaries containing fake specifications data.
+    """
+    fake = fk.Faker()
+    fake_orderdetail = []
+
+    for _ in range(nbr_orderdetail):
+        orderdetail = {
+            "product_id": fake.pyint(1, nbr_order),
+            "orderhead_id": fake.pyint(1, nbr_product),
+        }
+        fake_orderdetail.append(orderdetail)
+    return fake_orderdetail
