@@ -3,6 +3,7 @@ from db_api import DBConnection
 # product list to Pydantic model
 from products.models import Product
 
+
 def get_product_list_model(db_connection: DBConnection, product_id: int = None) -> list:
     """
     Retrieve a list of products from the database and convert them to Pydantic models.
@@ -17,7 +18,10 @@ def get_product_list_model(db_connection: DBConnection, product_id: int = None) 
     products = get_product_list(db_connection, product_id)
     return [Product(**product) for product in products]
 
-def get_product_list(db_connection: DBConnection, product_id: int = None) -> list:
+
+def get_product_list(
+    db_connection: DBConnection, product_id: int = None
+) -> list[dict[str]]:
     """
     Retrieve a list of products from the database.
     Args:
@@ -25,7 +29,7 @@ def get_product_list(db_connection: DBConnection, product_id: int = None) -> lis
         product_id (int, optional): The ID of the product to retrieve. Defaults to None.
     Returns:
         list: A list of products.
-    """ 
+    """
     sql = "SELECT * FROM product"
     if product_id:
         sql += f" WHERE product_id = {product_id}"
@@ -35,11 +39,11 @@ def get_product_list(db_connection: DBConnection, product_id: int = None) -> lis
     for row in dataset:
         product = {
             "product_id": row[0],
-            "name": row[1],
-            "description": row[2],
-            "technical_details": row[3],
-            "price": row[4],
-            "picture": row[5]
+            "product_name": row[1],
+            "product_description": row[2],
+            "price": row[3],
+            "picture": row[4],
+            "spetech": row[5],
         }
         products.append(product)
     return products
