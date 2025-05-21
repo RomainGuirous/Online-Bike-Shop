@@ -120,5 +120,11 @@ class DBTableRecord:
                     and_keyword = ' AND '
         cursor = self.__db_connection.new_cursor()
         cursor.execute(sql, self.__fields)
+        if self.__is_new:
+            for field_name, fieldvalue in self.__fields.items():
+                if ((fieldvalue is None) and (field_name in self.__pk_list)):
+                    self.set_field(field_name, cursor.lastrowid)
+                    break
         cursor.close()
+        self.__db_connection.commit()
         self.__is_new = False
