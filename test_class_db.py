@@ -33,17 +33,17 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
 
     for data in liste_fake_datas:
         mon_enreg = ma_connexion.new_table_record(
-            table, {f"{table.lower()}_id": "AUTO"}, True
+            table, {f"{table.lower()}_id": None}, True
         )
         for key, value in data.items():
             mon_enreg.set_field(key, value)
         mon_enreg.save_record()
 
 
-# injection_faker("User", user_data)
-# injection_faker("Product", product_data)
-# injection_faker("Orderhead", order_data)
-# injection_faker("SpeTech", spetech_data)
+injection_faker("User", user_data)
+injection_faker("Product", product_data)
+injection_faker("Orderhead", order_data)
+injection_faker("SpeTech", spetech_data)
 # mon_enreg = ma_connexion.new_table_record("Product", {"product_Id": "AUTO"}, True)
 # mon_enreg.set_field("description", "voici ma nouvelle description.")
 # mon_enreg.save_record()
@@ -56,8 +56,8 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
 
 # ma_connexion.delete_record('Product', {'product_Id' : 1})
 
-mon_nouvel_utilisateur = User(ma_connexion, True)
-mon_nouvel_utilisateur.first_name = 'Toto'
-mon_nouvel_utilisateur.last_name = 'AZERTY'
-mon_nouvel_utilisateur.save_to_db()
+# mon_nouvel_utilisateur = User(ma_connexion, True)
+# mon_nouvel_utilisateur.first_name = 'Toto'
+# mon_nouvel_utilisateur.last_name = 'AZERTY'
+# mon_nouvel_utilisateur.save_to_db()
 ma_connexion.commit()
