@@ -39,10 +39,10 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
         mon_enreg.save_record()
 
 
-injection_faker("User", user_data)
-injection_faker("Product", product_data)
-injection_faker("Orderhead", order_data)
-injection_faker("SpeTech", spetech_data)
+#injection_faker("User", user_data)
+#injection_faker("Product", product_data)
+#injection_faker("Orderhead", order_data)
+#injection_faker("SpeTech", spetech_data)
 # mon_enreg = ma_connexion.new_table_record("Product", {"product_Id": "AUTO"}, True)
 # mon_enreg.set_field("description", "voici ma nouvelle description.")
 # mon_enreg.save_record()
