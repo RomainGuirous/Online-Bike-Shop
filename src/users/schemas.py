@@ -5,14 +5,14 @@ class User:
     User model representing a user in the database.
     """
     def __init__(self, db_connexion: DBConnection, is_new: bool, user_id: int = None):
-        self.__dataset = db_connexion.new_table_record('User', {'user_Id' : user_id}, is_new)
+        self.__dataset = db_connexion.new_table_record('User', {'user_id' : user_id}, is_new)
 
     @property
     def user_id(self):
         return self.__dataset.get_field('user_id')
     @user_id.setter
     def user_id(self, value):
-        self.__dataset.set_field('user_Id', value)
+        self.__dataset.set_field('user_id', value)
 
     @property
     def first_name(self):
