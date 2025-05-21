@@ -1,7 +1,6 @@
 # utility functions for the application
 # database import
 
-from .database import create_connection, close_connection
 import faker as fk
 from .config import (
     DB_FILE,
@@ -15,147 +14,147 @@ from .config import (
 # region add product
 
 
-def add_product_data(product_data: dict) -> None:
-    """
-    Add  1 product data to the database.
+# def add_product_data(product_data: dict) -> None:
+#     """
+#     Add  1 product data to the database.
 
-    Args:
-        product_data (dict): A dictionary containing product data.
-        The dictionary should contain the following keys:
-            - product_name: str
-            - description: str
-            - price: str
-            - picture: str
+#     Args:
+#         product_data (dict): A dictionary containing product data.
+#         The dictionary should contain the following keys:
+#             - product_name: str
+#             - description: str
+#             - price: str
+#             - picture: str
 
-    Returns:
-        None
-    """
-    conn = create_connection(DB_FILE)
-    if conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO Product(product_name, description, price, picture) VALUES (?, ?, ?, ?)",
-            (
-                product_data["product_name"],
-                product_data["description"],
-                product_data["price"],
-                product_data["picture"],
-            ),
-        )
-        conn.commit()
-        close_connection(conn)
-    else:
-        print("Failed to connect to the database.")
-        print("Failed to add product data.")
-
-
-# region add user
+#     Returns:
+#         None
+#     """
+#     conn = create_connection(DB_FILE)
+#     if conn:
+#         cursor = conn.cursor()
+#         cursor.execute(
+#             "INSERT INTO Product(product_name, description, price, picture) VALUES (?, ?, ?, ?)",
+#             (
+#                 product_data["product_name"],
+#                 product_data["description"],
+#                 product_data["price"],
+#                 product_data["picture"],
+#             ),
+#         )
+#         conn.commit()
+#         close_connection(conn)
+#     else:
+#         print("Failed to connect to the database.")
+#         print("Failed to add product data.")
 
 
-def add_user_data(user_data: dict) -> None:
-    """
-    Add  1 user data to the database.
-
-    Args:
-        product_data (dict): A dictionary containing product data.
-        The dictionary should contain the following keys:
-            - first_name: str
-            - last_name: str
-            - email: str
-
-    Returns:
-        None
-    """
-    conn = create_connection(DB_FILE)
-    if conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO User(first_name, last_name, email) VALUES (?, ?, ?)",
-            (
-                user_data["first_name"],
-                user_data["last_name"],
-                user_data["email"],
-            ),
-        )
-        conn.commit()
-        close_connection(conn)
-    else:
-        print("Failed to connect to the database.")
-        print("Failed to add user data.")
+# # region add user
 
 
-# region add order
+# def add_user_data(user_data: dict) -> None:
+#     """
+#     Add  1 user data to the database.
+
+#     Args:
+#         product_data (dict): A dictionary containing product data.
+#         The dictionary should contain the following keys:
+#             - first_name: str
+#             - last_name: str
+#             - email: str
+
+#     Returns:
+#         None
+#     """
+#     conn = create_connection(DB_FILE)
+#     if conn:
+#         cursor = conn.cursor()
+#         cursor.execute(
+#             "INSERT INTO User(first_name, last_name, email) VALUES (?, ?, ?)",
+#             (
+#                 user_data["first_name"],
+#                 user_data["last_name"],
+#                 user_data["email"],
+#             ),
+#         )
+#         conn.commit()
+#         close_connection(conn)
+#     else:
+#         print("Failed to connect to the database.")
+#         print("Failed to add user data.")
 
 
-def add_order_data(order_data: dict) -> None:
-    """
-    Add  1 user data to the database.
-
-    Args:
-        product_data (dict): A dictionary containing product data.
-        The dictionary should contain the following keys:
-            - date: str
-            - quantity: str
-            - user_id: str
-
-    Returns:
-        None
-    """
-    conn = create_connection(DB_FILE)
-    if conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO User(date, quantity, user_id) VALUES (?, ?, ?)",
-            (
-                order_data["date"],
-                order_data["quantity"],
-                order_data["user_id"],
-            ),
-        )
-        conn.commit()
-        close_connection(conn)
-    else:
-        print("Failed to connect to the database.")
-        print("Failed to add order data.")
+# # region add order
 
 
-# region add spetech
+# def add_order_data(order_data: dict) -> None:
+#     """
+#     Add  1 user data to the database.
+
+#     Args:
+#         product_data (dict): A dictionary containing product data.
+#         The dictionary should contain the following keys:
+#             - date: str
+#             - quantity: str
+#             - user_id: str
+
+#     Returns:
+#         None
+#     """
+#     conn = create_connection(DB_FILE)
+#     if conn:
+#         cursor = conn.cursor()
+#         cursor.execute(
+#             "INSERT INTO User(date, quantity, user_id) VALUES (?, ?, ?)",
+#             (
+#                 order_data["date"],
+#                 order_data["quantity"],
+#                 order_data["user_id"],
+#             ),
+#         )
+#         conn.commit()
+#         close_connection(conn)
+#     else:
+#         print("Failed to connect to the database.")
+#         print("Failed to add order data.")
 
 
-def add_spetech_data(spetech_data: dict) -> None:
-    """
-    Add  1 spetech data to the database.
+# # region add spetech
 
-    Args:
-        product_data (dict): A dictionary containing product data.
-        The dictionary should contain the following keys:
-            - type: str
-            - color: str
-            - weight: str
-            - brand: str
-            - frame_size: str
 
-    Returns:
-        None
-    """
-    conn = create_connection(DB_FILE)
-    if conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO Spetech(type, color, weight, brand, frame_size) VALUES (?, ?, ?, ?, ?)",
-            (
-                spetech_data["type"],
-                spetech_data["color"],
-                spetech_data["weight"],
-                spetech_data["brand"],
-                spetech_data["frame_size"],
-            ),
-        )
-        conn.commit()
-        close_connection(conn)
-    else:
-        print("Failed to connect to the database.")
-        print("Failed to add spetech data.")
+# def add_spetech_data(spetech_data: dict) -> None:
+#     """
+#     Add  1 spetech data to the database.
+
+#     Args:
+#         product_data (dict): A dictionary containing product data.
+#         The dictionary should contain the following keys:
+#             - type: str
+#             - color: str
+#             - weight: str
+#             - brand: str
+#             - frame_size: str
+
+#     Returns:
+#         None
+#     """
+#     conn = create_connection(DB_FILE)
+#     if conn:
+#         cursor = conn.cursor()
+#         cursor.execute(
+#             "INSERT INTO Spetech(type, color, weight, brand, frame_size) VALUES (?, ?, ?, ?, ?)",
+#             (
+#                 spetech_data["type"],
+#                 spetech_data["color"],
+#                 spetech_data["weight"],
+#                 spetech_data["brand"],
+#                 spetech_data["frame_size"],
+#             ),
+#         )
+#         conn.commit()
+#         close_connection(conn)
+#     else:
+#         print("Failed to connect to the database.")
+#         print("Failed to add spetech data.")
 
 
 # region faker user

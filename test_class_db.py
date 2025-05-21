@@ -10,7 +10,7 @@ from src.utils import (
 )
 
 product_data = generate_fake_product()
-order_data = generate_fake_orderhead()
+orderhead_data = generate_fake_orderhead()
 user_data = generate_fake_user()
 spetech_data = generate_fake_spetech()
 orderdetail_data = generate_fake_orderdetail()
@@ -40,6 +40,18 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
         mon_enreg.save_record()
 
 
+liste_tables = [
+    "User",
+    "Product",
+    "Orderhead",
+    "SpeTech",
+    # "Orderdetail",
+]
+
+# injecte les fonctions faker
+for table in liste_tables:
+    injection_faker(table, locals()[f"{table.lower()}_data"])
+
 # injection_faker("User", user_data)
 # injection_faker("Product", product_data)
 # injection_faker("Orderhead", order_data)
@@ -55,10 +67,10 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
 
 # ma_connexion.delete_record('Product', {'product_Id' : 1})
 
-mon_user = User(ma_connexion, True)
-mon_user.first_name = "Nouveau"
-mon_user.last_name = "User"
-mon_user.save_to_db()
-print(f"User-id : {mon_user.user_id}")
+# mon_user = User(ma_connexion, True)
+# mon_user.first_name = "Nouveau"
+# mon_user.last_name = "User"
+# mon_user.save_to_db()
+# print(f"User-id : {mon_user.user_id}")
 
 ma_connexion.commit()

@@ -3,8 +3,8 @@
 DB_FILE = "online_bikes.db"
 
 # Number of records to generate for each table (fake data)
-NBR_USERS = 10
-NBR_PRODUCTS = 10
+NBR_USERS = 30
+NBR_PRODUCTS = 24
 NBR_SPETECH = 5
-NBR_ORDERS = 10
-NBR_ORDERDETAIL = 10
+NBR_ORDERS = 50
+NBR_ORDERDETAIL = 40
