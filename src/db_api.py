@@ -1,5 +1,4 @@
 from sqlite3 import connect
-from sqlite3 import Connection
 from sqlite3 import Cursor
 from sqlite3 import Error
 
@@ -82,12 +81,12 @@ class DBTableRecord:
         return not self.__is_new
 
     def get_field(self, field_name: str)-> any:
-        if not field_name in self.__fields.keys():
+        if field_name not in self.__fields.keys():
             raise Exception(f"The field '{field_name}' was not found.")
         return self.__fields[field_name]
 
     def set_field(self, field_name: str, new_value: any)-> None:
-        if not field_name in self.__fields.keys():
+        if field_name not in self.__fields.keys():
             raise Exception(f"The field '{field_name}' was not found.")
         self.__fields[field_name] = new_value
 
@@ -110,7 +109,7 @@ class DBTableRecord:
             sql = f"UPDATE {self.table} SET "
             comma = ''
             for field_name in self.__fields:
-                if not field_name in self.__pk_list:
+                if field_name not in self.__pk_list:
                     sql += f"{comma}{field_name} = :{field_name}"
                     comma = ', '
             sql += " WHERE "
@@ -120,6 +119,5 @@ class DBTableRecord:
                     sql += f"{and_keyword}{field_name} = :{field_name}"
                     and_keyword = ' AND '
         cursor = self.__db_connection.new_cursor()
-        dataset = cursor.execute(sql, self.__fields)
         cursor.close()
         self.__is_new = False

@@ -1,5 +1,5 @@
 # utility functions for the application
-# add bike data to the database
+# database import
 
 from .database import create_connection, close_connection
 import faker as fk

@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
 
-
 class OrderBase(BaseModel):
     order_id: int = Field(..., description="Unique identifier for the order")
     user_id: int = Field(..., description="Unique identifier for the user")
