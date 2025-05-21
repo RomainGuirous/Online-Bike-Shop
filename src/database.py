@@ -5,8 +5,19 @@ from sqlite3 import Connection
 from sqlite3 import Error
 
 
+# region connection
+
+
 def create_connection(db_file: str) -> Connection:
-    """create a database connection to a SQLite database"""
+    """
+    Create a database connection to a SQLite database.
+
+    Args:
+        db_file (str): The database file path.
+
+    Returns:
+        Connection: Connection object or None if connection fails.
+    """
     conn = None
     try:
         conn = connect(db_file)
@@ -16,8 +27,19 @@ def create_connection(db_file: str) -> Connection:
     return conn
 
 
+# region deconnection
+
+
 def close_connection(conn: Connection) -> None:
-    """close the database connection"""
+    """
+    Close the database connection.
+
+    Args:
+        conn (Connection): The connection object to close.
+
+    Returns:
+        None
+    """
     if conn:
         conn.close()
         print("Connection closed.")
