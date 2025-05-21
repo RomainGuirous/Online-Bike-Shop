@@ -126,5 +126,4 @@ class DBTableRecord:
                     self.set_field(field_name, cursor.lastrowid)
                     break
         cursor.close()
-        self.__db_connection.commit()
         self.__is_new = False

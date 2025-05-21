@@ -1,5 +1,5 @@
 from src.db_api import DBConnection
-from src.users.schemas import User
+#from src.users.schemas import User
 
 from src.utils import (
     generate_fake_orderhead,
@@ -40,10 +40,10 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
         mon_enreg.save_record()
 
 
-#injection_faker("User", user_data)
-#injection_faker("Product", product_data)
-#injection_faker("Orderhead", order_data)
-#injection_faker("SpeTech", spetech_data)
+# injection_faker("User", user_data)
+# injection_faker("Product", product_data)
+# injection_faker("Orderhead", order_data)
+# injection_faker("SpeTech", spetech_data)
 # mon_enreg = ma_connexion.new_table_record("Product", {"product_Id": "AUTO"}, True)
 # mon_enreg.set_field("description", "voici ma nouvelle description.")
 # mon_enreg.save_record()
@@ -55,10 +55,10 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
 
 # ma_connexion.delete_record('Product', {'product_Id' : 1})
 
-mon_user = User(ma_connexion, True)
-mon_user.first_name = 'Nouveau'
-mon_user.last_name = 'User'
-mon_user.save_to_db()
-print(f"User-id : {mon_user.user_id}")
+# mon_user = User(ma_connexion, True)
+# mon_user.first_name = 'Nouveau'
+# mon_user.last_name = 'User'
+# mon_user.save_to_db()
+# print(f"User-id : {mon_user.user_id}")
 
 ma_connexion.commit()
