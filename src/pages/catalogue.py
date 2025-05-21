@@ -1,7 +1,9 @@
 import streamlit as st
 from streamlit_card import card
 
-st.set_page_config(page_title="Catalogue", page_icon="🛒")
+st.set_page_config(page_title="Catalogue",
+                    page_icon="📚",
+                   )
 
 cols = st.columns(2)
 
