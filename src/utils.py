@@ -234,7 +234,6 @@ def generate_fake_orderhead(
     for _ in range(nbr_orders):
         order = {
             "orderhead_date": fake.date(),
-            "quantity": fake.pyint(),
             "user_id": fake.pyint(1, nbr_user),
         }
         fake_orders.append(order)
