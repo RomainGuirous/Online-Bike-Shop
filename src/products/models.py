@@ -1,28 +1,46 @@
-# Product model definitions
-from products.schemas import ProductBase
+from src.db_api import DBConnection
 
-class Product(ProductBase):
+class Product:
     """
     Product model representing a product in the database.
     """
-    def __init__(self, product_id, name, description, technical_details, price):
-        super().__init__(
-            product_id=product_id,
-            name=name,
-            description=description,
-            technical_details=technical_details,
-            price=price
-        )
-        
+    def __init__(self, db_connexion: DBConnection, is_new: bool, product_id: int = None):
+        self.__record = db_connexion.new_table_record('Product', {'product_id' : product_id}, is_new)
 
-# product = Product(
-#     product_id=1,
-#     name="Moun",
-#     description="A high-performance mountain bike.",
-#     technical_details="Frame: Aluminum, Gears: 21-speed, Brakes: Disc",
-#     price=499.99
-# )
+    @property
+    def product_name(self):
+        return self.__record.get_field('product_name')
+    @product_name.setter
+    def product_name(self, value):
+        self.__record.set_field('product_name', value)
 
-# print(product)
-    
-    
+    @property
+    def product_description(self):
+        return self.__record.get_field('product_description')
+    @product_description.setter
+    def product_description(self, value):
+        self.__record.set_field('product_description', value)
+
+    @property
+    def price(self):
+        return self.__record.get_field('price')
+    @price.setter
+    def price(self, value):
+        self.__record.set_field('price', value)
+
+    @property
+    def picture(self):
+        return self.__record.get_field('picture')
+    @picture.setter
+    def picture(self, value):
+        self.__record.set_field('picture', value)
+
+    @property
+    def spetech_id(self):
+        return self.__record.get_field('spetech_id')
+    @spetech_id.setter
+    def spetech_id(self, value):
+        self.__record.set_field('spetech_id', value)
+
+    def save_to_db(self):
+        self.__record.save_record()
