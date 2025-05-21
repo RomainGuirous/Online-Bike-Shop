@@ -52,4 +52,7 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
 # mon_enreg.set_field("price", 123)
 # mon_enreg.save_record()
 
+
+# ma_connexion.delete_record('Product', {'product_Id' : 1})
+
 ma_connexion.commit()
