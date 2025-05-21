@@ -30,15 +30,15 @@ CREATE TABLE IF NOT EXISTS Product(
 CREATE TABLE IF NOT EXISTS OrderHead(
    orderhead_id INTEGER,
    orderhead_date TEXT NOT NULL,
-   quantity INTEGER NOT NULL,
    user_id INTEGER NOT NULL,
    PRIMARY KEY(orderhead_id),
    FOREIGN KEY(user_id) REFERENCES User(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS OrderDetail(
-   product_id INTEGER,
    orderhead_id INTEGER,
+   product_id INTEGER,
+   quantity INTEGER NOT NULL,
    PRIMARY KEY(product_id, orderhead_id),
    FOREIGN KEY(product_id) REFERENCES Product(product_id),
    FOREIGN KEY(orderhead_id) REFERENCES Orderhead(orderhead_id)
