@@ -1,5 +1,5 @@
 from src.db_api import DBConnection
-#from src.users.schemas import User
+from src.users.models import User
 
 from src.utils import (
     generate_fake_orderhead,
@@ -55,10 +55,10 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
 
 # ma_connexion.delete_record('Product', {'product_Id' : 1})
 
-# mon_user = User(ma_connexion, True)
-# mon_user.first_name = 'Nouveau'
-# mon_user.last_name = 'User'
-# mon_user.save_to_db()
-# print(f"User-id : {mon_user.user_id}")
+mon_user = User(ma_connexion, True)
+mon_user.first_name = 'Nouveau'
+mon_user.last_name = 'User'
+mon_user.save_to_db()
+print(f"User-id : {mon_user.user_id}")
 
 ma_connexion.commit()
