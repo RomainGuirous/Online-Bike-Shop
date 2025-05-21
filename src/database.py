@@ -2,14 +2,8 @@
 
 from sqlite3 import connect
 from sqlite3 import Connection
-from sqlite3 import Cursor
 from sqlite3 import Error
-from src.utils import (
-    generate_fake_order,
-    generate_fake_product,
-    generate_fake_user,
-    generate_fake_spetech,
-)
+
 
 # region connection
 
