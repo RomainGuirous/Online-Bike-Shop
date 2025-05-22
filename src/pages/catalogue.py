@@ -11,7 +11,7 @@ st.set_page_config(
 css = """
     <style>
         .stApp {
-            background-image: url("https://i.makeagif.com/media/7-20-2022/MFoxN5.gif");
+            background-image: url("https://wallpapers.com/images/hd/sunset-sky-background-92b7gfssbwa36cle.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
