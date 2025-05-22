@@ -90,7 +90,9 @@ class DBTableRecord:
             raise Exception(f"The field '{field_name}' was not found.")
         self.__fields[field_name] = new_value
 
-    def save_record(self)-> None:
+    def save_record(self, force_insert = False)-> None:
+        if force_insert:
+            self.__is_new = True
         if self.__is_new:
             sql = f"INSERT INTO {self.table} ("
             comma = ''
