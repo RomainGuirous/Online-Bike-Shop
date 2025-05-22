@@ -13,7 +13,7 @@ st.set_page_config(
 css = """
     <style>
         .stApp {
-            background-image: url("https://i.makeagif.com/media/9-23-2018/Y5MlYr.gif");
+            background-image: url("https://bikes.com/cdn/shop/files/RM_MY25_NewColours_Altitude_Opt2.jpg?v=1738878523&width=2880");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -29,7 +29,8 @@ st.markdown(css, unsafe_allow_html=True)
 
 if "id" not in st_session:
     st.session_state["id"] = None
-else:
+elif st.session_state["id"]:
+    st.write(st.session_state["id"])
     conn = DBConnection("online_bikes.db")
     if conn:
         list_data_product = get_product_list(conn)
