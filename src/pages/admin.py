@@ -1,9 +1,25 @@
 import streamlit as st
-from streamlit import session_state as st_session
+import streamlit_authenticator as stauth
+from yaml import SafeLoader
+import yaml
 
-if "role" not in st_session:
-    st_session["role"] = "default"  # Default role
+st.set_page_config(page_title="Admin", page_icon="🛠️")
 
-if st_session.get("role") != "admin":
-    st.error("You need to be an admin to access this page.")
+
+with open('/Users/fabgrall/Documents/Online-Bike-Shop/config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days']
+)
+
+if "admin" not in (st.session_state.get("roles") or []):
+    st.error("Access denied. You are not an admin.")
     st.stop()
+    
+if st.session_state.get('authentication_status'):
+    st.success(f'Welcome {st.session_state["name"]}!')
+    authenticator.logout()

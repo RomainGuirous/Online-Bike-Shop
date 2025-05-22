@@ -15,14 +15,12 @@ st.set_page_config(
 )
 
 
-conn = st.connection("sqlite_conn", type="sql", url=f"sqlite:///{DB_FILE}")
-
 def main():
 
     css = '''
     <style>
         .stApp {
-            background-image: url("");
+            background-image: url("https://www.les3vallees.com/media/cache/hero_single/ete-vtt-et-vae-addict-tribu-meribel-1920x1080-arthur-bertrand-293.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
