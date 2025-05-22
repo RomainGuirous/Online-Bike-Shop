@@ -14,8 +14,7 @@ st.set_page_config(
 
 
 def main():
-
-    css = '''
+    css = """
     <style>
         .stApp {
             background-image: url("https://bikes.com/cdn/shop/files/RM_MY25_NewColours_Growler_Opt2.jpg?v=1738878774&width=2880");
@@ -27,11 +26,11 @@ def main():
             background-color: transparent;
         }
     </style>
-    '''
+    """
 
     st.markdown(css, unsafe_allow_html=True)
 
-    #initialize session state
+    # initialize session state
     if "connection" not in st.session_state:
         st.session_state["connection"] = None
 
@@ -52,17 +51,17 @@ def main():
         return f"""
         <a href="" target="_blank" class="product-card-link">
             <div class="product-card-wide">
-                <img src="{product['picture']}" alt="Bike Image">
-                <div class="product-title">{product['name']}</div>
-                <div class="product-price">{product['price']}</div>
+                <img src="{product["picture"]}" alt="Bike Image">
+                <div class="product-title">{product["name"]}</div>
+                <div class="product-price">{product["price"]}</div>
                 <div class="product-button">🛒 Add to Cart</div>
             </div>
         </a>
         """
 
-
     # Inject global styles
-    st.markdown("""
+    st.markdown(
+        """
         <style>
         
         .product-card-wide {
@@ -123,17 +122,19 @@ def main():
             text-decoration: none !important;
         }
         </style>
-    """, unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
     # title
     st.markdown(
         """
         <h1 style="text-align: center; color: #FFFFFF;">Welcome to the Online Bike Shop</h1>
         <p style="text-align: center; color: #FFFFFF;">Best selling product.</p>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
-    
+
     # Display cards in a 4-column responsive layout
     cols_per_row = 4
     for i in range(0, len(products), cols_per_row):
@@ -141,7 +142,10 @@ def main():
         for j in range(cols_per_row):
             if i + j < len(products):
                 with row[j]:
-                    st.markdown(get_product_card(products[i + j]), unsafe_allow_html=True)
+                    st.markdown(
+                        get_product_card(products[i + j]), unsafe_allow_html=True
+                    )
+
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,6 @@
 from src.db_api import DBConnection
-#from src.users.models import User
+
+# from src.users.models import User
 from src.orders.models import OrderHead, OrderDetail
 
 from src.utils import (
@@ -10,7 +11,14 @@ from src.utils import (
     generate_fake_orderdetail,
 )
 
+product_data = generate_fake_product()
+orderhead_data = generate_fake_orderhead()
+user_data = generate_fake_user()
+spetech_data = generate_fake_spetech()
+orderdetail_data = generate_fake_orderdetail()
+
 ma_connexion = DBConnection("online_bikes.db")
+
 
 def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
     """
@@ -32,25 +40,33 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
             mon_enreg.set_field(key, value)
         mon_enreg.save_record()
 
+
 ma_connexion.executescript("src/db.sql")
 
-# product_data = generate_fake_product()
-# order_data = generate_fake_orderhead()
-# user_data = generate_fake_user()
-# spetech_data = generate_fake_spetech()
-# orderdetail_data = generate_fake_orderdetail()
-# injection_faker("User", user_data)
-# injection_faker("Product", product_data)
-# injection_faker("Orderhead", order_data)
-# injection_faker("SpeTech", spetech_data)
+liste_tables = [
+    "User",
+    "Product",
+    "Orderhead",
+    "SpeTech",
+    # "Orderdetail",
+]
+
+# injecte les fonctions faker
+for table in liste_tables:
+    injection_faker(table, locals()[f"{table.lower()}_data"])
+
+
+# mon_enreg = ma_connexion.new_table_record("Product", {"product_Id": "AUTO"}, True)
+# mon_enreg.set_field("description", "voici ma nouvelle description.")
+# mon_enreg.save_record()
 
 # ajout d'une commande
 commande = OrderHead(ma_connexion, True)
 commande.user_id = 8
-commande.orderhead_date = '2025-05-21'
+commande.orderhead_date = "2025-05-21"
 commande.save_to_db()
 ma_connexion.commit()
-commande.add_product(3, 5) # on ajoute le produit 3 avec une qt de 5
+commande.add_product(3, 5)  # on ajoute le produit 3 avec une qt de 5
 commande.add_product(1, 5)
 commande.add_product(2, 2)
 commande.save_to_db()
