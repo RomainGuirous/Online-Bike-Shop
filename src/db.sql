@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS OrderDetail(
 );
 
 -- Insert data into Product table
-INSERT INTO Product (product_id, product_name, product_description, price, picture, spetech_id) VALUES
+INSERT OR REPLACE INTO Product (product_id, product_name, product_description, price, picture, spetech_id) VALUES
 (1, 'Mountain Bike', 'A rugged mountain bike for off-road adventures.', 499.99, 'https://www.serk.cc/wp-content/uploads/2022/10/DSCF2936.jpg', 1),
 (2, 'Road Bike', 'A lightweight road bike for speed and efficiency.', 799.99, 'https://www.serk.cc/wp-content/uploads/2022/10/DSCF4542-Edit.jpg', 2),
 (3, 'Hybrid Bike', 'A versatile hybrid bike for city and trail riding.', 599.99, 'https://www.serk.cc/wp-content/uploads/2019/07/A21_1920-300x200.jpg', 3),
