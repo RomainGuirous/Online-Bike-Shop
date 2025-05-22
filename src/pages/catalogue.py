@@ -2,16 +2,37 @@ import streamlit as st
 from streamlit_card import card
 from products.utils import get_product_list
 from db_api import DBConnection
-from img import liste_img
 
 st.set_page_config(
     page_title="Catalogue",
     page_icon="📚",
 )
 
+css = """
+    <style>
+        .stApp {
+            background-image: url("https://i.makeagif.com/media/7-20-2022/MFoxN5.gif");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .stApp > header {       
+            background-color: transparent;
+        }
+    </style>
+    """
+
+st.markdown(css, unsafe_allow_html=True)
+
+
 conn = DBConnection("online_bikes.db")
 if conn:
     list_data_product = get_product_list(conn)
+
+
+def click(id: int):
+    st.session_state["id"] = list_data_product[id]["product_id"]
+    st.switch_page("pages/product.py")
 
 
 cols = st.columns(2)
@@ -21,8 +42,8 @@ for i in range(len(list_data_product)):
         card(
             title=list_data_product[i]["product_name"],
             text=list_data_product[i]["product_description"],
-            image=liste_img[i],
-            on_click=lambda: st.switch_page("pages/connection.py"),
+            image=list_data_product[i]["picture"],
+            on_click=lambda: click(i),
             styles={
                 "card": {
                     "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",

@@ -47,3 +47,33 @@ def get_product_list(
         }
         products.append(product)
     return products
+
+
+def get_spetech_list(
+    db_connection: DBConnection, spetech_id: int = None
+) -> list[dict[str]]:
+    """
+    Retrieve a list of products from the database.
+    Args:
+        db_connection (DBConnection): The database connection object.
+        product_id (int, optional): The ID of the product to retrieve. Defaults to None.
+    Returns:
+        list: A list of products.
+    """
+    sql = "SELECT * FROM SpeTech"
+    if spetech_id:
+        sql += f" WHERE spetech_id = {spetech_id}"
+    cursor = db_connection.new_cursor()
+    dataset = cursor.execute(sql)
+    spetechs = []
+    for row in dataset:
+        spetech = {
+            "spetech_id": row[0],
+            "spetech_type": row[1],
+            "color": row[2],
+            "spetech_weight": row[3],
+            "brand": row[4],
+            "frame_size": row[5],
+        }
+        spetechs.append(spetech)
+    return spetechs
