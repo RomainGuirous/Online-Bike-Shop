@@ -15,8 +15,6 @@ st.set_page_config(
 )
 
 
-conn = st.connection("sqlite_conn", type="sql", url=f"sqlite:///{DB_FILE}")
-
 def main():
 
     css = '''
