@@ -4,15 +4,15 @@ class OrderHead:
     """
     OrderHead model representing a order head in the database.
     """
-    def __init__(self, db_connexion: DBConnection, is_new: bool, orderhead_id: int = None):
-        self.__db_connection = db_connexion
-        self.__record = db_connexion.new_table_record('OrderHead', {'orderhead_id' : orderhead_id}, is_new)
+    def __init__(self, db_connection: DBConnection, is_new: bool, orderhead_id: int = None):
+        self.__db_connection = db_connection
+        self.__record = db_connection.new_table_record('OrderHead', {'orderhead_id': orderhead_id}, is_new)
         self.__detail_records: list[OrderDetail] = []
         if not is_new:
             sql = "SELECT product_id FROM OrderDetail WHERE orderhead_id = ?"
-            rows = db_connexion.new_cursor().execute(sql, (orderhead_id,)).fetchall()
+            rows = db_connection.new_cursor().execute(sql, (orderhead_id,)).fetchall()
             for row in rows:
-                self.__detail_records.append(OrderDetail(db_connexion, False, self.orderhead_id, row[0]))
+                self.__detail_records.append(OrderDetail(db_connection, False, self.orderhead_id, row[0]))
 
     @property
     def orderhead_id(self):
@@ -35,10 +35,12 @@ class OrderHead:
     def user_id(self, value):
         self.__record.set_field('user_id', value)
 
-    def add_product(self, product_id: int)-> "OrderDetail":
+    def add_product(self, product_id: int, quantity: int)-> "OrderDetail":
         if not self.__record.created:
             raise Exception("The order's head must be saved before adding details")
-        self.__detail_records.append(OrderDetail(self.__db_connexion, False, self.orderhead_id, product_id))
+        detail = OrderDetail(self.__db_connection, True, self.orderhead_id, product_id)
+        detail.quantity = quantity
+        self.__detail_records.append(detail)
 
     def details(self)-> list["OrderDetail"]:
         return self.__detail_records
