@@ -2,6 +2,8 @@ import streamlit as st
 from db_api import DBConnection
 from products.utils import get_product_list, get_spetech_list
 from streamlit import session_state as st_session
+from streamlit_card import card
+from utils import st_add_to_basket
 
 st.set_page_config(
     page_title="Product",
@@ -60,5 +62,11 @@ else:
                 st.write(f"Frame Size : {value}")
             else:
                 st.write(f"{key.capitalize()} : {value}")
+    card(
+        title="Add to basket",
+        text="",
+        #image=product.picture,
+        on_click=lambda: st_add_to_basket(product)
+    )
 
     st.session_state["id"] = None
