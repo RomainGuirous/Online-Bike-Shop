@@ -56,8 +56,8 @@ class OrderDetail:
     """
     OrderDetail model representing a order detail in the database.
     """
-    def __init__(self, db_connexion: DBConnection, is_new: bool, orderhead_id: int, product_id: int):
-        self.__record = db_connexion.new_table_record('OrderDetail', {'orderhead_id' : orderhead_id, 'product_id' : product_id}, is_new)
+    def __init__(self, db_connection: DBConnection, is_new: bool, orderhead_id: int, product_id: int):
+        self.__record = db_connection.new_table_record('OrderDetail', {'orderhead_id' : orderhead_id, 'product_id' : product_id}, is_new)
 
     @property
     def orderhead_id(self):
