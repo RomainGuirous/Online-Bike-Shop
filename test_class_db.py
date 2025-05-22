@@ -1,6 +1,7 @@
 from src.db_api import DBConnection
 from src.users.models import User
 
+
 from src.utils import (
     generate_fake_orderhead,
     generate_fake_product,

@@ -4,6 +4,7 @@ class User:
     """
     User model representing a user in the database.
     """
+
     def __init__(self, db_connexion: DBConnection, is_new: bool, user_id: int = None):
         self.__record = db_connexion.new_table_record('User', {'user_id' : user_id}, is_new)
 
@@ -37,3 +38,4 @@ class User:
 
     def save_to_db(self):
         self.__record.save_record()
+
