@@ -7,15 +7,34 @@ from products.utils import get_product_list
 from db_api import DBConnection
 from config import DB_FILE
 
+
+
 st.set_page_config(
     page_title="Page d'accueil",
     page_icon="🚴",
 )
 
-# conn = st.connection(DB_FILE, type="sql")
+
+conn = st.connection("sqlite_conn", type="sql", url=f"sqlite:///{DB_FILE}")
 
 def main():
-    
+
+    css = '''
+    <style>
+        .stApp {
+            background-image: url("");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .stApp > header {       
+            background-color: transparent;
+        }
+    </style>
+    '''
+
+    st.markdown(css, unsafe_allow_html=True)
+
     #initialize session state
     if "connection" not in st_session:
         st_session["connection"] = None
@@ -47,9 +66,11 @@ def main():
                     styles={
                         "card": {
                             "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",
+
                         },
                         "filter": {
                             "background-color": "transparent",
+                            
                         },
                     },
                 )
