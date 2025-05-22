@@ -18,7 +18,9 @@ authenticator = stauth.Authenticate(
 
 if "admin" not in (st.session_state.get("roles") or []):
     st.error("Access denied. You are not an admin.")
-    st.stop()
+    if st.button("Login"):
+        st.switch_page("pages/connection.py")
+
     
 if st.session_state.get('authentication_status'):
     st.success(f'Welcome {st.session_state["name"]}!')
