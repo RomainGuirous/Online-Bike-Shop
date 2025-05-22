@@ -1,5 +1,7 @@
 from src.db_api import DBConnection
-from src.users.models import User
+
+# from src.users.models import User
+from src.orders.models import OrderHead, OrderDetail
 
 from src.utils import (
     generate_fake_orderhead,
@@ -16,7 +18,6 @@ spetech_data = generate_fake_spetech()
 orderdetail_data = generate_fake_orderdetail()
 
 ma_connexion = DBConnection("online_bikes.db")
-ma_connexion.executescript("src/db.sql")
 
 
 def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
@@ -40,6 +41,8 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
         mon_enreg.save_record()
 
 
+ma_connexion.executescript("src/db.sql")
+
 liste_tables = [
     "User",
     "Product",
@@ -57,17 +60,30 @@ for table in liste_tables:
 # mon_enreg.set_field("description", "voici ma nouvelle description.")
 # mon_enreg.save_record()
 
-# mon_enreg = ma_connexion.new_table_record("Product", {"product_Id": "AUTO"}, True)
-# mon_enreg.set_field("description", "Ceci est un nouveau produit.")
-# mon_enreg.set_field("price", 123)
-# mon_enreg.save_record()
+# ajout d'une commande
+commande = OrderHead(ma_connexion, True)
+commande.user_id = 8
+commande.orderhead_date = "2025-05-21"
+commande.save_to_db()
+ma_connexion.commit()
+commande.add_product(3, 5)  # on ajoute le produit 3 avec une qt de 5
+commande.add_product(1, 5)
+commande.add_product(2, 2)
+commande.save_to_db()
+ma_connexion.commit()
+num_commande = commande.orderhead_id
+print(f"Commande enregistrée avec le N° {num_commande}")
+for detail in commande.details():
+    print(f"  Produit : {detail.product_id} Qt : {detail.quantity}")
 
-# ma_connexion.delete_record('Product', {'product_Id' : 1})
-
-# mon_user = User(ma_connexion, True)
-# mon_user.first_name = "Nouveau"
-# mon_user.last_name = "User"
-# mon_user.save_to_db()
-# print(f"User-id : {mon_user.user_id}")
-
+input("Vérifier en base la création de la commande et des lignes...")
+# on supprime le détail n°2 (correspondant au produit 1) et on re-enregistre...
+del commande.details()[1]
+commande.save_to_db()
+ma_connexion.commit()
+input("Vérifier en base la suppression du produit 1...")
+# on recharge... et on affiche les lignes
+commande = OrderHead(ma_connexion, False, num_commande)
+for detail in commande.details():
+    print(f"  Produit : {detail.product_id} Qt : {detail.quantity}")
 ma_connexion.commit()

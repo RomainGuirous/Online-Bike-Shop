@@ -30,18 +30,24 @@ CREATE TABLE IF NOT EXISTS Product(
 CREATE TABLE IF NOT EXISTS OrderHead(
    orderhead_id INTEGER,
    orderhead_date TEXT NOT NULL,
-   quantity INTEGER NOT NULL,
    user_id INTEGER NOT NULL,
    PRIMARY KEY(orderhead_id),
    FOREIGN KEY(user_id) REFERENCES User(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS OrderDetail(
-   product_id INTEGER,
    orderhead_id INTEGER,
+   product_id INTEGER,
+   quantity INTEGER NOT NULL,
    PRIMARY KEY(product_id, orderhead_id),
    FOREIGN KEY(product_id) REFERENCES Product(product_id),
    FOREIGN KEY(orderhead_id) REFERENCES Orderhead(orderhead_id)
 );
 
-
+-- Insert data into Product table
+INSERT OR REPLACE INTO Product (product_id, product_name, product_description, price, picture, spetech_id) VALUES
+(1, 'Mountain Bike', 'A rugged mountain bike for off-road adventures.', 499.99, 'https://www.serk.cc/wp-content/uploads/2022/10/DSCF2936.jpg', 1),
+(2, 'Road Bike', 'A lightweight road bike for speed and efficiency.', 799.99, 'https://www.serk.cc/wp-content/uploads/2022/10/DSCF4542-Edit.jpg', 2),
+(3, 'Hybrid Bike', 'A versatile hybrid bike for city and trail riding.', 599.99, 'https://www.serk.cc/wp-content/uploads/2019/07/A21_1920-300x200.jpg', 3),
+(4, 'Electric Bike', 'An electric bike for effortless commuting.', 1299.99, 'https://www.serk.cc/wp-content/uploads/2019/07/A10_1920-300x200.jpg', 4),
+(5, 'Kids Bike', 'A fun and safe bike for kids.', 199.99, 'https://www.serk.cc/wp-content/uploads/2019/07/a30M_side.jpg', 5);

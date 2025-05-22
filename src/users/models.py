@@ -1,11 +1,12 @@
-from src.db_api import DBConnection
+from db_api import DBConnection
 
 class User:
     """
     User model representing a user in the database.
     """
-    def __init__(self, db_connexion: DBConnection, is_new: bool, user_id: int = None):
-        self.__record = db_connexion.new_table_record('User', {'user_id' : user_id}, is_new)
+
+    def __init__(self, db_connection: DBConnection, is_new: bool, user_id: int = None):
+        self.__record = db_connection.new_table_record('User', {'user_id' : user_id}, is_new)
 
     @property
     def user_id(self):
@@ -37,3 +38,4 @@ class User:
 
     def save_to_db(self):
         self.__record.save_record()
+
