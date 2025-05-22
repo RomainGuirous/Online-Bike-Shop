@@ -6,7 +6,7 @@ import yaml
 st.set_page_config(page_title="Admin", page_icon="🛠️")
 
 
-with open('/Users/fabgrall/Documents/Online-Bike-Shop/config.yaml') as file:
+with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
