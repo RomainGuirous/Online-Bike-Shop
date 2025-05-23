@@ -4,6 +4,7 @@ from products.utils import get_best_selling_products
 from db_api import DBConnection
 from config import DB_FILE
 from style.style import get_card_style, get_background_style
+import streamlit_utils as st_utils
 
 st.set_page_config(
     page_title="Page d'accueil",
@@ -75,7 +76,8 @@ def main():
                     with col1:
                         if st.button("🛒 Add to Cart", key=f"cart_{product['product_id']}"):
                             st.session_state.id = product['product_id']
-                            st.switch_page("pages/basket.py")
+                            st_utils.event_add_to_basket(product['product_id'])
+
                     with col2:
                         if st.button("🔍 View Details", key=f"details_{product['product_id']}"):
                             st.session_state.id = product['product_id']
