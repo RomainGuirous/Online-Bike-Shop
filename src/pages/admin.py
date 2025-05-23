@@ -7,7 +7,6 @@ from db_api import create_connection
 from yaml import SafeLoader
 import yaml
 import plotly.express as px
-import pandas as pd
 
 st.set_page_config(page_title="Admin Dashboard", page_icon="🛠️", layout="wide")
 
@@ -52,6 +51,7 @@ if st.session_state.get('authentication_status'):
 
         if order_df is not None and not order_df.empty:
             with st.expander("🔍 View Full Table"):
+                
                 st.dataframe(order_df)
 
             # Summary
