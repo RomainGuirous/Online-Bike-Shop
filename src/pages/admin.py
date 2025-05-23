@@ -24,10 +24,12 @@ user_df = get_user_list(conn)
 if order_df is not None and not order_df.empty:
     order_df = order_df.merge(product_df[["product_id", "price"]], on="product_id", how="left")
     order_df["total"] = order_df["quantity"] * order_df["price"]
-    order_df['total'] = pd.to_numeric(order_df['total'], errors='coerce')
+
 
 # --- ORDERS ---
 with tabs[0]:
+    order_df["total"] = order_df["quantity"] * order_df["price"]
+    order_df["total"] = order_df["total"].str.replace("€", "").str.replace(",", ".").astype(float)
     st.subheader("📦 Order Data")
 
     if order_df is not None and not order_df.empty:
