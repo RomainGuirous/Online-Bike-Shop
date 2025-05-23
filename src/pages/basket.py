@@ -1,9 +1,6 @@
 import streamlit as st
 from streamlit_card import card
-import streamlit_authenticator as stauth
 from db_api import create_connection
-import yaml
-from yaml.loader import SafeLoader
 from products.models import Product
 import streamlit_utils as st_utils
 
@@ -12,26 +9,7 @@ basket = st_utils.get_session_basket()
 
 st.set_page_config(page_title="Basket", page_icon="🛒")
 
-with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
-
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days']
-)
-
-if "user" not in (st.session_state.get("roles") or []):
-    st.error("you must be logged in to access this page.")
-    
-    if st.button("Login"):
-        st.switch_page("pages/connection.py")
-    st.stop()
-    
-if st.session_state.get('authentication_status'):
-    st.success(f'Welcome {st.session_state["name"]}!')
-    authenticator.logout()
+st_utils.handle_access_rights('user', 'Please sign in to access your basket.')
 
 
 if st.session_state.get("product_to_add_to_basket", None) is not None:
