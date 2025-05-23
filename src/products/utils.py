@@ -49,6 +49,58 @@ def get_product_list(
     return products
 
 
+def get_best_selling_products(
+    db_connection: DBConnection
+) -> list[dict[str]]:
+    """
+    Retrieve a list of best-selling products from the database.
+    Args:
+        db_connection (DBConnection): The database connection object.
+    Returns:
+        list: A list of best-selling products.
+    """
+    
+    
+    # get the best-selling products
+    sql = """
+    SELECT product_id, SUM(quantity) as total_quantity
+    FROM orderdetail
+    GROUP BY product_id
+    ORDER BY total_quantity DESC
+    LIMIT 4
+    """
+    cursor = db_connection.new_cursor()
+    dataset = cursor.execute(sql)
+    products = []
+    for row in dataset:
+        product = {
+            "product_id": row[0],
+            "quantity": row[1],
+        }
+        products.append(product)
+        
+    # get thr products with product_id
+    sql = """
+    SELECT product_id, product_name, product_description, price, picture
+    FROM product
+    WHERE product_id IN ({})
+    """.format(
+        ",".join([str(product["product_id"]) for product in products])
+    )
+    cursor = db_connection.new_cursor()
+    dataset = cursor.execute(sql)
+    products = []
+    for row in dataset:
+        product = {
+            "product_id": row[0],
+            "product_name": row[1],
+            "product_description": row[2],
+            "price": row[3],
+            "picture": row[4],
+        }
+        products.append(product)
+    return products
+
 def get_spetech_list(
     db_connection: DBConnection, spetech_id: int = None
 ) -> list[dict[str]]:

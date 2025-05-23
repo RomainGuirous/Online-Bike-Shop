@@ -3,8 +3,12 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-st.set_page_config(page_title="Connection", page_icon="🔑"
-                    )
+st.set_page_config(
+    page_title="Connection", 
+    page_icon="🔑", 
+    layout="centered"
+)
+
 with st.spinner('Please wait...'):
 
 
