@@ -16,14 +16,13 @@ st.set_page_config(
 # HTML for a product card with wider image
 def get_product_card(product):
     return f"""
-    <a href="" target="_blank" class="product-card-link">
         <div class="product-card-wide">
             <img src="{product["picture"]}" alt="Bike Image">
-            <div class="product-title">{product["product_name"]}</div>
+            <div class="product-title">{product["product_name"].capitalize()}</div>
             <div class="product-price">{product["price"]}</div>
             <div class="product-button">🛒 Add to Cart</div>
         </div>
-    </a>
+
     """
 
 

@@ -3,7 +3,11 @@ from products.utils import get_product_list
 from db_api import DBConnection
 from main import get_product_card
 
-st.set_page_config(page_title="Catalogue", page_icon="📚", layout="wide")
+st.set_page_config(
+    page_title="Catalogue",
+    layout="wide",
+    page_icon="📚",
+)
 
 # background image
 css = """
@@ -19,7 +23,7 @@ css = """
         }
     </style>
     """
-st.markdown(css, unsafe_allow_html=True)
+# st.markdown(css, unsafe_allow_html=True)
 
 
 conn = DBConnection("online_bikes.db")
@@ -116,11 +120,47 @@ st.markdown(
 #         )
 
 cols_per_row = 4
+
+# for i in range(0, len(list_data_product), cols_per_row):
+#     row = st.columns(cols_per_row)
+#     for j in range(cols_per_row):
+#         if i + j < len(list_data_product):
+#             product = list_data_product[i + j]
+#             with row[j]:
+#                 st.markdown(get_product_card(product), unsafe_allow_html=True)
+#                 if st.button(
+#                     f"Voir {product['product_name'].capitalize()}",
+#                     key=f"btn_{product['product_id']}",
+#                 ):
+#                     st.session_state["id"] = product["product_id"]
+#                     st.switch_page("pages/product.py")
+
 for i in range(0, len(list_data_product), cols_per_row):
     row = st.columns(cols_per_row)
     for j in range(cols_per_row):
         if i + j < len(list_data_product):
+            product = list_data_product[i + j]
             with row[j]:
-                st.markdown(
-                    get_product_card(list_data_product[i + j]), unsafe_allow_html=True
-                )
+                st.markdown(get_product_card(product), unsafe_allow_html=True)
+                # Le bouton juste sous la card, donc "dans" la card visuellement
+                btn_style = """
+                    <style>
+                    div.stButton > button {
+                        width: 100%;
+                        margin-top: -12px;
+                        border-radius: 4px;
+                        background: #f6f6f6;
+                        border: 1px solid #ccc;
+                        color: #111;
+                        font-size: 14px;
+                        font-weight: 400;
+                    }
+                    </style>
+                """
+                st.markdown(btn_style, unsafe_allow_html=True)
+                if st.button(
+                    f"Voir {product['product_name'].capitalize()}",
+                    key=f"btn_{product['product_id']}",
+                ):
+                    st.session_state["id"] = product["product_id"]
+                    st.switch_page("pages/product.py")
