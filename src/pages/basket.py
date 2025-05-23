@@ -1,12 +1,13 @@
 import streamlit as st
 from streamlit_card import card
 import streamlit_authenticator as stauth
+from db_api import create_connection
 import yaml
 from yaml.loader import SafeLoader
 from products.models import Product
 import streamlit_utils as st_utils
 
-connection = st_utils.get_session_connection()
+connection = create_connection()
 basket = st_utils.get_session_basket()
 
 st.set_page_config(page_title="Catalogue", page_icon="🛒")
