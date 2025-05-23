@@ -21,6 +21,10 @@ def handle_access_rights(authorized_role: str, error_message: str = "Access deni
     if streamlit.session_state.get('authentication_status'):
         streamlit.success(f'Welcome {streamlit.session_state["name"]}!')
         authenticator.logout()
+    return authenticator
+
+
+
 
 def get_session_basket()-> Basket:
     if 'basket' not in streamlit.session_state:

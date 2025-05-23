@@ -2,7 +2,7 @@ from db_api import DBConnection
 
 # product list to Pydantic model
 from products.models import Product
-
+import pandas as pd
 
 def get_product_list_model(db_connection: DBConnection, product_id: int = None) -> list:
     """
@@ -129,3 +129,32 @@ def get_spetech_list(
         }
         spetechs.append(spetech)
     return spetechs
+
+def get_product_dataframe(
+    db_connection: DBConnection, product_id: int = None
+) -> pd.DataFrame:
+    """
+    Retrieve a DataFrame of products from the database.
+    Args:
+        db_connection (DBConnection): The database connection object.
+        product_id (int, optional): The ID of the product to retrieve. Defaults to None.
+    Returns:
+        pd.DataFrame: A DataFrame containing the products.
+    """
+    sql = "SELECT * FROM product"
+    if product_id:
+        sql += f" WHERE product_id = {product_id}"
+    cursor = db_connection.new_cursor()
+    dataset = cursor.execute(sql)
+    products = []
+    for row in dataset:
+        product = {
+            "product_id": row[0],
+            "product_name": row[1],
+            "product_description": row[2],
+            "price": row[3],
+            "picture": row[4],
+            "spetech": row[5],
+        }
+        products.append(product)
+    return pd.DataFrame(products)
