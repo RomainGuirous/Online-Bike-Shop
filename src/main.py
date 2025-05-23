@@ -13,7 +13,6 @@ st.set_page_config(
     page_icon="🚴",
 )
 
-
 def get_product_card(product):
     return f"""
     <div class="product-card-wide">

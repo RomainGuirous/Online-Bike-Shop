@@ -10,7 +10,7 @@ import streamlit_utils as st_utils
 connection = create_connection()
 basket = st_utils.get_session_basket()
 
-st.set_page_config(page_title="Catalogue", page_icon="🛒")
+st.set_page_config(page_title="Basket", page_icon="🛒")
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -36,6 +36,7 @@ if st.session_state.get('authentication_status'):
 
 if st.session_state.get("product_to_add_to_basket", None) is not None:
     basket.add(st.session_state['product_to_add_to_basket'], 1)
+    del st.session_state['product_to_add_to_basket']
 
 if len(basket.get_product_list()) == 0:
     st.error("Your basket is empty.")
@@ -51,3 +52,8 @@ else:
                 image=product.picture,
                 #on_click=lambda: st.switch_page("pages/connection.py"),
             )
+    if st.button("Order now"):
+        connection = create_connection()
+        basket.create_order(connection, 8)
+        connection.commit()
+        st.switch_page("pages/orders.py")
