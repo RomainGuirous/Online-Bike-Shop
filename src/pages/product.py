@@ -37,19 +37,23 @@ elif st.session_state["id"]:
     product = list_data_product[st.session_state["id"] - 1]
     spetech = list_data_spetech[product["spetech"] - 1]
 
-    css_product = (
-        f'<span style="color:orange">{product["product_name"].capitalize()}</span>'
-    )
+    def text_field_color(field: str, color: str) -> None:
+        return st.markdown(
+            f'<span style="color:{color}">{field.capitalize()}</span>',
+            unsafe_allow_html=True,
+        )
 
     # st.write(product)
     # st.write(list_data_spetech)
 
-    st.markdown(
-        f'<span style="color:chartreuse">{product["product_name"].capitalize()}</span>',
-        unsafe_allow_html=True,
-    )
+    text_field_color(product["product_name"], "chartreuse")
+    text_field_color(product["product_description"], "chartreuse")
+    # st.markdown(
+    #     f'<span style="color:chartreuse">{product["product_name"].capitalize()}</span>',
+    #     unsafe_allow_html=True,
+    # )
     st.image(product["picture"])
-    st.write(product["product_description"])
+    # st.write(product["product_description"])
     st.write(f"Price : {product['price']}")
     for key, value in spetech.items():
         if key != "spetech_id":
