@@ -1,4 +1,8 @@
-from src.db_api import DBConnection
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
+from src.db_api import create_connection
 
 # from src.users.models import User
 from src.orders.models import OrderHead, OrderDetail
@@ -17,7 +21,7 @@ user_data = generate_fake_user()
 spetech_data = generate_fake_spetech()
 orderdetail_data = generate_fake_orderdetail()
 
-ma_connexion = DBConnection("online_bikes.db")
+ma_connexion = create_connection()
 
 
 def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
