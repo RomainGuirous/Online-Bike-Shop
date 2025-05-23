@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_card import card
 from products.utils import get_product_list
-from db_api import DBConnection
+from db_api import create_connection
 
 st.set_page_config(
     page_title="Catalogue",
@@ -25,7 +25,7 @@ css = """
 st.markdown(css, unsafe_allow_html=True)
 
 
-conn = DBConnection("online_bikes.db")
+conn = create_connection()
 if conn:
     list_data_product = get_product_list(conn)
 

@@ -10,7 +10,6 @@ from config import (
     NBR_ORDERDETAIL,
 )
 from img import liste_img
-import streamlit
 
 # region faker user
 
@@ -160,10 +159,3 @@ def generate_fake_orderdetail(
         }
         fake_orderdetail.append(orderdetail)
     return fake_orderdetail
-
-
-# common functions for streamlit
-
-def st_add_to_basket(product_id: int)-> None:
-    streamlit.session_state["product_to_add_to_basket"] = product_id
-    streamlit.switch_page("pages/basket.py")

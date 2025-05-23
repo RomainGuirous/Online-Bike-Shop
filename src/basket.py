@@ -3,8 +3,6 @@ from db_api import DBConnection
 from streamlit import session_state as st_session
 from datetime import datetime
 
-
-
 class BasketDetail():
 
     def __init__(self, product_id: int):
@@ -17,7 +15,7 @@ class BasketDetail():
     
     @property
     def quantity(self):
-        return self.quantity
+        return self.__quantity
     
     def add_quantity(self, quantity: int)-> None:
         self.__quantity += quantity

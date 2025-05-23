@@ -52,7 +52,7 @@ def main():
         <a href="" target="_blank" class="product-card-link">
             <div class="product-card-wide">
                 <img src="{product["picture"]}" alt="Bike Image">
-                <div class="product-title">{product["name"]}</div>
+                <div class="product-title">{product["product_name"]}</div>
                 <div class="product-price">{product["price"]}</div>
                 <div class="product-button">🛒 Add to Cart</div>
             </div>
