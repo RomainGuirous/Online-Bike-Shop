@@ -2,12 +2,14 @@ import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+import streamlit_utils as st_utils
 
 st.set_page_config(
     page_title="Connection", 
     page_icon="🔑", 
     layout="centered"
 )
+st_utils.show_global_menu()
 
 with st.spinner('Please wait...'):
 

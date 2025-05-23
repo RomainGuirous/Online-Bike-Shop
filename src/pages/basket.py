@@ -8,6 +8,7 @@ connection = create_connection()
 basket = st_utils.get_session_basket()
 
 st.set_page_config(page_title="Basket", page_icon="🛒")
+st_utils.show_global_menu()
 
 st_utils.handle_access_rights('user', 'Please sign in to access your basket.')
 

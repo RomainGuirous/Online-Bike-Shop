@@ -24,7 +24,7 @@ def main():
         initial_sidebar_state="expanded",
         page_icon="🚴",
     )
-
+    st_utils.show_global_menu()
     get_background_style()
 
     # initialize session state

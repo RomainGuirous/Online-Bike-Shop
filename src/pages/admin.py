@@ -9,6 +9,7 @@ import streamlit_utils as st_utils
 
 
 st.set_page_config(page_title="Admin Dashboard", page_icon="🛠️", layout="wide")
+st_utils.show_global_menu()
 
 # --- AUTH ---
 conn = create_connection()
