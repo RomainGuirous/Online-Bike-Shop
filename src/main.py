@@ -6,12 +6,6 @@ from config import DB_FILE
 from style.style import get_card_style, get_background_style
 import streamlit_utils as st_utils
 
-st.set_page_config(
-    page_title="Page d'accueil",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    page_icon="🚴",
-)
 
 def get_product_card(product):
     return f"""
@@ -21,8 +15,16 @@ def get_product_card(product):
         <div class="product-price">{product["price"]}</div>
     </div>
     """
-    
+
+
 def main():
+    st.set_page_config(
+        page_title="Page d'accueil",
+        layout="wide",
+        initial_sidebar_state="expanded",
+        page_icon="🚴",
+    )
+
     get_background_style()
 
     # initialize session state
@@ -87,4 +89,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

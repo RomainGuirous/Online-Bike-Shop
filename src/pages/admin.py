@@ -5,7 +5,7 @@ from users.utils import get_user_list
 from db_api import create_connection
 import plotly.express as px
 import streamlit_utils as st_utils
-import pandas as pd
+
 
 
 st.set_page_config(page_title="Admin Dashboard", page_icon="🛠️", layout="wide")
