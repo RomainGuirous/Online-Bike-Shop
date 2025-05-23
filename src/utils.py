@@ -2,14 +2,14 @@
 # database import
 
 import faker as fk
-from .config import (
+from config import (
     NBR_USERS,
     NBR_PRODUCTS,
     NBR_SPETECH,
     NBR_ORDERS,
     NBR_ORDERDETAIL,
 )
-from .img import liste_img
+from img import liste_img
 
 # region faker user
 

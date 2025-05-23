@@ -15,7 +15,7 @@ class BasketDetail():
     
     @property
     def quantity(self):
-        return self.quantity
+        return self.__quantity
     
     def add_quantity(self, quantity: int)-> None:
         self.__quantity += quantity
