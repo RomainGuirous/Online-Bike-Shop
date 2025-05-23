@@ -42,7 +42,7 @@ sql = """\
         INNER JOIN Product ON Product.product_id = OrderDetail.product_id
     WHERE
         OrderHead.user_id = ?
-    ORDER BY OrderHead.orderhead_date DESC"""
+    ORDER BY OrderHead.orderhead_date DESC, OrderHead.orderhead_id DESC"""
 rows = connection.new_cursor().execute(sql, (8,)).fetchall()
 if len(rows) == 0:
     st.markdown('# No order yet...')

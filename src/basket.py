@@ -65,7 +65,6 @@ class Basket():
     def create_order(self, connection: DBConnection, user_id: int)-> OrderHead:
         if not self.__detail_list:
             raise Exception('Order creation impossible. The basket is empty.')
-        connection: DBConnection = st_session['connection']
         order = OrderHead(connection, True)
         order.user_id = user_id
         order.orderhead_date = datetime.today().strftime('%Y-%m-%d')
@@ -74,4 +73,5 @@ class Basket():
             order.add_product(basket_detail.product_id, basket_detail.quantity)
         order.save_to_db()
         connection.commit()
+        self.empty_basket()
         return order

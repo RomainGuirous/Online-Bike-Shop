@@ -53,5 +53,7 @@ else:
                 #on_click=lambda: st.switch_page("pages/connection.py"),
             )
     if st.button("Order now"):
+        connection = create_connection()
         basket.create_order(connection, 8)
+        connection.commit()
         st.switch_page("pages/orders.py")
