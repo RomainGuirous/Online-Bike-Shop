@@ -9,7 +9,7 @@ basket = st_utils.get_session_basket()
 
 st.set_page_config(page_title="Basket", page_icon="🛒")
 
-st_utils.handle_access_rights('user')
+st_utils.handle_access_rights('user', 'Please sign in to access your basket.')
 
 
 if st.session_state.get("product_to_add_to_basket", None) is not None:

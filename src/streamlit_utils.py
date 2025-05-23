@@ -4,7 +4,7 @@ import streamlit
 import streamlit_authenticator as stauth
 from basket import Basket
 
-def handle_access_rights(authorized_role: str)-> None:
+def handle_access_rights(authorized_role: str, error_message: str = "Access denied.")-> None:
     with open('config.yaml') as file:
         config = yaml.load(file, Loader=SafeLoader)
     authenticator = stauth.Authenticate(
@@ -14,7 +14,7 @@ def handle_access_rights(authorized_role: str)-> None:
         config['cookie']['expiry_days']
     )
     if authorized_role not in (streamlit.session_state.get("roles") or []):
-        streamlit.error("Access denied.")
+        streamlit.error(error_message)
         if streamlit.button("Login"):
             streamlit.switch_page("pages/connection.py")
         streamlit.stop()

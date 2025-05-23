@@ -4,7 +4,7 @@ import streamlit_utils as st_utils
 
 st.set_page_config(page_title="Orders", page_icon="🛒")
 
-st_utils.handle_access_rights('user')
+st_utils.handle_access_rights('user', 'Please sign in to access your orders.')
 
 connection = create_connection()
 sql = """\
