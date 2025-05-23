@@ -1,6 +1,7 @@
 from sqlite3 import connect
 from sqlite3 import Cursor
 from sqlite3 import Error
+from config import DB_FILE
 
 class DBConnection:
     
@@ -129,3 +130,6 @@ class DBTableRecord:
                     break
         cursor.close()
         self.__is_new = False
+
+def create_connection()-> DBConnection:
+    return DBConnection(DB_FILE)

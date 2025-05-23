@@ -56,34 +56,34 @@ for table in liste_tables:
     injection_faker(table, locals()[f"{table.lower()}_data"])
 
 
-# mon_enreg = ma_connexion.new_table_record("Product", {"product_Id": "AUTO"}, True)
-# mon_enreg.set_field("description", "voici ma nouvelle description.")
-# mon_enreg.save_record()
+# # mon_enreg = ma_connexion.new_table_record("Product", {"product_Id": "AUTO"}, True)
+# # mon_enreg.set_field("description", "voici ma nouvelle description.")
+# # mon_enreg.save_record()
 
-# ajout d'une commande
-commande = OrderHead(ma_connexion, True)
-commande.user_id = 8
-commande.orderhead_date = "2025-05-21"
-commande.save_to_db()
-ma_connexion.commit()
-commande.add_product(3, 5)  # on ajoute le produit 3 avec une qt de 5
-commande.add_product(1, 5)
-commande.add_product(2, 2)
-commande.save_to_db()
-ma_connexion.commit()
-num_commande = commande.orderhead_id
-print(f"Commande enregistrée avec le N° {num_commande}")
-for detail in commande.details():
-    print(f"  Produit : {detail.product_id} Qt : {detail.quantity}")
+# # ajout d'une commande
+# commande = OrderHead(ma_connexion, True)
+# commande.user_id = 8
+# commande.orderhead_date = "2025-05-21"
+# commande.save_to_db()
+# ma_connexion.commit()
+# commande.add_product(3, 5)  # on ajoute le produit 3 avec une qt de 5
+# commande.add_product(1, 5)
+# commande.add_product(2, 2)
+# commande.save_to_db()
+# ma_connexion.commit()
+# num_commande = commande.orderhead_id
+# print(f"Commande enregistrée avec le N° {num_commande}")
+# for detail in commande.details():
+#     print(f"  Produit : {detail.product_id} Qt : {detail.quantity}")
 
-input("Vérifier en base la création de la commande et des lignes...")
-# on supprime le détail n°2 (correspondant au produit 1) et on re-enregistre...
-del commande.details()[1]
-commande.save_to_db()
-ma_connexion.commit()
-input("Vérifier en base la suppression du produit 1...")
-# on recharge... et on affiche les lignes
-commande = OrderHead(ma_connexion, False, num_commande)
-for detail in commande.details():
-    print(f"  Produit : {detail.product_id} Qt : {detail.quantity}")
+# input("Vérifier en base la création de la commande et des lignes...")
+# # on supprime le détail n°2 (correspondant au produit 1) et on re-enregistre...
+# del commande.details()[1]
+# commande.save_to_db()
+# ma_connexion.commit()
+# input("Vérifier en base la suppression du produit 1...")
+# # on recharge... et on affiche les lignes
+# commande = OrderHead(ma_connexion, False, num_commande)
+# for detail in commande.details():
+#     print(f"  Produit : {detail.product_id} Qt : {detail.quantity}")
 ma_connexion.commit()

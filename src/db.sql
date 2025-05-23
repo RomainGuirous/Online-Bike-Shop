@@ -51,3 +51,29 @@ INSERT OR REPLACE INTO Product (product_id, product_name, product_description, p
 (3, 'Hybrid Bike', 'A versatile hybrid bike for city and trail riding.', 599.99, 'https://www.serk.cc/wp-content/uploads/2019/07/A21_1920-300x200.jpg', 3),
 (4, 'Electric Bike', 'An electric bike for effortless commuting.', 1299.99, 'https://www.serk.cc/wp-content/uploads/2019/07/A10_1920-300x200.jpg', 4),
 (5, 'Kids Bike', 'A fun and safe bike for kids.', 199.99, 'https://www.serk.cc/wp-content/uploads/2019/07/a30M_side.jpg', 5);
+
+-- Insert data into Order table
+INSERT OR REPLACE INTO OrderHead (orderhead_id, orderhead_date, user_id) VALUES
+(1, '2023-10-01', 1),
+(2, '2023-10-02', 2),
+(3, '2023-10-03', 3),
+(4, '2023-10-04', 4),
+(5, '2023-10-05', 5),
+(6, '2023-10-06', 1),
+(7, '2023-10-07', 2),
+(8, '2023-10-08', 3),
+(9, '2023-10-09', 4),
+(10, '2023-10-10', 5);
+
+-- Insert data into OrderDetail table
+INSERT OR REPLACE INTO OrderDetail (orderhead_id, product_id, quantity) VALUES
+(1, 1, 2),
+(1, 2, 1),
+(2, 3, 1),
+(2, 4, 2),
+(3, 5, 1),
+(4, 1, 1),
+(5, 2, 3),
+(6, 3, 2),
+(7, 4, 1),
+(8, 5, 4);

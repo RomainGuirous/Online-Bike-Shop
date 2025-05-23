@@ -8,6 +8,13 @@ class Product:
         self.__record = db_connection.new_table_record('Product', {'product_id' : product_id}, is_new)
 
     @property
+    def product_id(self):
+        return self.__record.get_field('product_id')
+    @product_id.setter
+    def product_id(self, value):
+        self.__record.set_field('product_id', value)
+
+    @property
     def product_name(self):
         return self.__record.get_field('product_name')
     @product_name.setter

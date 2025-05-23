@@ -1,4 +1,4 @@
-from src.db_api import DBConnection
+from db_api import DBConnection
 
 class SpeTech:
     """
