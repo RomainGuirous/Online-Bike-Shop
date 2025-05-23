@@ -22,9 +22,9 @@ def get_product_card(product):
         <div class="product-price">{product["price"]}</div>
     </div>
     """
-    
-def main():
 
+
+def main():
     get_background_style()
 
     # initialize session state
@@ -39,18 +39,18 @@ def main():
 
     if conn:
         products = get_best_selling_products(conn)
-        
+
     else:
         st.error("Database connection failed.")
         st.stop()
 
     # Inject global styles
     get_card_style()
-        
+
     st.image(
         "https://images.squarespace-cdn.com/content/v1/5d9a1d9c10aea63ab743558c/62ba744d-87f8-44ee-8a80-9d0988aa19c5/2025_The-Big-Velo-Bike-Sale-Home-Page-Images-9-website+homepage+image.png",
         use_container_width=True,
-        width=700
+        width=700,
     )
 
     st.markdown(
@@ -59,7 +59,7 @@ def main():
         """,
         unsafe_allow_html=True,
     )
-    
+
     # Display cards in a 4-column responsive layout
     cols_per_row = 4
     for i in range(0, len(products), cols_per_row):
@@ -68,21 +68,24 @@ def main():
             if i + j < len(products):
                 product = products[i + j]
                 with row[j]:
-
                     # Card HTML
                     st.markdown(get_product_card(product), unsafe_allow_html=True)
-    
+
                     col1, col2 = st.columns(2)
                     with col1:
-                        if st.button("🛒 Add to Cart", key=f"cart_{product['product_id']}"):
-                            st.session_state.id = product['product_id']
-                            st_utils.event_add_to_basket(product['product_id'])
+                        if st.button(
+                            "🛒 Add to Cart", key=f"cart_{product['product_id']}"
+                        ):
+                            st.session_state.id = product["product_id"]
+                            st_utils.event_add_to_basket(product["product_id"])
 
                     with col2:
-                        if st.button("🔍 View Details", key=f"details_{product['product_id']}"):
-                            st.session_state.id = product['product_id']
+                        if st.button(
+                            "🔍 View Details", key=f"details_{product['product_id']}"
+                        ):
+                            st.session_state.id = product["product_id"]
                             st.switch_page("pages/product.py")
 
-    
+
 if __name__ == "__main__":
     main()
