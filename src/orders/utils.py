@@ -1,11 +1,10 @@
 # get all orders
-from db_api import DBConnection, create_connection
+from db_api import DBConnection
+
 import pandas as pd
 
 
-conn = create_connection()
-
-def get_all_orders_head(db_connection: DBConnection) -> pd.DataFrame:
+def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     Retrieve a DataFrame of all orders from the database.
     Args:
@@ -19,13 +18,14 @@ def get_all_orders_head(db_connection: DBConnection) -> pd.DataFrame:
     orders = [] 
     for row in dataset:
         order = {
-            "order_id": row[0],
-
+            "orderhead_id": row[0],
+            "orderhead_date": row[1],
+            "user_id": row[2],
         }
         orders.append(order)
     return pd.DataFrame(orders)
 
-def get_all_orders_detail(db_connection: DBConnection) -> pd.DataFrame:
+def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     Retrieve a DataFrame of all orders from the database.
     Args:
@@ -39,9 +39,26 @@ def get_all_orders_detail(db_connection: DBConnection) -> pd.DataFrame:
     orders = [] 
     for row in dataset:
         order = {
-            "order_id": row[0],
+            "orderdetail_id": row[0],
             "product_id": row[1],
             "quantity": row[2]
         }
         orders.append(order)
     return pd.DataFrame(orders)
+
+def get_order_list(db: DBConnection) -> pd.DataFrame:
+    """
+    Merge order head and order detail DataFrames.
+    Args:
+        orders_head (pd.DataFrame): The order head DataFrame.
+        orders_detail (pd.DataFrame): The order detail DataFrame.
+    Returns:
+        pd.DataFrame: A merged DataFrame containing all orders.
+    """
+
+    orders_head = get_orderhead_list(db)
+    orders_detail = get_orderdetails_list(db)
+
+    merged_orders = pd.merge(orders_head, orders_detail, left_on="orderhead_id", right_on="orderdetail_id", how="inner")
+    return merged_orders
+

@@ -22,8 +22,7 @@ def get_product_card(product):
         <div class="product-price">{product["price"]}</div>
     </div>
     """
-
-
+    
 def main():
     get_background_style()
 
@@ -89,3 +88,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
