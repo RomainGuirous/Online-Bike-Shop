@@ -1,6 +1,5 @@
 from orders.models import OrderHead
 from db_api import DBConnection
-from streamlit import session_state as st_session
 from datetime import datetime
 
 class BasketDetail():

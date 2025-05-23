@@ -5,7 +5,7 @@ from users.utils import get_user_list
 from db_api import create_connection
 import plotly.express as px
 import streamlit_utils as st_utils
-import pandas as pd
+
 
 
 st.set_page_config(page_title="Admin Dashboard", page_icon="🛠️", layout="wide")
@@ -24,10 +24,12 @@ user_df = get_user_list(conn)
 if order_df is not None and not order_df.empty:
     order_df = order_df.merge(product_df[["product_id", "price"]], on="product_id", how="left")
     order_df["total"] = order_df["quantity"] * order_df["price"]
-    order_df['total'] = pd.to_numeric(order_df['total'], errors='coerce')
+
 
 # --- ORDERS ---
 with tabs[0]:
+    order_df["total"] = order_df["quantity"] * order_df["price"]
+    order_df["total"] = order_df["total"].str.replace("€", "").str.replace(",", ".").astype(float)
     st.subheader("📦 Order Data")
 
     if order_df is not None and not order_df.empty:
