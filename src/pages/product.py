@@ -9,6 +9,7 @@ from spetech.models import SpeTech
 connection = create_connection()
 
 st.set_page_config(page_title="Product", page_icon="🚲")
+st_utils.show_global_menu()
 
 css = """
     <style>

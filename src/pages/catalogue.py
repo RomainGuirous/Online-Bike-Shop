@@ -2,12 +2,14 @@ import streamlit as st
 from products.utils import get_product_list
 from main import get_product_card
 from db_api import create_connection
+import streamlit_utils as st_utils
 
 st.set_page_config(
     page_title="Catalogue",
     layout="wide",
     page_icon="📚",
 )
+st_utils.show_global_menu()
 
 # background image
 css = """

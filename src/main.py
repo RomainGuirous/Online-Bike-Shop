@@ -12,6 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
     page_icon="🚴",
 )
+st_utils.show_global_menu()
 
 def get_product_card(product):
     return f"""
