@@ -1,7 +1,6 @@
 import streamlit as st
 from db_api import create_connection
 from streamlit import session_state as st_session
-from streamlit_card import card
 import streamlit_utils as st_utils
 from products.models import Product
 from spetech.models import SpeTech
@@ -41,17 +40,7 @@ elif st.session_state["id"]:
             unsafe_allow_html=True,
         )
 
-    # text_field_color(product.product_name, "chartreuse")
-    st.image(product.picture)
-    # st.write(product.product_description)
-    # st.write(f"Price : {product.price}")
-    # if spetech is not None:
-    #     if spetech.spetech_type:
-    #         st.write(f"Type : {spetech.spetech_type}")
-    #     if spetech.spetech_weight:
-    #         st.write(f"Weight : {spetech.spetech_weight}")
-    #     if spetech.frame_size:
-    #         st.write(f"Frame Size : {spetech.frame_size}")
+    st.image(product.picture, use_container_width=True)
 
     css_card = f"""
     <div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
@@ -66,10 +55,6 @@ elif st.session_state["id"]:
     """
 
     st.markdown(css_card, unsafe_allow_html=True)
-
-    card(
-        title="Add to basket " + str(product.product_id),
-        text="",
-        # image=product.picture,
-        on_click=lambda: st_utils.event_add_to_basket(product.product_id),
-    )
+    if st.button("🛒 Add to Cart", key=f"cart_{product.product_id}"):
+        st.session_state.id = product.product_id
+        st_utils.event_add_to_basket(product.product_id)

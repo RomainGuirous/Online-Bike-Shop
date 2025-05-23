@@ -25,7 +25,7 @@ css = """
         }
     </style>
     """
-# st.markdown(css, unsafe_allow_html=True)
+st.markdown(css, unsafe_allow_html=True)
 
 
 conn = create_connection()
