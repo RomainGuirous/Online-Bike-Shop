@@ -62,16 +62,12 @@ class Basket():
     def empty_basket(self):
         self.__detail_list = []
         
-    def create_order(self)-> OrderHead:
-        if st_session.get('user_id', 0) == 0:
-            raise Exception('Order creation impossible. Unknown user.')
-        if not isinstance(st_session.get('connection', None), DBConnection):
-            raise Exception('Order creation impossible. No DB connection.')
+    def create_order(self, connection: DBConnection, user_id: int)-> OrderHead:
         if not self.__detail_list:
             raise Exception('Order creation impossible. The basket is empty.')
         connection: DBConnection = st_session['connection']
         order = OrderHead(connection, True)
-        order.user_id = st_session['user_id']
+        order.user_id = user_id
         order.orderhead_date = datetime.today().strftime('%Y-%m-%d')
         order.save_to_db() # we need to save before adding details (we must know the new order's id to continue...)
         for basket_detail in self.__detail_list:
