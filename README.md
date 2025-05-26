@@ -14,41 +14,26 @@ Bienvenue sur **Online-Bike-Shop**, une application web de démonstration pour l
 
 ## Structure du projet
 
+```
 Online-Bike-Shop/
-
 │
-
-├── src/ # Code source principal
-
-│   ├── main.py # Page d'accueil Streamlit
-
-│   ├── pages/ # Pages Streamlit (si déplacé à la racine)
-
-│   │   └── pages/ # Pages Streamlit (catalogue, panier, etc.)   
- 
-│   ├── db_api.py # Accès base de données SQLite
-
-│   ├── config.py # Configuration
-
-│   ├── products/ # Modèles et utilitaires produits
-
-│   ├── orders/ # Modèles et utilitaires commandes
-
-│   ├── users/ # Modèles utilisateurs
-
-│   ├── spetech/ # Spécificités techniques vélos
-
-│   ├── style/ # Styles CSS personnalisés
-
+├── src/                  # Code source principal
+│   ├── main.py           # Page d'accueil Streamlit
+│   ├── db_api.py         # Accès base de données SQLite
+│   ├── config.py         # Configuration
+│   ├── products/         # Modèles et utilitaires produits
+│   ├── orders/           # Modèles et utilitaires commandes
+│   ├── users/            # Modèles utilisateurs
+│   ├── spetech/          # Spécificités techniques vélos
+│   ├── style/            # Styles CSS personnalisés
 │   ├── streamlit_utils.py# Fonctions utilitaires Streamlit
-
-├── online_bikes.db # Base de données SQLite
-
-├── requirements.txt # Dépendances Python
-
-├── test_class_db.py # Script de test de la base de données
-
-└── README.md # Ce fichier
+│   └── pages/            # Pages Streamlit (catalogue, panier, etc.)
+│
+├── [online_bikes.db]      # Base de données SQLite
+├── [requirements.txt]     # Dépendances Python
+├── [test_class_db.py]     # Script de test de la base de données
+└── [README.md]            # Ce fichier
+```
 
 
 ## Installation
