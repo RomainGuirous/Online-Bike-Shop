@@ -47,17 +47,7 @@ def show_global_menu() -> None:
     of the application, allowing users to navigate between the home, catalogue, basket,
     orders, and admin pages.
     """
-    streamlit.markdown(
-        """\
-        <ul style="background-color: white;">
-            <li style="display:inline-block;"><a href="/" target="_self">Home</a></li>
-            <li style="display:inline-block;"><a href="/catalogue" target="_self">Catalogue</a></li>
-            <li style="display:inline-block;"><a href="/basket" target="_self">Basket</a></li>
-            <li style="display:inline-block;"><a href="/orders" target="_self">Orders</a></li>
-            <li style="display:inline-block;"><a href="/admin" target="_self">Admin</a></li>
-        </ul>""",
-        unsafe_allow_html=True,
-    )
+
     col_1, col_2, col_3, col_4, col_5 = streamlit.columns(5)
     with col_1:
         if streamlit.button("Home"):
