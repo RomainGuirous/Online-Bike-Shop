@@ -25,7 +25,7 @@ def handle_access_rights(authorized_role: str, error_message: str = "Access deni
 
 def show_global_menu()-> None:
     streamlit.markdown('''\
-        <ul style="display:inline-block;">
+        <ul style="background-color: white;">
             <li style="display:inline-block;"><a href="/" target="_self">Home</a></li>
             <li style="display:inline-block;"><a href="/catalogue" target="_self">Catalogue</a></li>
             <li style="display:inline-block;"><a href="/basket" target="_self">Basket</a></li>
