@@ -3,8 +3,10 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 import streamlit_utils as st_utils
+from style.style import get_card_style
 
 st.set_page_config(page_title="Connection", page_icon="🔑", layout="centered")
+get_card_style()
 st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 

@@ -66,6 +66,7 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     Returns:
         list: A list of dictionaries containing product details.
     """
+
     # get the best-selling products
     sql = """
     SELECT product_id, SUM(quantity) as total_quantity

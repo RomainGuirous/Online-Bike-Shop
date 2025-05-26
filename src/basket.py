@@ -10,6 +10,8 @@ class BasketDetail:
     It allows adding to the quantity of the product.
     """
 
+
+class BasketDetail:
     def __init__(self, product_id: int):
         self.__product_id = product_id
         self.__quantity = 0
@@ -32,6 +34,8 @@ class Basket:
     It allows adding, removing, and managing products in the basket.
     It can also create an order from the basket contents."""
 
+
+class Basket:
     def __init__(self):
         self.__detail_list: list[BasketDetail] = []
 
