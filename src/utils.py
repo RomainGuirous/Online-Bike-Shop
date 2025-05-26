@@ -115,16 +115,12 @@ def generate_fake_spetech(nbr_spetech: int = NBR_SPETECH) -> list[dict[str, str]
         spetech = {
             "spetech_type": fake.name(),
             "color": fake.color_name(),
-            "spetech_weight": f"{
-                fake.pyfloat(
-                    right_digits=fake.pyint(
-                        0, 2
-                    ),  # entre 0 et 2 chiffres après la virugle
-                    positive=True,
-                    min_value=1,
-                    max_value=100,
-                )
-            } kg",
+            "spetech_weight": fake.pyfloat(
+                right_digits=fake.pyint(0, 2),  # entre 0 et 2 chiffres après la virugle
+                positive=True,
+                min_value=1,
+                max_value=100,
+            ),
             "brand": fake.company(),
             "frame_size": frame_sizes[fake.pyint(0, len(frame_sizes) - 1)],
         }
