@@ -3,9 +3,10 @@ from db_api import create_connection
 import streamlit_utils as st_utils
 
 st.set_page_config(page_title="Orders", page_icon="🛒")
+st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 
-st_utils.handle_access_rights('user', 'Please sign in to access your orders.')
+st_utils.handle_access_rights("user", "Please sign in to access your orders.")
 
 connection = create_connection()
 sql = """\
@@ -23,9 +24,9 @@ sql = """\
     ORDER BY OrderHead.orderhead_date DESC, OrderHead.orderhead_id DESC"""
 rows = connection.new_cursor().execute(sql, (8,)).fetchall()
 if len(rows) == 0:
-    st.markdown('# No order yet...')
+    st.markdown("# No order yet...")
 else:
-    st.markdown('# Orders')
+    st.markdown("# Orders")
 prior_order_id = 0
 for row in rows:
     order_id = row[0]
