@@ -5,7 +5,7 @@ from users.utils import get_user_list
 from db_api import create_connection
 import plotly.express as px
 import streamlit_utils as st_utils
-
+import pandas as pd
 
 
 st.set_page_config(page_title="Admin Dashboard", page_icon="🛠️", layout="wide")
@@ -21,16 +21,16 @@ order_df = get_order_list(conn)
 product_df = get_product_dataframe(conn)
 user_df = get_user_list(conn)
 
-# add product price in order_df
-if order_df is not None and not order_df.empty:
-    order_df = order_df.merge(product_df[["product_id", "price"]], on="product_id", how="left")
-    order_df["total"] = order_df["quantity"] * order_df["price"]
+product_df["price"] = product_df["price"].astype(str).str.replace(r'[^\d\.\-]', '', regex=True)
+product_df["price"] = pd.to_numeric(product_df["price"], errors='coerce')
+product_df = product_df.dropna(subset=["price"])
+order_df = order_df.merge(product_df[["product_id", "price"]], on="product_id", how="left")
 
+order_df["total"] = order_df["quantity"] * order_df["price"]
 
 # --- ORDERS ---
 with tabs[0]:
-    order_df["total"] = order_df["quantity"] * order_df["price"]
-    order_df["total"] = order_df["total"].str.replace("€", "").str.replace(",", ".").astype(float)
+
     st.subheader("📦 Order Data")
 
     if order_df is not None and not order_df.empty:
@@ -44,7 +44,7 @@ with tabs[0]:
         with col1:
             st.metric("Total Orders", len(order_df.groupby("orderhead_id")))
         with col2:
-            st.metric("Total Revenue", f"${order_df['total'].sum():,.2f}")
+            st.metric("Total Revenue", f"{order_df['total'].sum():,.2f}€")
 
         # Time-based sales chart
         if "orderhead_date" in order_df.columns:

@@ -18,6 +18,7 @@ def get_product_card(product):
 
 
 def main():
+    
     st.set_page_config(
         page_title="Page d'accueil",
         layout="wide",
