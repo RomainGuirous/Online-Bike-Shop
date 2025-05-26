@@ -1,8 +1,9 @@
 import streamlit as st
 from db_api import create_connection
 import streamlit_utils as st_utils
-
+from style.style import get_card_style
 st.set_page_config(page_title="Orders", page_icon="🛒")
+get_card_style()
 st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 

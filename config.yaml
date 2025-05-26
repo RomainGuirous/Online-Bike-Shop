@@ -1,7 +1,7 @@
 cookie:
   expiry_days: 30
-  key: sdafgasgafdgfgdgad
-  name: qwerqwerqwqfsadsdfqerwgt
+  key: my-random-key
+  name: my-random-name
 credentials:
   usernames:
     jsmith:
