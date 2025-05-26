@@ -6,8 +6,10 @@ from db_api import create_connection
 import plotly.express as px
 import streamlit_utils as st_utils
 import pandas as pd
+from style.style import get_card_style
 
 st.set_page_config(page_title="Admin Dashboard", page_icon="🛠️", layout="wide")
+get_card_style()
 st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 

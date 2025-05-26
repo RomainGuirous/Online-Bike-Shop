@@ -4,6 +4,7 @@ from db_api import DBConnection
 from products.models import Product
 import pandas as pd
 
+
 def get_product_list_model(db_connection: DBConnection, product_id: int = None) -> list:
     """
     Retrieve a list of products from the database and convert them to Pydantic models.
@@ -49,9 +50,7 @@ def get_product_list(
     return products
 
 
-def get_best_selling_products(
-    db_connection: DBConnection
-) -> list[dict[str]]:
+def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     """
     Retrieve a list of best-selling products from the database.
     Args:
@@ -59,8 +58,7 @@ def get_best_selling_products(
     Returns:
         list: A list of best-selling products.
     """
-    
-    
+
     # get the best-selling products
     sql = """
     SELECT product_id, SUM(quantity) as total_quantity
@@ -78,15 +76,13 @@ def get_best_selling_products(
             "quantity": row[1],
         }
         products.append(product)
-        
+
     # get thr products with product_id
     sql = """
     SELECT product_id, product_name, product_description, price, picture
     FROM product
     WHERE product_id IN ({})
-    """.format(
-        ",".join([str(product["product_id"]) for product in products])
-    )
+    """.format(",".join([str(product["product_id"]) for product in products]))
     cursor = db_connection.new_cursor()
     dataset = cursor.execute(sql)
     products = []
@@ -100,6 +96,7 @@ def get_best_selling_products(
         }
         products.append(product)
     return products
+
 
 def get_spetech_list(
     db_connection: DBConnection, spetech_id: int = None
@@ -129,6 +126,7 @@ def get_spetech_list(
         }
         spetechs.append(spetech)
     return spetechs
+
 
 def get_product_dataframe(
     db_connection: DBConnection, product_id: int = None
