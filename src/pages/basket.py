@@ -3,11 +3,12 @@ from streamlit_card import card
 from db_api import create_connection
 from products.models import Product
 import streamlit_utils as st_utils
-
+from style.style import get_card_style
 connection = create_connection()
 basket = st_utils.get_session_basket()
 
 st.set_page_config(page_title="Basket", page_icon="🛒")
+get_card_style()
 st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 
