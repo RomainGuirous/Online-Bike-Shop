@@ -60,7 +60,7 @@ def generate_fake_product(
         product = {
             "product_name": fake.word(),
             "product_description": fake.text(),
-            "price": f"{fake.pyint()}€",
+            "price": fake.pyint(),
             "picture": liste_img[i],
             "spetech_id": fake.pyint(1, nbr_spetech),
         }
