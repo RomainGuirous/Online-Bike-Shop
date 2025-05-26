@@ -1,14 +1,15 @@
 # get all orders
 from db_api import DBConnection
-
 import pandas as pd
 
 
 def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     Retrieve a DataFrame of all orders from the database.
+
     Args:
         db_connection (DBConnection): The database connection object.
+
     Returns:
         pd.DataFrame: A DataFrame containing all orders.
     """
@@ -29,8 +30,10 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
 def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     Retrieve a DataFrame of all orders from the database.
+
     Args:
         db_connection (DBConnection): The database connection object.
+
     Returns:
         pd.DataFrame: A DataFrame containing all orders.
     """
@@ -47,9 +50,10 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
 def get_order_list(db: DBConnection) -> pd.DataFrame:
     """
     Merge order head and order detail DataFrames.
+
     Args:
-        orders_head (pd.DataFrame): The order head DataFrame.
-        orders_detail (pd.DataFrame): The order detail DataFrame.
+        db (DBConnection): The database connection object.
+
     Returns:
         pd.DataFrame: A merged DataFrame containing all orders.
     """

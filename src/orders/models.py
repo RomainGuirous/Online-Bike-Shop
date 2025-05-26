@@ -47,6 +47,16 @@ class OrderHead:
         self.__record.set_field("user_id", value)
 
     def add_product(self, product_id: int, quantity: int) -> "OrderDetail":
+        """
+        Adds a product to the order details.
+
+        Args:
+            product_id (int): The ID of the product to add.
+            quantity (int): The quantity of the product to add.
+
+        Returns:
+            OrderDetail: The created OrderDetail instance.
+        """
         if not self.__record.created:
             raise Exception("The order's head must be saved before adding details")
         detail = OrderDetail(self.__db_connection, True, self.orderhead_id, product_id)
@@ -56,7 +66,17 @@ class OrderHead:
     def details(self) -> list["OrderDetail"]:
         return self.__detail_records
 
-    def save_to_db(self):
+    def save_to_db(self) -> None:
+        """
+        Saves the order head and its details to the database.
+        This method saves the order head record and then iterates through the
+        order details, saving each one to the database.
+        If the order head is new, it will be created in the database.
+        If the order head already exists, it will be updated.
+
+        Returns:
+            None
+        """
         self.__record.save_record()
         # we delete details in db then we recreate them (allows to remove OrderDetail(s) which have been deleted)
         self.__db_connection.delete_record(

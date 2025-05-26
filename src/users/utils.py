@@ -4,13 +4,14 @@ import pandas as pd
 
 def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
     """
-    Retrieve a dataframe of all users from the database.
+    Retrieve a DataFrame of all users from the database.
+    This function fetches user data from the database and converts it into a DataFrame.
 
     Args:
         db_connection (DBConnection): The database connection object.
 
     Returns:
-        pd.DataFrame: A dataframe containing all users.
+        pd.DataFrame: A DataFrame containing all users.
     """
     sql = "SELECT * FROM user"
     cursor = db_connection.new_cursor()

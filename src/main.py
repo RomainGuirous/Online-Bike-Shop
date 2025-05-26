@@ -7,7 +7,16 @@ from style.style import get_card_style, get_background_style
 import streamlit_utils as st_utils
 
 
-def get_product_card(product):
+def get_product_card(product) -> str:
+    """
+    Generate HTML for a product card.
+
+    Args:
+        product (dict): A dictionary containing product details.
+
+    Returns:
+        str: HTML string for the product card.
+    """
     return f"""
     <div class="product-card-wide">
         <img src="{product["picture"]}" alt="Bike Image">
@@ -18,6 +27,12 @@ def get_product_card(product):
 
 
 def main():
+    """
+    Main function to run the Streamlit application.
+    This function sets up the page configuration, initializes the database connection,
+    retrieves the best-selling products, and displays them in a responsive layout.
+    """
+
     st.set_page_config(
         page_title="Page d'accueil",
         layout="wide",

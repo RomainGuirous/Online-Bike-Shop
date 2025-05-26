@@ -4,6 +4,8 @@ from db_api import DBConnection
 class User:
     """
     User model representing a user in the database.
+    It contains fields for user ID, first name, last name, and email.
+    It provides methods to get and set these fields, and to save the user record to the database.
     """
 
     def __init__(self, db_connection: DBConnection, is_new: bool, user_id: int = None):
