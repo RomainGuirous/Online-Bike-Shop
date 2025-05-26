@@ -25,4 +25,3 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
         }
         users.append(user)
     return pd.DataFrame(users)
-

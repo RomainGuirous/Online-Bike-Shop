@@ -12,10 +12,10 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all orders.
     """
-    sql = "SELECT * FROM orderhead" 
+    sql = "SELECT * FROM orderhead"
     cursor = db_connection.new_cursor()
     dataset = cursor.execute(sql)
-    orders = [] 
+    orders = []
     for row in dataset:
         order = {
             "orderhead_id": row[0],
@@ -25,6 +25,7 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
         orders.append(order)
     return pd.DataFrame(orders)
 
+
 def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     Retrieve a DataFrame of all orders from the database.
@@ -33,18 +34,15 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all orders.
     """
-    sql = "SELECT * FROM orderdetail" 
+    sql = "SELECT * FROM orderdetail"
     cursor = db_connection.new_cursor()
     dataset = cursor.execute(sql)
-    orders = [] 
+    orders = []
     for row in dataset:
-        order = {
-            "orderdetail_id": row[0],
-            "product_id": row[1],
-            "quantity": row[2]
-        }
+        order = {"orderdetail_id": row[0], "product_id": row[1], "quantity": row[2]}
         orders.append(order)
     return pd.DataFrame(orders)
+
 
 def get_order_list(db: DBConnection) -> pd.DataFrame:
     """
@@ -59,6 +57,11 @@ def get_order_list(db: DBConnection) -> pd.DataFrame:
     orders_head = get_orderhead_list(db)
     orders_detail = get_orderdetails_list(db)
 
-    merged_orders = pd.merge(orders_head, orders_detail, left_on="orderhead_id", right_on="orderdetail_id", how="inner")
+    merged_orders = pd.merge(
+        orders_head,
+        orders_detail,
+        left_on="orderhead_id",
+        right_on="orderdetail_id",
+        how="inner",
+    )
     return merged_orders
-

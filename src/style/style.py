@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 def get_card_style():
     """
     Function to set the CSS styles for the product cards.
@@ -8,7 +9,7 @@ def get_card_style():
     # CSS for product card with wider image
 
     st.markdown(
-    """<style>
+        """<style>
         # .product-card-wide {
         #     background-color: #ffffff;
         #     border-radius: 12px;
@@ -116,15 +117,16 @@ def get_card_style():
     """,
         unsafe_allow_html=True,
     )
-    
+
+
 def get_background_style():
     """
     Function to set the CSS styles for the background.
     This function is called in the main script to apply the styles.
     """
-    
+
     st.markdown(
-    """<style>
+        """<style>
         .stApp {
             background-image: url("https://bikes.com/cdn/shop/files/RM_MY25_NewColours_Growler_Opt2.jpg?v=1738878774&width=2880");
             background-size: cover;
