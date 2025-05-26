@@ -23,18 +23,33 @@ if len(basket.get_product_list()) == 0:
     st.error("Your basket is empty.")
 else:
     cols = st.columns(2)
-    for product_index in range(len(basket.get_product_list())):
+    product_id_list = basket.get_product_list()
+    for product_index in range(len(product_id_list)):
         with cols[product_index % 2]:
-            product_id = basket.get_product_list()[product_index]
-            product = Product(connection, False, product_id)
+            product = Product(connection, False, product_id_list[product_index])
             card(
-                title=f"({product.product_id}) {product.product_name} QT = {basket.get_quantity(product_id)}",
+                title=product.product_name,
                 text=product.product_description,
                 image=product.picture,
-                # on_click=lambda: st.switch_page("pages/connection.py"),
             )
-    if st.button("Order now"):
-        connection = create_connection()
-        basket.create_order(connection, 8)
-        connection.commit()
-        st.switch_page("pages/orders.py")
+            col_qt_less, col_qt, col_qt_plus = st.columns(3)
+            qt = basket.get_quantity(product.product_id)
+            with col_qt_less:
+                if qt == 1:
+                    caption = '🗑️'
+                else:
+                    caption = '➖'
+                if st.button(label=caption, key='qt-' + str(product.product_id)):
+                    basket.add(product.product_id, -1)
+                    st.switch_page('pages/basket.py')
+            with col_qt:
+                st.text(basket.get_quantity(product.product_id))
+            with col_qt_plus:
+                if st.button(label='➕', key='qt+' + str(product.product_id)):
+                    basket.add(product.product_id, 1)
+                    st.switch_page('pages/basket.py')
+if st.button("Order now"):
+    connection = create_connection()
+    basket.create_order(connection, 8)
+    connection.commit()
+    st.switch_page("pages/orders.py")
