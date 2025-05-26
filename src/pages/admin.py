@@ -9,6 +9,7 @@ import pandas as pd
 
 
 st.set_page_config(page_title="Admin Dashboard", page_icon="🛠️", layout="wide")
+st_utils.show_global_menu()
 
 # --- AUTH ---
 conn = create_connection()
@@ -20,20 +21,16 @@ order_df = get_order_list(conn)
 product_df = get_product_dataframe(conn)
 user_df = get_user_list(conn)
 
-# add product price in order_df
-
+product_df["price"] = product_df["price"].astype(str).str.replace(r'[^\d\.\-]', '', regex=True)
+product_df["price"] = pd.to_numeric(product_df["price"], errors='coerce')
+product_df = product_df.dropna(subset=["price"])
 order_df = order_df.merge(product_df[["product_id", "price"]], on="product_id", how="left")
-order_df["total"] = 0
-order_df["price"] = order_df["price"].astype(str).str.replace(r'[^\d\.\-]', '', regex=True)
-order_df["price"] = pd.to_numeric(order_df["price"], errors='coerce')
-order_df = order_df.dropna(subset=["price"])
-
 
 order_df["total"] = order_df["quantity"] * order_df["price"]
 
 # --- ORDERS ---
 with tabs[0]:
-    order_df["total"] = order_df["quantity"] * order_df["price"]
+
     st.subheader("📦 Order Data")
 
     if order_df is not None and not order_df.empty:
