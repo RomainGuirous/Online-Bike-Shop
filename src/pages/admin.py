@@ -7,13 +7,13 @@ import plotly.express as px
 import streamlit_utils as st_utils
 import pandas as pd
 
-
 st.set_page_config(page_title="Admin Dashboard", page_icon="🛠️", layout="wide")
+st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 
 # --- AUTH ---
 conn = create_connection()
-st_utils.handle_access_rights('admin')
+st_utils.handle_access_rights("admin")
 
 tabs = st.tabs(["📦 Orders", "🛍️ Products", "👤 Users"])
 
@@ -21,21 +21,23 @@ order_df = get_order_list(conn)
 product_df = get_product_dataframe(conn)
 user_df = get_user_list(conn)
 
-product_df["price"] = product_df["price"].astype(str).str.replace(r'[^\d\.\-]', '', regex=True)
-product_df["price"] = pd.to_numeric(product_df["price"], errors='coerce')
+product_df["price"] = (
+    product_df["price"].astype(str).str.replace(r"[^\d\.\-]", "", regex=True)
+)
+product_df["price"] = pd.to_numeric(product_df["price"], errors="coerce")
 product_df = product_df.dropna(subset=["price"])
-order_df = order_df.merge(product_df[["product_id", "price"]], on="product_id", how="left")
+order_df = order_df.merge(
+    product_df[["product_id", "price"]], on="product_id", how="left"
+)
 
 order_df["total"] = order_df["quantity"] * order_df["price"]
 
 # --- ORDERS ---
 with tabs[0]:
-
     st.subheader("📦 Order Data")
 
     if order_df is not None and not order_df.empty:
         with st.expander("🔍 View Full Table"):
-            
             st.dataframe(order_df)
 
         # Summary
@@ -49,7 +51,9 @@ with tabs[0]:
         # Time-based sales chart
         if "orderhead_date" in order_df.columns:
             df_by_day = order_df.groupby("orderhead_date")["total"].sum().reset_index()
-            fig = px.line(df_by_day, x="orderhead_date", y="total", title="Revenue Over Time")
+            fig = px.line(
+                df_by_day, x="orderhead_date", y="total", title="Revenue Over Time"
+            )
             st.plotly_chart(fig, use_container_width=True)
 
 # --- PRODUCTS ---
@@ -63,7 +67,9 @@ with tabs[1]:
         # Top-selling products (if available)
         if "sales" in product_df.columns:
             top_products = product_df.sort_values(by="sales", ascending=False).head(10)
-            fig = px.bar(top_products, x="product_name", y="sales", title="Top Selling Products")
+            fig = px.bar(
+                top_products, x="product_name", y="sales", title="Top Selling Products"
+            )
             st.plotly_chart(fig, use_container_width=True)
 
 # --- USERS ---

@@ -9,6 +9,7 @@ st.set_page_config(
     layout="wide",
     page_icon="📚",
 )
+st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 
 # background image
