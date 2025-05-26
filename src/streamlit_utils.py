@@ -28,17 +28,22 @@ def handle_access_rights(
 
 
 def show_global_menu() -> None:
-    streamlit.markdown(
-        """\
-        <ul style="background-color: white;">
-            <li style="display:inline-block;"><a href="/" target="_self">Home</a></li>
-            <li style="display:inline-block;"><a href="/catalogue" target="_self">Catalogue</a></li>
-            <li style="display:inline-block;"><a href="/basket" target="_self">Basket</a></li>
-            <li style="display:inline-block;"><a href="/orders" target="_self">Orders</a></li>
-            <li style="display:inline-block;"><a href="/admin" target="_self">Admin</a></li>
-        </ul>""",
-        unsafe_allow_html=True,
-    )
+    col_1, col_2, col_3, col_4, col_5 = streamlit.columns(5)
+    with col_1:
+        if streamlit.button("Home"):
+            streamlit.switch_page("main.py")
+    with col_2:
+        if streamlit.button("Catalogue"):
+            streamlit.switch_page("pages/catalogue.py")
+    with col_3:
+        if streamlit.button("Basket"):
+            streamlit.switch_page("pages/basket.py")
+    with col_4:
+        if streamlit.button("Orders"):
+            streamlit.switch_page("pages/orders.py")
+    with col_5:
+        if streamlit.button("Admin"):
+            streamlit.switch_page("pages/admin.py")
 
 
 def get_session_basket() -> Basket:
