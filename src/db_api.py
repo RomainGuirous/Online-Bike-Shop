@@ -2,6 +2,8 @@ from sqlite3 import connect
 from sqlite3 import Cursor
 from sqlite3 import Error
 from config import DB_FILE
+from pymongo import MongoClient
+from pymongo.database import Database
 
 
 class DBConnection:
@@ -59,7 +61,6 @@ class DBConnection:
             sql += f"{and_keyword}{field_name} = :{field_name}"
             and_keyword = " AND "
         self.new_cursor().execute(sql, primary_keys)
-
 
 class DBTableRecord:
     """
@@ -228,8 +229,49 @@ class DBTableRecord:
         cursor.close()
         self.__is_new = False
 
+class DBDocument:
 
-def create_connection() -> DBConnection:
+    def __init__(
+        self,
+        mongodb_db_connection: Database,
+        collection: str,
+        document_id: str|None,
+    ):
+        self.__db_connection:Database = mongodb_db_connection
+        self.__collection = collection
+        self.__is_new = (document_id is None)
+        self.__document = {}
+        if self.created:
+            collection = self.__db_connection[self.__collection]
+            self.__document = collection.find_one({"_id": document_id})
+
+    @property
+    def collection(self) -> bool:
+        return self.__collection
+
+    @property
+    def created(self) -> bool:
+        return not self.__is_new
+
+    def get_field(self, field_name: str) -> any:
+        return self.__document.get(field_name, None)
+
+    def set_field(self, field_name: str, new_value: any) -> None:
+        self.__document[field_name] = new_value
+
+    def save_document(self) -> None:
+        document_content = dict(self.__document)
+        if "_id" in document_content:
+            del document_content["_id"]
+        if self.__is_new:
+            response = self.__db_connection[self.__collection].insert_one(document_content)
+            self.__document['_id'] = response.inserted_id
+        else:
+            self.__db_connection[self.__collection].update_one({'_id' : self.__document['_id']}, {'$set': document_content})
+        self.__is_new = False
+
+
+def create_connection() -> DBConnection | Database:
     """
     Creates a new database connection to the SQLite database specified by DB_FILE.
     This function initializes a DBConnection instance and returns it.
@@ -237,4 +279,7 @@ def create_connection() -> DBConnection:
     Returns:
         DBConnection: An instance of the DBConnection class connected to the database.
     """
-    return DBConnection(DB_FILE)
+    if False:
+        return DBConnection(DB_FILE)
+    else:
+        return MongoClient("mongodb://localhost:27017/")["online_bike_shop"]
