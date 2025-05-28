@@ -1,4 +1,11 @@
 from pymongo import MongoClient
+from utils import (
+    generate_fake_user,
+    generate_fake_product,
+    generate_fake_orderhead,
+    generate_fake_spetech,
+    generate_fake_orderdetail,
+)
 
 # Connect to MongoDB (default localhost:27017)
 client = MongoClient("mongodb://localhost:27017/")
@@ -9,12 +16,26 @@ client = MongoClient("mongodb://localhost:27017/")
 # Create/use the database
 db = client["BikeShopDB"]
 
-# Create collections (MongoDB creates them on first insert)
-users = db["User"]
-spetechs = db["SpeTech"]
-products = db["Product"]
-order_heads = db["OrderHead"]
-order_details = db["OrderDetail"]
+
+# liste des dico (lignes)
+user_data = generate_fake_user()
+product_data = generate_fake_product()
+orderhead_data = generate_fake_orderhead()
+spetech_data = generate_fake_spetech()
+orderdetail_data = generate_fake_orderdetail()
+
+
+# Création (ou accès) des collections (tables)
+product_collection = db["Products"]
+user_collection = db["User"]
+spetech_collection = db["Spetech"]
+orderhead_collection = db["Orderhead"]
+orderdetail_collection = db["Orderdetail"]
+
+# injection des data en DB Mongo
+list_collections = ["product", "user", "spetech", "orderhead", "orderdetail"]
+for collection in list_collections:
+    locals()[f"{collection}_collection"].insert_many(locals()[f"{collection}_data"])
 
 # Insert into Product
 products.insert_many(
