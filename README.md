@@ -60,4 +60,5 @@ Les contributions sont les bienvenues !
 Merci de créer une issue ou une pull request pour toute suggestion ou amélioration.
 
 ## Auteurs
+
 Projet réalisé par FA, AH, RG. 
