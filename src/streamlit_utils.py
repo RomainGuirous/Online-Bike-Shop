@@ -21,6 +21,7 @@ def handle_access_rights(
     Returns:
         stauth.Authenticate: An instance of the Authenticate class for user authentication.
     """
+
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=SafeLoader)
     authenticator = stauth.Authenticate(
@@ -28,7 +29,9 @@ def handle_access_rights(
         config["cookie"]["name"],
         config["cookie"]["key"],
         config["cookie"]["expiry_days"],
+        api_key=config["api_key"],
     )
+
     if authorized_role not in (streamlit.session_state.get("roles") or []):
         streamlit.error(error_message)
         if streamlit.button("Login"):
@@ -37,6 +40,8 @@ def handle_access_rights(
     if streamlit.session_state.get("authentication_status"):
         streamlit.success(f"Welcome {streamlit.session_state['name']}!")
         authenticator.logout()
+        if streamlit.button("Modify user details"):
+            streamlit.switch_page("pages/update_user.py")
     return authenticator
 
 
