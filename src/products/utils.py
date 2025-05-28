@@ -1,8 +1,10 @@
 from db_api import DBConnection
-
-# product list to Pydantic model
 from products.models import Product
 import pandas as pd
+import os
+import dotenv
+
+dotenv.load_dotenv()
 
 
 def get_product_list_model(db_connection: DBConnection, product_id: int = None) -> list:
@@ -36,23 +38,38 @@ def get_product_list(
     Returns:
         list: A list of products.
     """
-    sql = "SELECT * FROM product"
-    if product_id:
-        sql += f" WHERE product_id = {product_id}"
-    cursor = db_connection.new_cursor()
-    dataset = cursor.execute(sql)
-    products = []
-    for row in dataset:
-        product = {
-            "product_id": row[0],
-            "product_name": row[1],
-            "product_description": row[2],
-            "price": row[3],
-            "picture": row[4],
-            "spetech": row[5],
-        }
-        products.append(product)
-    return products
+    if os.getenv("CONNECTION_TYPE") == "nosql":
+        products_list = db_connection.find("product")
+        products = []
+        for product in products_list:
+            product_data = {
+                "product_id": product.get("product_id"),
+                "product_name": product.get("product_name"),
+                "product_description": product.get("product_description"),
+                "price": product.get("price"),
+                "picture": product.get("picture"),
+                "spetech": product.get("spetech"),
+            }
+            products.append(product_data)
+        return products
+    elif os.getenv("CONNECTION_TYPE") == "sql":
+        sql = "SELECT * FROM product"
+        if product_id:
+            sql += f" WHERE product_id = {product_id}"
+        cursor = db_connection.new_cursor()
+        dataset = cursor.execute(sql)
+        products = []
+        for row in dataset:
+            product = {
+                "product_id": row[0],
+                "product_name": row[1],
+                "product_description": row[2],
+                "price": row[3],
+                "picture": row[4],
+                "spetech": row[5],
+            }
+            products.append(product)
+        return products
 
 
 def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
@@ -66,44 +83,67 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     Returns:
         list: A list of dictionaries containing product details.
     """
+    if os.getenv("CONNECTION_TYPE") == "nosql":
+        # If using NoSQL, fetch best-selling products from the collection
+        products_list = db_connection.find("orderdetail")
+        product_sales = {}
+        for order in products_list:
+            product_id = order.get("product_id")
+            quantity = order.get("quantity", 0)
+            if product_id in product_sales:
+                product_sales[product_id] += quantity
+            else:
+                product_sales[product_id] = quantity
 
-    # get the best-selling products
-    sql = """
-    SELECT product_id, SUM(quantity) as total_quantity
-    FROM orderdetail
-    GROUP BY product_id
-    ORDER BY total_quantity DESC
-    LIMIT 4
-    """
-    cursor = db_connection.new_cursor()
-    dataset = cursor.execute(sql)
-    products = []
-    for row in dataset:
-        product = {
-            "product_id": row[0],
-            "quantity": row[1],
-        }
-        products.append(product)
+        # Sort products by total quantity sold and get the top 4
+        sorted_products = sorted(
+            product_sales.items(), key=lambda x: x[1], reverse=True
+        )[:4]
+        product_ids = [product[0] for product in sorted_products]
 
-    # get thr products with product_id
-    sql = """
-    SELECT product_id, product_name, product_description, price, picture
-    FROM product
-    WHERE product_id IN ({})
-    """.format(",".join([str(product["product_id"]) for product in products]))
-    cursor = db_connection.new_cursor()
-    dataset = cursor.execute(sql)
-    products = []
-    for row in dataset:
-        product = {
-            "product_id": row[0],
-            "product_name": row[1],
-            "product_description": row[2],
-            "price": row[3],
-            "picture": row[4],
-        }
-        products.append(product)
-    return products
+        # Fetch product details for the top products
+        products = db_connection.find("product", {"product_id": {"$in": product_ids}})
+        return [product for product in products if product["product_id"] in product_ids]
+
+    if os.getenv("CONNECTION_TYPE") == "sql":
+        # SQL implementation to get best-selling products
+        # Get the top 4 products based on total quantity sold
+        sql = """
+        SELECT product_id, SUM(quantity) as total_quantity
+        FROM orderdetail
+        GROUP BY product_id
+        ORDER BY total_quantity DESC
+        LIMIT 4
+        """
+        cursor = db_connection.new_cursor()
+        dataset = cursor.execute(sql)
+        products = []
+        for row in dataset:
+            product = {
+                "product_id": row[0],
+                "quantity": row[1],
+            }
+            products.append(product)
+
+        # Fetch product details for the top products
+        sql = """
+        SELECT product_id, product_name, product_description, price, picture
+        FROM product
+        WHERE product_id IN ({})
+        """.format(",".join([str(product["product_id"]) for product in products]))
+        cursor = db_connection.new_cursor()
+        dataset = cursor.execute(sql)
+        products = []
+        for row in dataset:
+            product = {
+                "product_id": row[0],
+                "product_name": row[1],
+                "product_description": row[2],
+                "price": row[3],
+                "picture": row[4],
+            }
+            products.append(product)
+        return products
 
 
 def get_spetech_list(
@@ -122,22 +162,38 @@ def get_spetech_list(
     Returns:
         list: A list of spetechs.
     """
-    sql = "SELECT * FROM SpeTech"
-    if spetech_id:
-        sql += f" WHERE spetech_id = {spetech_id}"
-    cursor = db_connection.new_cursor()
-    dataset = cursor.execute(sql)
-    spetechs = []
-    for row in dataset:
-        spetech = {
-            "spetech_id": row[0],
-            "spetech_type": row[1],
-            "color": row[2],
-            "spetech_weight": row[3],
-            "brand": row[4],
-            "frame_size": row[5],
-        }
-        spetechs.append(spetech)
+    if os.getenv("CONNECTION_TYPE") == "nosql":
+        # If using NoSQL, fetch spetechs from the collection
+        spetechs_list = db_connection.find("spetech")
+        spetechs = []
+        for spetech in spetechs_list:
+            spetech_data = {
+                "spetech_id": spetech.get("spetech_id"),
+                "spetech_type": spetech.get("spetech_type"),
+                "color": spetech.get("color"),
+                "spetech_weight": spetech.get("spetech_weight"),
+                "brand": spetech.get("brand"),
+                "frame_size": spetech.get("frame_size"),
+            }
+            if not spetech_id or spetech_data["spetech_id"] == spetech_id:
+                spetechs.append(spetech_data)
+    elif os.getenv("CONNECTION_TYPE") == "sql":
+        sql = "SELECT * FROM SpeTech"
+        if spetech_id:
+            sql += f" WHERE spetech_id = {spetech_id}"
+        cursor = db_connection.new_cursor()
+        dataset = cursor.execute(sql)
+        spetechs = []
+        for row in dataset:
+            spetech = {
+                "spetech_id": row[0],
+                "spetech_type": row[1],
+                "color": row[2],
+                "spetech_weight": row[3],
+                "brand": row[4],
+                "frame_size": row[5],
+            }
+            spetechs.append(spetech)
     return spetechs
 
 
@@ -157,20 +213,37 @@ def get_product_dataframe(
     Returns:
         pd.DataFrame: A DataFrame containing product data.
     """
-    sql = "SELECT * FROM product"
-    if product_id:
-        sql += f" WHERE product_id = {product_id}"
-    cursor = db_connection.new_cursor()
-    dataset = cursor.execute(sql)
-    products = []
-    for row in dataset:
-        product = {
-            "product_id": row[0],
-            "product_name": row[1],
-            "product_description": row[2],
-            "price": row[3],
-            "picture": row[4],
-            "spetech": row[5],
-        }
-        products.append(product)
+    if os.getenv("CONNECTION_TYPE") == "nosql":
+        # If using NoSQL, fetch products from the collection
+        products_list = db_connection.find("product")
+        products = []
+        for product in products_list:
+            if product_id and product.get("product_id") != product_id:
+                continue
+            product_data = {
+                "product_id": product.get("product_id"),
+                "product_name": product.get("product_name"),
+                "product_description": product.get("product_description"),
+                "price": product.get("price"),
+                "picture": product.get("picture"),
+                "spetech": product.get("spetech"),
+            }
+            products.append(product_data)
+    elif os.getenv("CONNECTION_TYPE") == "sql":
+        sql = "SELECT * FROM product"
+        if product_id:
+            sql += f" WHERE product_id = {product_id}"
+        cursor = db_connection.new_cursor()
+        dataset = cursor.execute(sql)
+        products = []
+        for row in dataset:
+            product = {
+                "product_id": row[0],
+                "product_name": row[1],
+                "product_description": row[2],
+                "price": row[3],
+                "picture": row[4],
+                "spetech": row[5],
+            }
+            products.append(product)
     return pd.DataFrame(products)
