@@ -43,18 +43,18 @@ Online-Bike-Shop/
 git clone git@github.com:RomainGuirous/Online-Bike-Shop.git
 ```
 2. **Créer un environnement virtuel**
-
+```sh
 python3 -m venv .venv
 source .venv/bin/activate
-
+```
 3. **Installer les dépendances**
-
+```sh
 pip install -r requirements.txt
-
+```
 4. **Lancer l’application**
-
+```sh
 streamlit run src/main.py
-
+```
 ## Contribuer
 Les contributions sont les bienvenues !
 Merci de créer une issue ou une pull request pour toute suggestion ou amélioration.
