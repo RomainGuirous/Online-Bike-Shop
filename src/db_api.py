@@ -311,8 +311,10 @@ class DBDocument(Record):
         self.__collection = collection
         self.__document = {}
         if self.created:
-            collection = self.__db_connection.new_query[self.__collection]
+            collection = self.__db_connection.new_query()[self.__collection]
             self.__document = collection.find_one({"_id": document_id})
+            if self.__document is None:
+                raise Exception("The document '" + str(document_id) + "' was not found.")
 
     @property
     def collection(self) -> bool:
@@ -331,10 +333,10 @@ class DBDocument(Record):
         if "_id" in document_content:
             del document_content["_id"]
         if self._is_new:
-            response = self.__db_connection.new_query[self.__collection].insert_one(document_content)
+            response = self.__db_connection.new_query()[self.__collection].insert_one(document_content)
             self.__document['_id'] = response.inserted_id
         else:
-            self.__db_connection.new_query[self.__collection].update_one({'_id' : self.__document['_id']}, {'$set': document_content})
+            self.__db_connection.new_query()[self.__collection].update_one({'_id' : self.__document['_id']}, {'$set': document_content})
         self._is_new = False
 
 
