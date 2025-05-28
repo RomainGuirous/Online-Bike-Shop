@@ -2,7 +2,6 @@
 import streamlit as st
 from products.utils import get_best_selling_products
 from db_api import create_connection
-from config import DB_FILE
 from style.style import get_card_style, get_background_style
 import streamlit_utils as st_utils
 
