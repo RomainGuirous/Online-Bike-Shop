@@ -58,7 +58,5 @@ streamlit run src/main.py
 ## Contribuer
 Les contributions sont les bienvenues !
 Merci de créer une issue ou une pull request pour toute suggestion ou amélioration.
-
-## Auteurs
-
+## Auteurs
 Projet réalisé par FA, AH, RG. 
