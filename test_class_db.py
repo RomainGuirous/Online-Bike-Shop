@@ -37,12 +37,12 @@ def injection_faker(table: str, liste_fake_datas: list[dict[str, any]]) -> None:
     """
 
     for data in liste_fake_datas:
-        mon_enreg = ma_connexion.new_table_record(
+        mon_enreg = ma_connexion.get_record_object(
             table, {f"{table.lower()}_id": None}, True
         )
         for key, value in data.items():
             mon_enreg.set_field(key, value)
-        mon_enreg.save_record()
+        mon_enreg.save()
 
 
 ma_connexion.executescript("src/db.sql")
@@ -60,7 +60,7 @@ for table in liste_tables:
     injection_faker(table, locals()[f"{table.lower()}_data"])
 
 
-# # mon_enreg = ma_connexion.new_table_record("Product", {"product_Id": "AUTO"}, True)
+# # mon_enreg = ma_connexion.get_record_object("Product", {"product_Id": "AUTO"}, True)
 # # mon_enreg.set_field("description", "voici ma nouvelle description.")
 # # mon_enreg.save_record()
 

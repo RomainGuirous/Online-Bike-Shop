@@ -43,15 +43,10 @@ def main():
     st_utils.show_global_menu()
     get_background_style()
 
-    # initialize session state
-    if "connection" not in st.session_state:
-        st.session_state["connection"] = None
-
     if "role" not in st.session_state:
         st.session_state["role"] = "default"  # Default role
 
     conn = create_connection()
-    st.session_state["connection"] = conn
 
     if conn:
         products = get_best_selling_products(conn)

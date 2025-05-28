@@ -1,4 +1,4 @@
-from db_api import DBConnection
+from db_api import ConnectionType, DBConnection
 
 
 class Product:
@@ -7,19 +7,24 @@ class Product:
     """
 
     def __init__(
-        self, db_connection: DBConnection, is_new: bool, product_id: int = None
+        self, db_connection: DBConnection, is_new: bool, product_id: any = None
     ):
-        self.__record = db_connection.new_table_record(
-            "Product", {"product_id": product_id}, is_new
-        )
+        if db_connection.connection_type == ConnectionType.SQLITE:
+            self.__id_field_name = "product_id"
+            self.__record = db_connection.get_record_object(
+                "Product", {"product_id": product_id}, is_new
+            )
+        else:
+            self.__id_field_name = "_id"
+            self.__record = db_connection.get_record_object('Product', product_id, is_new)
 
     @property
     def product_id(self):
-        return self.__record.get_field("product_id")
+        return self.__record.get_field(self.__id_field_name)
 
     @product_id.setter
     def product_id(self, value):
-        self.__record.set_field("product_id", value)
+        self.__record.set_field(self.__id_field_name, value)
 
     @property
     def product_name(self):
@@ -62,4 +67,4 @@ class Product:
         self.__record.set_field("spetech_id", value)
 
     def save_to_db(self):
-        self.__record.save_record()
+        self.__record.save()
