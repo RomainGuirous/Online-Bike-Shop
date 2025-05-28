@@ -10,7 +10,7 @@ from utils import (
 # Connect to MongoDB (default localhost:27017)
 client = MongoClient("mongodb://localhost:27017/")
 
-# Drop the database if it exists (for fresh start)
+# # Drop the database if it exists (for fresh start)
 # client.drop_database("BikeShopDB")
 
 # Create/use the database
@@ -38,7 +38,7 @@ for collection in list_collections:
     locals()[f"{collection}_collection"].insert_many(locals()[f"{collection}_data"])
 
 # Insert into Product
-products.insert_many(
+product_collection.insert_many(
     [
         {
             "product_id": 1,
@@ -84,7 +84,7 @@ products.insert_many(
 )
 
 # Insert into OrderHead
-order_heads.insert_many(
+orderhead_collection.insert_many(
     [
         {"orderhead_id": 1, "orderhead_date": "2023-10-01", "user_id": 1},
         {"orderhead_id": 2, "orderhead_date": "2023-10-02", "user_id": 2},
@@ -100,7 +100,7 @@ order_heads.insert_many(
 )
 
 # Insert into OrderDetail
-order_details.insert_many(
+orderdetail_collection.insert_many(
     [
         {"orderhead_id": 1, "product_id": 1, "quantity": 2},
         {"orderhead_id": 1, "product_id": 2, "quantity": 1},
@@ -116,7 +116,7 @@ order_details.insert_many(
 )
 
 # Insert into SpeTech
-spetechs.insert_many(
+spetech_collection.insert_many(
     [
         {
             "spetech_id": 1,
@@ -170,7 +170,7 @@ spetechs.insert_many(
 )
 
 # Insert into User
-users.insert_many(
+user_collection.insert_many(
     [
         {
             "user_id": 1,
