@@ -39,8 +39,9 @@ Online-Bike-Shop/
 ## Installation
 
 1. **Cloner le dépôt**
+```sh
 git clone git@github.com:RomainGuirous/Online-Bike-Shop.git
-
+```
 2. **Créer un environnement virtuel**
 
 python3 -m venv .venv
