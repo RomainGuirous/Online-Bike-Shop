@@ -1,10 +1,6 @@
-from db_api import DBConnection
+from db_api import DBConnection, ConnectionType
 from products.models import Product
 import pandas as pd
-import os
-import dotenv
-
-dotenv.load_dotenv()
 
 
 def get_product_list_model(db_connection: DBConnection, product_id: int = None) -> list:
@@ -38,8 +34,8 @@ def get_product_list(
     Returns:
         list: A list of products.
     """
-    if os.getenv("CONNECTION_TYPE") == "nosql":
-        products_list = db_connection.find("product")
+    if db_connection.connection_type == ConnectionType.MONGODB:
+        products_list = db_connection.new_query()["Product"].find()
         products = []
         for product in products_list:
             product_data = {
@@ -52,7 +48,7 @@ def get_product_list(
             }
             products.append(product_data)
         return products
-    elif os.getenv("CONNECTION_TYPE") == "sql":
+    elif db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM product"
         if product_id:
             sql += f" WHERE product_id = {product_id}"
@@ -83,9 +79,9 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     Returns:
         list: A list of dictionaries containing product details.
     """
-    if os.getenv("CONNECTION_TYPE") == "nosql":
+    if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch best-selling products from the collection
-        products_list = db_connection.find("orderdetail")
+        products_list = db_connection.new_query()["OrderDetail"].find()
         product_sales = {}
         for order in products_list:
             product_id = order.get("product_id")
@@ -102,10 +98,10 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
         product_ids = [product[0] for product in sorted_products]
 
         # Fetch product details for the top products
-        products = db_connection.find("product", {"product_id": {"$in": product_ids}})
+        products = db_connection.new_query()["Product"].find({"product_id": {"$in": product_ids}})
         return [product for product in products if product["product_id"] in product_ids]
 
-    if os.getenv("CONNECTION_TYPE") == "sql":
+    if db_connection.connection_type == ConnectionType.SQLITE:
         # SQL implementation to get best-selling products
         # Get the top 4 products based on total quantity sold
         sql = """
@@ -162,9 +158,9 @@ def get_spetech_list(
     Returns:
         list: A list of spetechs.
     """
-    if os.getenv("CONNECTION_TYPE") == "nosql":
+    if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch spetechs from the collection
-        spetechs_list = db_connection.find("spetech")
+        spetechs_list = db_connection.new_query().find("spetech")
         spetechs = []
         for spetech in spetechs_list:
             spetech_data = {
@@ -177,7 +173,7 @@ def get_spetech_list(
             }
             if not spetech_id or spetech_data["spetech_id"] == spetech_id:
                 spetechs.append(spetech_data)
-    elif os.getenv("CONNECTION_TYPE") == "sql":
+    elif db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM SpeTech"
         if spetech_id:
             sql += f" WHERE spetech_id = {spetech_id}"
@@ -213,9 +209,9 @@ def get_product_dataframe(
     Returns:
         pd.DataFrame: A DataFrame containing product data.
     """
-    if os.getenv("CONNECTION_TYPE") == "nosql":
+    if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch products from the collection
-        products_list = db_connection.find("product")
+        products_list = db_connection.new_query().find("product")
         products = []
         for product in products_list:
             if product_id and product.get("product_id") != product_id:
@@ -229,7 +225,7 @@ def get_product_dataframe(
                 "spetech": product.get("spetech"),
             }
             products.append(product_data)
-    elif os.getenv("CONNECTION_TYPE") == "sql":
+    elif db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM product"
         if product_id:
             sql += f" WHERE product_id = {product_id}"

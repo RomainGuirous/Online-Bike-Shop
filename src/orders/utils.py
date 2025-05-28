@@ -1,10 +1,6 @@
 # get all orders
-from db_api import DBConnection
+from db_api import DBConnection, ConnectionType
 import pandas as pd
-import os
-import dotenv
-
-dotenv.load_dotenv()
 
 
 def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
@@ -17,9 +13,9 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all orders.
     """
-    if os.getenv("CONNECTION_TYPE") == "nosql":
+    if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch orders from the collection
-        orders_list = db_connection.find("orderhead")
+        orders_list = db_connection.new_query().find("orderhead")
         orders = []
         for order in orders_list:
             order_data = {
@@ -29,7 +25,7 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
             }
             orders.append(order_data)
         return pd.DataFrame(orders)
-    elif os.getenv("CONNECTION_TYPE") == "sql":
+    elif db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM orderhead"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
@@ -54,9 +50,9 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all orders.
     """
-    if os.getenv("CONNECTION_TYPE") == "nosql":
+    if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch order details from the collection
-        orders_list = db_connection.find("orderdetail")
+        orders_list = db_connection.new_query().find("orderdetail")
         orders = []
         for order in orders_list:
             order_data = {
@@ -65,7 +61,7 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
                 "quantity": order.get("quantity"),
             }
             orders.append(order_data)
-    elif os.getenv("CONNECTION_TYPE") == "sql":
+    elif db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM orderdetail"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)

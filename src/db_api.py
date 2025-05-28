@@ -1,3 +1,5 @@
+import dotenv
+import os
 from enum import Enum
 from abc import ABC, abstractmethod
 from sqlite3 import connect
@@ -344,7 +346,8 @@ def create_connection() -> DBConnection:
     Returns:
         DBConnection: An instance of the DBConnection class connected to the database.
     """
-    if False:
+    dotenv.load_dotenv()
+    if os.getenv("CONNECTION_TYPE") == "sql":
         return SQLiteConnection(DB_FILE)
     else:
-        return MongoDBConnection("mongodb://localhost:27017/", "online_bike_shop")
+        return MongoDBConnection("mongodb://localhost:27017/", "BikeShopDB")

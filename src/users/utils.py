@@ -1,10 +1,5 @@
-from db_api import DBConnection
+from db_api import DBConnection, ConnectionType
 import pandas as pd
-import os
-import dotenv
-
-dotenv.load_dotenv()
-
 
 def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
     """
@@ -17,7 +12,7 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all users.
     """
-    if os.getenv("CONNECTION_TYPE") == "sql":
+    if db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM user"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
@@ -30,7 +25,7 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
                 "email": row[3],
             }
             users.append(user)
-    elif os.getenv("CONNECTION_TYPE") == "nosql":
+    elif db_connection.connection_type == ConnectionType.MONGODB:
         users_list = db_connection.find_all("user")
         users = []
         for user in users_list:
