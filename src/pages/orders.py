@@ -23,7 +23,7 @@ sql = """\
     WHERE
         OrderHead.user_id = ?
     ORDER BY OrderHead.orderhead_date DESC, OrderHead.orderhead_id DESC"""
-rows = connection.new_cursor().execute(sql, (8,)).fetchall()
+rows = connection.new_query().execute(sql, (8,)).fetchall()
 if len(rows) == 0:
     st.markdown("# No order yet...")
 else:

@@ -14,7 +14,7 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
         pd.DataFrame: A DataFrame containing all orders.
     """
     sql = "SELECT * FROM orderhead"
-    cursor = db_connection.new_cursor()
+    cursor = db_connection.new_query()
     dataset = cursor.execute(sql)
     orders = []
     for row in dataset:
@@ -38,7 +38,7 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
         pd.DataFrame: A DataFrame containing all orders.
     """
     sql = "SELECT * FROM orderdetail"
-    cursor = db_connection.new_cursor()
+    cursor = db_connection.new_query()
     dataset = cursor.execute(sql)
     orders = []
     for row in dataset:

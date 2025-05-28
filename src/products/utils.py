@@ -39,7 +39,7 @@ def get_product_list(
     sql = "SELECT * FROM product"
     if product_id:
         sql += f" WHERE product_id = {product_id}"
-    cursor = db_connection.new_cursor()
+    cursor = db_connection.new_query()
     dataset = cursor.execute(sql)
     products = []
     for row in dataset:
@@ -75,7 +75,8 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     ORDER BY total_quantity DESC
     LIMIT 4
     """
-    cursor = db_connection.new_cursor()
+    cursor = db_connection.new_query()
+    print(db_connection)
     dataset = cursor.execute(sql)
     products = []
     for row in dataset:
@@ -91,7 +92,7 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     FROM product
     WHERE product_id IN ({})
     """.format(",".join([str(product["product_id"]) for product in products]))
-    cursor = db_connection.new_cursor()
+    cursor = db_connection.new_query()
     dataset = cursor.execute(sql)
     products = []
     for row in dataset:
@@ -125,7 +126,7 @@ def get_spetech_list(
     sql = "SELECT * FROM SpeTech"
     if spetech_id:
         sql += f" WHERE spetech_id = {spetech_id}"
-    cursor = db_connection.new_cursor()
+    cursor = db_connection.new_query()
     dataset = cursor.execute(sql)
     spetechs = []
     for row in dataset:
@@ -160,7 +161,7 @@ def get_product_dataframe(
     sql = "SELECT * FROM product"
     if product_id:
         sql += f" WHERE product_id = {product_id}"
-    cursor = db_connection.new_cursor()
+    cursor = db_connection.new_query()
     dataset = cursor.execute(sql)
     products = []
     for row in dataset:

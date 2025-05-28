@@ -1,7 +1,7 @@
 # main application logic, launch streamlit app, etc.
 import streamlit as st
 from products.utils import get_best_selling_products
-from db_api import DBConnection
+from db_api import create_connection
 from config import DB_FILE
 from style.style import get_card_style, get_background_style
 import streamlit_utils as st_utils
@@ -44,15 +44,10 @@ def main():
     st_utils.show_global_menu()
     get_background_style()
 
-    # initialize session state
-    if "connection" not in st.session_state:
-        st.session_state["connection"] = None
-
     if "role" not in st.session_state:
         st.session_state["role"] = "default"  # Default role
 
-    conn = DBConnection(DB_FILE)
-    st.session_state["connection"] = conn
+    conn = create_connection()
 
     if conn:
         products = get_best_selling_products(conn)

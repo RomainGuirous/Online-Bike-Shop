@@ -14,7 +14,7 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
         pd.DataFrame: A DataFrame containing all users.
     """
     sql = "SELECT * FROM user"
-    cursor = db_connection.new_cursor()
+    cursor = db_connection.new_query()
     dataset = cursor.execute(sql)
     users = []
     for row in dataset:
