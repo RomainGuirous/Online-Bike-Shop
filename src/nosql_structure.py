@@ -6,6 +6,14 @@ from utils import (
     generate_fake_spetech,
     generate_fake_orderdetail,
 )
+from products.models import Product
+from spetech.models import SpeTech
+from users.models import User
+from orders.models import OrderHead
+from db_api import create_connection
+from random import randint
+
+conn = create_connection()
 
 # Connect to MongoDB (default localhost:27017)
 client = MongoClient("mongodb://localhost:27017/")
@@ -30,17 +38,69 @@ product_collection = db["Products"]
 user_collection = db["User"]
 spetech_collection = db["Spetech"]
 orderhead_collection = db["Orderhead"]
-orderdetail_collection = db["Orderdetail"]
+orderdetail_collection = db["Orderdetail"]  # mettre dans Orderhead
 
 # injection des data en DB Mongo
 list_collections = ["user", "spetech", "product", "orderhead", "orderdetail"]
 user_ids = []
 spetech_ids = []
 product_ids = []
-for collection in list_collections:
-    locals()[f"{collection}_ids"] = locals()[f"{collection}_collection"].insert_many(
-        locals()[f"{collection}_data"]
-    )
+
+
+def random_element_list(liste_elmt: list) -> any:
+    return liste_elmt[randint(0, len(liste_elmt) - 1)]
+
+
+# injection products
+for spetech_dico in spetech_data:
+    spetech = SpeTech(conn, is_new=True)
+    spetech.color = spetech_dico["color"]
+    spetech.brand = spetech_dico["brand"]
+    spetech.spetech_weight = spetech_dico["spetech_weight"]
+    spetech.spetech_type = spetech_dico["spetech_type"]
+    spetech.frame_size = spetech_dico["frame_size"]
+
+    spetech.save_to_db()
+    spetech_ids.append(spetech.spetech_id)
+
+
+# injection products
+for product_dico in product_data:
+    product = Product(conn, is_new=True)
+    product.product_name = product_dico["product_name"]
+    product.product_description = product_dico["product_description"]
+    product.price = product_dico["price"]
+    product.picture = product_dico["picture"]
+    product.spetech_id = random_element_list(spetech_ids)
+
+    product.save_to_db()
+    product_ids.append(product.product_id)
+
+
+# injection users
+for user_dico in user_data:
+    user = User(conn, is_new=True)
+    user.first_name = user_dico["first_name"]
+    user.last_name = user_dico["last_name"]
+    user.email = user_dico["email"]
+
+    user.save_to_db
+    user_ids.append(user.user_id)
+
+
+# injection orderheads
+for orderhead_dico in orderhead_data:
+    orderhead = OrderHead(conn, True)
+    orderhead.orderhead_date = orderhead_dico["orderhead_date"]
+    orderhead.add_product(random_element_list(product_ids))
+    orderhead.user_id = random_element_list(user_ids)
+
+    orderhead.save_to_db()
+
+# for collection in list_collections:
+#     locals()[f"{collection}_ids"] = locals()[f"{collection}_collection"].insert_many(
+#         locals()[f"{collection}_data"]
+#     )
 
 # Insert into Product
 product_collection.insert_many(

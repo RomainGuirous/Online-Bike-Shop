@@ -40,7 +40,7 @@ def generate_fake_user(nbr_users: int = NBR_USERS) -> list[dict[str, str]]:
 
 
 def generate_fake_product(
-    nbr_product: int = NBR_PRODUCTS, nbr_spetech: int = NBR_SPETECH, list_ids: list, mongo: bool = False
+    nbr_product: int = NBR_PRODUCTS, nbr_spetech: int = NBR_SPETECH, mongo: bool = False
 ) -> list[dict[str, str]]:
     """
     Generate fake product data using the Faker library.
@@ -62,11 +62,10 @@ def generate_fake_product(
             "product_description": fake.text(),
             "price": fake.pyint(),
             "picture": liste_img[i],
-            if mongo:
-                "spetech_id": list_ids[fake.pyint(0, len(list_ids) -1)],
-            else:
-                "spetech_id": fake.pyint(1, nbr_spetech),
         }
+        if not mongo:
+            spetech_id = fake.pyint(1, nbr_spetech)
+        product["spetech_id"] = spetech_id
         fake_products.append(product)
     return fake_products
 
