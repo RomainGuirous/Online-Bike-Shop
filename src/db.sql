@@ -2,7 +2,11 @@ CREATE TABLE IF NOT EXISTS User(
    user_id INTEGER,
    first_name TEXT NOT NULL,
    last_name TEXT NOT NULL,
-   email TEXT,
+   email TEXT NOT NULL,
+   username TEXT NOT NULL,
+   hashed_password TEXT NOT NULL,
+   password_hint TEXT,
+   roles TEXT,
    PRIMARY KEY(user_id)
 );
 
