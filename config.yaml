@@ -15,23 +15,14 @@ credentials:
       roles:
       - user
       - admin
-    fabgrall:
-      email: florian.abgrall750@gmail.com
-      first_name: Florian
-      last_name: ABGRALL
-      logged_in: false
-      password: $2b$12$jB20bN6XKIh7ahzPgdiC9uTY7xwL1eio3QxLWO6huul4v1dwpQBMa
-      password_hint: admin
-      roles:
-      - user
-      - admin
     jsmith:
-      email: jsmith@gmail.com
+      email: test9r@gmail.com
       failed_login_attempts: 0
-      first_name: John
+      first_name: heyhey
       last_name: Smith
       logged_in: false
       password: $2b$12$8ukAfDSgU9RaP2yBJRwF8uk2frpTkbYsprJTmq68raHiA4InQql.u
+      password_hint: admin
       roles:
       - admin
       - user
@@ -42,6 +33,7 @@ credentials:
       last_name: Briggs
       logged_in: false
       password: $2b$12$GJKJ7GSxjWaEUGj3qFqHluE5xexAACd5OPjfm7TQRYqG4V5rJ2v6e
+      password_hint: admin
       roles:
       - user
     teggst:
