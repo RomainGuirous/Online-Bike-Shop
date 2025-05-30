@@ -16,7 +16,7 @@ class User:
             )
         else:
             self.__id_field_name = "_id"
-            self.__record = db_connection.get_record_object('User', user_id, is_new)
+            self.__record = db_connection.get_record_object("User", user_id, is_new)
 
     @property
     def user_id(self):
@@ -49,6 +49,38 @@ class User:
     @email.setter
     def email(self, value):
         self.__record.set_field("email", value)
+
+    @property
+    def username(self):
+        return self.__record.get_field("username")
+
+    @username.setter
+    def username(self, value):
+        self.__record.set_field("username", value)
+
+    @property
+    def hashed_password(self):
+        return self.__record.get_field("hashed_password")
+
+    @hashed_password.setter
+    def hashed_password(self, value):
+        self.__record.set_field("hashed_password", value)
+
+    @property
+    def password_hint(self):
+        return self.__record.get_field("password_hint")
+
+    @password_hint.setter
+    def password_hint(self, value):
+        self.__record.set_field("password_hint", value)
+
+    @property
+    def roles(self):
+        return self.__record.get_field("roles")
+
+    @roles.setter
+    def roles(self, value):
+        self.__record.set_field("roles", value)
 
     def save_to_db(self):
         self.__record.save()

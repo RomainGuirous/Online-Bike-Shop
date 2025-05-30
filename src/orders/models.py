@@ -1,5 +1,6 @@
 from db_api import ConnectionType, DBConnection
 
+
 class OrderHead:
     """
     OrderHead model representing a order head in the database.
@@ -17,16 +18,22 @@ class OrderHead:
             )
             if not is_new:
                 sql = "SELECT product_id FROM OrderDetail WHERE orderhead_id = ?"
-                rows = db_connection.new_query().execute(sql, (orderhead_id,)).fetchall()
+                rows = (
+                    db_connection.new_query().execute(sql, (orderhead_id,)).fetchall()
+                )
                 for row in rows:
                     self.__detail_records.append(
                         OrderDetail(db_connection, False, self.orderhead_id, row[0])
                     )
         else:
             self.__id_field_name = "_id"
-            self.__record = db_connection.get_record_object('OrderHead', orderhead_id, is_new)
+            self.__record = db_connection.get_record_object(
+                "OrderHead", orderhead_id, is_new
+            )
             if not is_new:
-                rows = db_connection.new_query()['OrderDetail'].find({'orderhead_id' : orderhead_id})
+                rows = db_connection.new_query()["OrderDetail"].find(
+                    {"orderhead_id": orderhead_id}
+                )
                 for row in rows:
                     self.__detail_records.append(row)
 
@@ -58,13 +65,15 @@ class OrderHead:
         if self.__db_connection.connection_type == ConnectionType.SQLITE:
             if not self.__record.created:
                 raise Exception("The order's head must be saved before adding details")
-            detail = OrderDetail(self.__db_connection, True, self.orderhead_id, product_id)
+            detail = OrderDetail(
+                self.__db_connection, True, self.orderhead_id, product_id
+            )
             detail.quantity = quantity
             self.__detail_records.append(detail)
         else:
             self.__detail_records.append({'product_id': product_id, 'quantity': quantity})
 
-    def details(self) -> list["OrderDetail"]|list[dict]:
+    def details(self) -> list["OrderDetail"] | list[dict]:
         return self.__detail_records
 
     def save_to_db(self) -> None:
@@ -80,8 +89,7 @@ class OrderHead:
                 detail_record.save_to_db()
 
 
-class OrderDetail():
-
+class OrderDetail:
     def __init__(
         self,
         db_connection: DBConnection,

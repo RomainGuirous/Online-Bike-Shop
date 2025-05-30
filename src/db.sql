@@ -2,7 +2,11 @@ CREATE TABLE IF NOT EXISTS User(
    user_id INTEGER,
    first_name TEXT NOT NULL,
    last_name TEXT NOT NULL,
-   email TEXT,
+   email TEXT NOT NULL,
+   username TEXT NOT NULL,
+   hashed_password TEXT NOT NULL,
+   password_hint TEXT,
+   roles TEXT,
    PRIMARY KEY(user_id)
 );
 
@@ -77,3 +81,10 @@ INSERT OR REPLACE INTO OrderDetail (orderhead_id, product_id, quantity) VALUES
 (6, 3, 2),
 (7, 4, 1),
 (8, 5, 4);
+
+INSERT OR REPLACE INTO User (first_name, last_name, email, username, hashed_password, password_hint, roles) VALUES
+('John', 'Doe', 'john.doe@example.com', 'johndoe', '$2b$12$KIXQ1Q1Q1Q1Q1Q1Q1Q1Q1u', 'test', 'user'),
+('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', '$2b$12$KIXQ1Q1Q1Q1Q1Q1Q1Q1Q1u', 'test', 'user'),
+('Alice', 'Johnson', 'alice.johnson@example.com', 'alicejohnson', '$2b$12$KIXQ1Q1Q1Q1Q1Q1Q1Q1Q1u', 'test', 'user'),
+('Bob', 'Brown', 'bob.brown@example.com', 'bobbrown', '$2b$12$KIXQ1Q1Q1Q1Q1Q1Q1Q1Q1u', 'test', 'user'),
+('Charlie', 'Davis', 'charlie.davis@example.com', 'charliedavis', '$2b$12$KIXQ1Q1Q1Q1Q1Q1Q1Q1Q1u', 'test', 'user');

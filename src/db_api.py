@@ -318,6 +318,10 @@ class DBDocument(Record):
         if self.created:
             collection = self.__db_connection.new_query()[self.__collection]
             self.__document = collection.find_one({"_id": document_id})
+            if self.__document is None:
+                raise Exception(
+                    "The document '" + str(document_id) + "' was not found."
+                )
 
     @property
     def collection(self) -> bool:
