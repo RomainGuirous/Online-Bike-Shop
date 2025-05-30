@@ -98,7 +98,9 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
         product_ids = [product[0] for product in sorted_products]
 
         # Fetch product details for the top products
-        products = db_connection.new_query()["Product"].find({"product_id": {"$in": product_ids}})
+        products = db_connection.new_query()["Product"].find(
+            {"product_id": {"$in": product_ids}}
+        )
         return [product for product in products if product["product_id"] in product_ids]
 
     if db_connection.connection_type == ConnectionType.SQLITE:
@@ -211,7 +213,7 @@ def get_product_dataframe(
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch products from the collection
-        products_list = db_connection.new_query()['Product'].find()
+        products_list = db_connection.new_query()["Product"].find()
         products = []
         for product in products_list:
             if product_id and product.get("product_id") != product_id:

@@ -1,6 +1,7 @@
 from db_api import DBConnection, ConnectionType
 import pandas as pd
 
+
 def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     Retrieve a DataFrame of all users from the database.
@@ -26,7 +27,7 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
             }
             users.append(user)
     elif db_connection.connection_type == ConnectionType.MONGODB:
-        users_list = db_connection.new_query()['User'].find()
+        users_list = db_connection.new_query()["User"].find()
         users = []
         for user in users_list:
             user_data = {

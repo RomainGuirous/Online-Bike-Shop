@@ -30,21 +30,33 @@ try:
 
     if email_of_registered_user:
         st.success("User registered successfully")
-        
+
         with open("config.yaml", "w") as file:
             yaml.dump(config, file, default_flow_style=False, allow_unicode=True)
-        user = config['credentials']['usernames'][username_of_registered_user]
 
+        user = config["credentials"]["usernames"][username_of_registered_user]
         new_user = User(db_connection=create_connection(), is_new=True)
-        new_user.username = username_of_registered_user
-        new_user.first_name = user['first_name']
-        new_user.last_name = user['last_name']
+        new_user.first_name = user["first_name"]
+        new_user.last_name = user["last_name"]
         new_user.email = email_of_registered_user
-        new_user.hashed_password = user['password']
-        new_user.roles = user['roles']
-        new_user.password_hint = user['password_hint']
+        new_user.username = username_of_registered_user
+        new_user.hashed_password = user["password"]
+        new_user.password_hint = user["password_hint"]
+        user["roles"] = "admin" if "admin" in user["roles"] else "user"
+        new_user.roles = user["roles"]
+        st.write(
+            new_user.username,
+            new_user.first_name,
+            new_user.last_name,
+            new_user.email,
+            new_user.roles,
+            new_user.password_hint,
+        )
+
         new_user.save_to_db()
-        
-        st.switch_page("pages/connection.py")
+
+        # st.switch_page("pages/connection.py")
+
+
 except Exception as e:
     st.error(e)
