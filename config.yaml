@@ -44,6 +44,16 @@ credentials:
       password: $2b$12$GJKJ7GSxjWaEUGj3qFqHluE5xexAACd5OPjfm7TQRYqG4V5rJ2v6e
       roles:
       - user
+    teggst:
+      email: tseets@tsgt.com
+      first_name: teset
+      last_name: etest
+      logged_in: false
+      password: $2b$12$wSzRkpgP52roXj4.xDummermQUj47ageafH9jQjIfv9PdVKu9MCzq
+      password_hint: Tsgt1234?
+      roles:
+      - user
+      - admin
 oauth2:
   google:
     client_id: null
