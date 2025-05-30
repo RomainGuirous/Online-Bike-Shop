@@ -37,7 +37,7 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
         users_list = db_connection.new_query()["User"].find()
         for user in users_list:
             user_data = {
-                "user_id": user.get("user_id"),
+                "user_id": user.get("_id"),
                 "first_name": user.get("first_name"),
                 "last_name": user.get("last_name"),
                 "email": user.get("email"),
