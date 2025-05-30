@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+# from pymongo import MongoClient
 from utils import (
     generate_fake_user,
     generate_fake_product,
@@ -8,20 +8,23 @@ from utils import (
 from products.models import Product
 from spetech.models import SpeTech
 from users.models import User
+from users.utils import update_auth_config_from_users
 from orders.models import OrderHead
-from db_api import create_connection
+from db_api import create_connection, ConnectionType
 from random import randint
 
 conn = create_connection()
+if conn.connection_type == ConnectionType.SQLITE:
+    conn.executescript('src/db.sql')
 
 # Connect to MongoDB (default localhost:27017)
-client = MongoClient("mongodb://localhost:27017/")
+# client = MongoClient("mongodb://localhost:27017/")
 
 # # Drop the database if it exists (for fresh start)
 # client.drop_database("BikeShopDB")
 
 # Create/use the database
-db = client["BikeShopDB"]
+# db = client["BikeShopDB"]
 
 
 # liste des dico (lignes)
@@ -32,13 +35,13 @@ spetech_data = generate_fake_spetech()
 
 
 # Création (ou accès) des collections (tables)
-product_collection = db["Products"]
-user_collection = db["User"]
-spetech_collection = db["Spetech"]
-orderhead_collection = db["Orderhead"]
+# product_collection = db["Products"]
+# user_collection = db["User"]
+# spetech_collection = db["Spetech"]
+# orderhead_collection = db["Orderhead"]
 
 # injection des data en DB Mongo
-list_collections = ["user", "spetech", "product", "orderhead", "orderdetail"]
+# list_collections = ["user", "spetech", "product", "orderhead", "orderdetail"]
 user_ids = []
 spetech_ids = []
 product_ids = []
@@ -75,6 +78,17 @@ for product_dico in product_data:
 
 
 # injection users
+# first, we create a user used to connect to the shop...
+user = User(conn, is_new=True)
+user.first_name = 'John'
+user.last_name = 'Smith'
+user.email = 'john.smith@test.com'
+user.username = 'jsmith'
+user.is_admin = True
+user.hashed_password = '123'
+user.password_hint = 'A very simple number...'
+user.save_to_db()
+user_ids.append(user.user_id)
 for user_dico in user_data:
     user = User(conn, is_new=True)
     user.first_name = user_dico["first_name"]
@@ -91,13 +105,16 @@ for user_dico in user_data:
 # injection orderheads
 for orderhead_dico in orderhead_data:
     orderhead = OrderHead(conn, True)
-    orderhead.orderhead_date = orderhead_dico["orderhead_date"]
-    orderhead.add_product(random_element_list(product_ids), randint(1, 3))
     orderhead.user_id = random_element_list(user_ids)
-
+    orderhead.orderhead_date = orderhead_dico["orderhead_date"]
+    if conn.connection_type == ConnectionType.SQLITE:
+        orderhead.save_to_db()
+    orderhead.add_product(random_element_list(product_ids), randint(1, 3))
     orderhead.save_to_db()
 
 conn.commit()
+# we generate config.yaml for connections rights
+update_auth_config_from_users(conn)
 
 # for collection in list_collections:
 #     locals()[f"{collection}_ids"] = locals()[f"{collection}_collection"].insert_many(
