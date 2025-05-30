@@ -1,10 +1,5 @@
-from db_api import DBConnection
+from db_api import DBConnection, ConnectionType
 import pandas as pd
-import os
-import dotenv
-
-dotenv.load_dotenv()
-
 
 def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
     """
@@ -17,9 +12,9 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all users.
     """
-    if os.getenv("CONNECTION_TYPE") == "sql":
+    if db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM user"
-        cursor = db_connection.new_cursor()
+        cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
         users = []
         for row in dataset:
@@ -30,8 +25,8 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
                 "email": row[3],
             }
             users.append(user)
-    elif os.getenv("CONNECTION_TYPE") == "nosql":
-        users_list = db_connection.find_all("user")
+    elif db_connection.connection_type == ConnectionType.MONGODB:
+        users_list = db_connection.new_query()['User'].find()
         users = []
         for user in users_list:
             user_data = {
@@ -56,10 +51,10 @@ def register_user(db_connection: DBConnection, user_data: dict) -> None:
     Returns:
         None
     """
-    if os.getenv("CONNECTION_TYPE") == "sql":
+    if db_connection.connection_type == ConnectionType.SQLITE:
         sql = "INSERT INTO user (first_name, last_name, email) VALUES (:first_name, :last_name, :email)"
         db_connection.new_cursor().execute(sql, user_data)
-    elif os.getenv("CONNECTION_TYPE") == "nosql":
+    elif db_connection.connection_type == ConnectionType.MONGODB:
         db_connection.insert("user", user_data)
 
 
@@ -75,7 +70,7 @@ def get_user_by_id(db_connection: DBConnection, user_id: int) -> dict:
     Returns:
         dict: A dictionary containing user data or an empty dictionary if not found.
     """
-    if os.getenv("CONNECTION_TYPE") == "sql":
+    if db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM user WHERE user_id = :user_id"
         cursor = db_connection.new_cursor()
         cursor.execute(sql, {"user_id": user_id})
@@ -87,7 +82,7 @@ def get_user_by_id(db_connection: DBConnection, user_id: int) -> dict:
                 "last_name": row[2],
                 "email": row[3],
             }
-    elif os.getenv("CONNECTION_TYPE") == "nosql":
+    elif db_connection.connection_type == ConnectionType.MONGODB:
         user = db_connection.find_one("user", {"user_id": user_id})
         if user:
             return {
@@ -112,9 +107,9 @@ def update_user(db_connection: DBConnection, user_id: int, user_data: dict) -> N
     Returns:
         None
     """
-    if os.getenv("CONNECTION_TYPE") == "sql":
+    if db_connection.connection_type == ConnectionType.SQLITE:
         sql = "UPDATE user SET first_name = :first_name, last_name = :last_name, email = :email WHERE user_id = :user_id"
         user_data["user_id"] = user_id
         db_connection.new_cursor().execute(sql, user_data)
-    elif os.getenv("CONNECTION_TYPE") == "nosql":
+    elif db_connection.connection_type == ConnectionType.MONGODB:
         db_connection.update("user", {"user_id": user_id}, user_data)

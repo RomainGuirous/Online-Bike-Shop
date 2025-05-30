@@ -1,5 +1,4 @@
-from db_api import DBConnection
-
+from db_api import ConnectionType, DBConnection
 
 class OrderHead:
     """
@@ -10,25 +9,34 @@ class OrderHead:
         self, db_connection: DBConnection, is_new: bool, orderhead_id: int = None
     ):
         self.__db_connection = db_connection
-        self.__record = db_connection.new_table_record(
-            "OrderHead", {"orderhead_id": orderhead_id}, is_new
-        )
         self.__detail_records: list[OrderDetail] = []
-        if not is_new:
-            sql = "SELECT product_id FROM OrderDetail WHERE orderhead_id = ?"
-            rows = db_connection.new_cursor().execute(sql, (orderhead_id,)).fetchall()
-            for row in rows:
-                self.__detail_records.append(
-                    OrderDetail(db_connection, False, self.orderhead_id, row[0])
-                )
+        if db_connection.connection_type == ConnectionType.SQLITE:
+            self.__id_field_name = "orderhead_id"
+            self.__record = db_connection.get_record_object(
+                "OrderHead", {"orderhead_id": orderhead_id}, is_new
+            )
+            if not is_new:
+                sql = "SELECT product_id FROM OrderDetail WHERE orderhead_id = ?"
+                rows = db_connection.new_query().execute(sql, (orderhead_id,)).fetchall()
+                for row in rows:
+                    self.__detail_records.append(
+                        OrderDetail(db_connection, False, self.orderhead_id, row[0])
+                    )
+        else:
+            self.__id_field_name = "_id"
+            self.__record = db_connection.get_record_object('OrderHead', orderhead_id, is_new)
+            if not is_new:
+                rows = db_connection.new_query()['OrderDetail'].find({'orderhead_id' : orderhead_id})
+                for row in rows:
+                    self.__detail_records.append(row)
 
     @property
     def orderhead_id(self):
-        return self.__record.get_field("orderhead_id")
+        return self.__record.get_field(self.__id_field_name)
 
     @orderhead_id.setter
     def orderhead_id(self, value):
-        self.__record.set_field("orderhead_id", value)
+        self.__record.set_field(self.__id_field_name, value)
 
     @property
     def orderhead_date(self):
@@ -46,50 +54,31 @@ class OrderHead:
     def user_id(self, value):
         self.__record.set_field("user_id", value)
 
-    def add_product(self, product_id: int, quantity: int) -> "OrderDetail":
-        """
-        Adds a product to the order details.
+    def add_product(self, product_id: int, quantity: int) -> None:
+        if self.__db_connection.connection_type == ConnectionType.SQLITE:
+            if not self.__record.created:
+                raise Exception("The order's head must be saved before adding details")
+            detail = OrderDetail(self.__db_connection, True, self.orderhead_id, product_id)
+            detail.quantity = quantity
+            self.__detail_records.append(detail)
+        else:
+            self.__detail_records.append({'orderhead_id': self.orderhead_id, 'product_id': product_id, 'quantity': quantity})
 
-        Args:
-            product_id (int): The ID of the product to add.
-            quantity (int): The quantity of the product to add.
-
-        Returns:
-            OrderDetail: The created OrderDetail instance.
-        """
-        if not self.__record.created:
-            raise Exception("The order's head must be saved before adding details")
-        detail = OrderDetail(self.__db_connection, True, self.orderhead_id, product_id)
-        detail.quantity = quantity
-        self.__detail_records.append(detail)
-
-    def details(self) -> list["OrderDetail"]:
+    def details(self) -> list["OrderDetail"]|list[dict]:
         return self.__detail_records
 
     def save_to_db(self) -> None:
-        """
-        Saves the order head and its details to the database.
-        This method saves the order head record and then iterates through the
-        order details, saving each one to the database.
-        If the order head is new, it will be created in the database.
-        If the order head already exists, it will be updated.
-
-        Returns:
-            None
-        """
-        self.__record.save_record()
-        # we delete details in db then we recreate them (allows to remove OrderDetail(s) which have been deleted)
-        self.__db_connection.delete_record(
-            "OrderDetail", {"orderhead_id": self.orderhead_id}
-        )
-        for detail_record in self.__detail_records:
-            detail_record.save_to_db()
+        self.__record.save()
+        if self.__db_connection.connection_type == ConnectionType.SQLITE:
+            # we delete details in db then we recreate them (allows to remove OrderDetail(s) which have been deleted)
+            self.__db_connection.delete_record(
+                "OrderDetail", {"orderhead_id": self.orderhead_id}
+            )
+            for detail_record in self.__detail_records:
+                detail_record.save_to_db()
 
 
-class OrderDetail:
-    """
-    OrderDetail model representing a order detail in the database.
-    """
+class OrderDetail():
 
     def __init__(
         self,
@@ -98,7 +87,7 @@ class OrderDetail:
         orderhead_id: int,
         product_id: int,
     ):
-        self.__record = db_connection.new_table_record(
+        self.__record = db_connection.get_record_object(
             "OrderDetail",
             {"orderhead_id": orderhead_id, "product_id": product_id},
             is_new,
@@ -129,6 +118,6 @@ class OrderDetail:
         self.__record.set_field("quantity", value)
 
     def save_to_db(self):
-        self.__record.save_record(
+        self.__record.save(
             True
         )  # details are allways created, never updated (see OrderHead.save_to_db())

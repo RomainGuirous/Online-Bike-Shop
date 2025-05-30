@@ -1,4 +1,4 @@
-from db_api import DBConnection
+from db_api import ConnectionType, DBConnection
 
 
 class User:
@@ -9,17 +9,22 @@ class User:
     """
 
     def __init__(self, db_connection: DBConnection, is_new: bool, user_id: int = None):
-        self.__record = db_connection.new_table_record(
-            "User", {"user_id": user_id}, is_new
-        )
+        if db_connection.connection_type == ConnectionType.SQLITE:
+            self.__id_field_name = "user_id"
+            self.__record = db_connection.get_record_object(
+                "User", {"user_id": user_id}, is_new
+            )
+        else:
+            self.__id_field_name = "_id"
+            self.__record = db_connection.get_record_object('User', user_id, is_new)
 
     @property
     def user_id(self):
-        return self.__record.get_field("user_id")
+        return self.__record.get_field(self.__id_field_name)
 
     @user_id.setter
     def user_id(self, value):
-        self.__record.set_field("user_id", value)
+        self.__record.set_field(self.__id_field_name, value)
 
     @property
     def first_name(self):
@@ -46,4 +51,4 @@ class User:
         self.__record.set_field("email", value)
 
     def save_to_db(self):
-        self.__record.save_record()
+        self.__record.save()
