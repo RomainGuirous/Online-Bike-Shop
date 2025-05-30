@@ -25,12 +25,17 @@ def generate_fake_user(nbr_users: int = NBR_USERS) -> list[dict[str, str]]:
         list: A list of dictionaries containing fake user data.
     """
     fake = fk.Faker()
+    liste_roles = ["admin", "user"]
     fake_users = []
     for _ in range(nbr_users):
         user = {
             "first_name": fake.first_name(),
             "last_name": fake.last_name(),
             "email": fake.email(),
+            "username": fake.user_name(),
+            "hashed_password": fake.password(),
+            "password_hint": fake.sentence(4),
+            "role": liste_roles[fake.pyint(0, len(liste_roles) - 1)],
         }
         fake_users.append(user)
     return fake_users
@@ -65,7 +70,8 @@ def generate_fake_product(
         }
         if not mongo:
             spetech_id = fake.pyint(1, nbr_spetech)
-        product["spetech_id"] = spetech_id
+            product["spetech_id"] = spetech_id
+
         fake_products.append(product)
     return fake_products
 
@@ -74,7 +80,7 @@ def generate_fake_product(
 
 
 def generate_fake_orderhead(
-    nbr_orders: int = NBR_ORDERS, nbr_user: int = NBR_USERS
+    nbr_orders: int = NBR_ORDERS, nbr_user: int = NBR_USERS, mongo: bool = False
 ) -> list[dict[str, str]]:
     """
     Generate fake order data using the Faker library.
@@ -91,8 +97,11 @@ def generate_fake_orderhead(
     for _ in range(nbr_orders):
         order = {
             "orderhead_date": fake.date(),
-            "user_id": fake.pyint(1, nbr_user),
         }
+        if not mongo:
+            user_id = fake.pyint(1, nbr_user)
+            order["user_id"] = user_id
+
         fake_orders.append(order)
     return fake_orders
 
