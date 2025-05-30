@@ -31,12 +31,12 @@ def generate_fake_user(nbr_users: int = NBR_USERS) -> list[dict[str, str]]:
         user = {
             "first_name": fake.first_name(),
             "last_name": fake.last_name(),
-            "email": fake.email(),
-            "username": fake.user_name(),
-            "hashed_password": fake.password(),
-            "password_hint": fake.sentence(4),
-            "role": liste_roles[fake.pyint(0, len(liste_roles) - 1)],
+            "is_admin": False,
+            "hashed_password": fake.password(5),
+            "password_hint": fake.sentence(4)
         }
+        user["email"] = (user["first_name"] + '.' + user["last_name"] + '@example.com').lower()
+        user["username"] = (user["first_name"] + '.' + user["last_name"]).lower()
         fake_users.append(user)
     return fake_users
 

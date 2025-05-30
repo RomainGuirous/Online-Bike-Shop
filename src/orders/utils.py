@@ -19,7 +19,7 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
         orders = []
         for order in orders_list:
             order_data = {
-                "orderhead_id": order.get("orderhead_id"),
+                "orderhead_id": order.get("_id"),
                 "orderhead_date": order.get("orderhead_date"),
                 "user_id": order.get("user_id"),
             }

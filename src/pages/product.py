@@ -32,7 +32,7 @@ if "id" not in st_session:
 elif st.session_state["id"]:
     product = Product(connection, False, st.session_state["id"])
     spetech = None
-    if product.spetech_id > 0:
+    if product.spetech_id:
         spetech = SpeTech(connection, False, product.spetech_id)
 
     def text_field_color(field: str, color: str) -> None:

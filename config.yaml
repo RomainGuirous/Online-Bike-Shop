@@ -5,13 +5,13 @@ cookie:
   name: my-random-name
 credentials:
   usernames:
-    fabg:
-      email: f.test@gmail.com
-      first_name: Florian
-      last_name: abgrall
+    andrea.wood:
+      email: andrea.wood@example.com
+      first_name: Andrea
+      last_name: Wood
       logged_in: false
-      password: $2b$12$cO4EOZ3kcQ7jJmjnQpbTf.pBGPgGzRKKm3XtAdv2C9fOe5x9DPhpG
-      password_hint: admin
+      password: '&67Ei'
+      password_hint: Their month speak too lot.
       roles:
       - user
       - admin
@@ -34,18 +34,267 @@ credentials:
       logged_in: false
       password: $2b$12$GJKJ7GSxjWaEUGj3qFqHluE5xexAACd5OPjfm7TQRYqG4V5rJ2v6e
       password_hint: admin
-      roles:
-      - user
-    teggst:
-      email: tseets@tsgt.com
-      first_name: teset
-      last_name: etest
+    angela.patel:
+      email: angela.patel@example.com
+      first_name: Angela
+      last_name: Patel
       logged_in: false
-      password: $2b$12$wSzRkpgP52roXj4.xDummermQUj47ageafH9jQjIfv9PdVKu9MCzq
-      password_hint: Tsgt1234?
+      password: '#4CuH'
+      password_hint: Mention include positive.
       roles:
       - user
-      - admin
+    ashley.johnston:
+      email: ashley.johnston@example.com
+      first_name: Ashley
+      last_name: Johnston
+      logged_in: false
+      password: j_0Oo
+      password_hint: Plan only story material reason.
+      roles:
+      - user
+    brooke.bautista:
+      email: brooke.bautista@example.com
+      first_name: Brooke
+      last_name: Bautista
+      logged_in: false
+      password: l_8Du
+      password_hint: Open help black story.
+      roles:
+      - user
+    cassidy.hill:
+      email: cassidy.hill@example.com
+      first_name: Cassidy
+      last_name: Hill
+      logged_in: false
+      password: +T9Sc
+      password_hint: Edge open under look like.
+      roles:
+      - user
+    catherine.jones:
+      email: catherine.jones@example.com
+      first_name: Catherine
+      last_name: Jones
+      logged_in: false
+      password: Z^0On
+      password_hint: Treatment risk physical father.
+      roles:
+      - user
+    donald.macias:
+      email: donald.macias@example.com
+      first_name: Donald
+      last_name: Macias
+      logged_in: false
+      password: '#0SYg'
+      password_hint: Analysis your present.
+      roles:
+      - user
+    douglas.brooks:
+      email: douglas.brooks@example.com
+      first_name: Douglas
+      last_name: Brooks
+      logged_in: false
+      password: '&9Xvo'
+      password_hint: Bag thousand mission news nearly.
+      roles:
+      - user
+    eileen.gonzalez:
+      email: eileen.gonzalez@example.com
+      first_name: Eileen
+      last_name: Gonzalez
+      logged_in: false
+      password: '#3K6s'
+      password_hint: Catch education peace six not.
+      roles:
+      - user
+    emma.castro:
+      email: emma.castro@example.com
+      first_name: Emma
+      last_name: Castro
+      logged_in: false
+      password: _8DUt
+      password_hint: Next learn local anything trial.
+      roles:
+      - user
+    jennifer.scott:
+      email: jennifer.scott@example.com
+      first_name: Jennifer
+      last_name: Scott
+      logged_in: false
+      password: (8XOn
+      password_hint: Somebody make effort.
+      roles:
+      - user
+    jonathan.johnson:
+      email: jonathan.johnson@example.com
+      first_name: Jonathan
+      last_name: Johnson
+      logged_in: false
+      password: _0aQu
+      password_hint: Similar size establish.
+      roles:
+      - user
+    jose.carter:
+      email: jose.carter@example.com
+      first_name: Jose
+      last_name: Carter
+      logged_in: false
+      password: '#18Sm'
+      password_hint: Without data here south serve.
+      roles:
+      - user
+    joseph.juarez:
+      email: joseph.juarez@example.com
+      first_name: Joseph
+      last_name: Juarez
+      logged_in: false
+      password: '!8Cju'
+      password_hint: Experience and again.
+      roles:
+      - user
+    joshua.garcia:
+      email: joshua.garcia@example.com
+      first_name: Joshua
+      last_name: Garcia
+      logged_in: false
+      password: '@$5Kh'
+      password_hint: Mrs break.
+      roles:
+      - user
+    julie.sharp:
+      email: julie.sharp@example.com
+      first_name: Julie
+      last_name: Sharp
+      logged_in: false
+      password: '&#5Fz'
+      password_hint: Range listen note style.
+      roles:
+      - user
+    laura.davis:
+      email: laura.davis@example.com
+      first_name: Laura
+      last_name: Davis
+      logged_in: false
+      password: +7Q+r
+      password_hint: Walk husband Mrs spend.
+      roles:
+      - user
+    lawrence.quinn:
+      email: lawrence.quinn@example.com
+      first_name: Lawrence
+      last_name: Quinn
+      logged_in: false
+      password: _0O7b
+      password_hint: Environmental executive follow girl all.
+      roles:
+      - user
+    linda.ryan:
+      email: linda.ryan@example.com
+      first_name: Linda
+      last_name: Ryan
+      logged_in: false
+      password: _9ZxI
+      password_hint: Mrs seven minute.
+      roles:
+      - user
+    matthew.jones:
+      email: matthew.jones@example.com
+      first_name: Matthew
+      last_name: Jones
+      logged_in: false
+      password: X@4Pe
+      password_hint: All line fly option.
+      roles:
+      - user
+    megan.carrillo:
+      email: megan.carrillo@example.com
+      first_name: Megan
+      last_name: Carrillo
+      logged_in: false
+      password: '@6UkK'
+      password_hint: Land loss he north.
+      roles:
+      - user
+    melissa.cantrell:
+      email: melissa.cantrell@example.com
+      first_name: Melissa
+      last_name: Cantrell
+      logged_in: false
+      password: '##4Fl'
+      password_hint: Majority possible sit they.
+      roles:
+      - user
+    michelle.walton:
+      email: michelle.walton@example.com
+      first_name: Michelle
+      last_name: Walton
+      logged_in: false
+      password: )_5Fi
+      password_hint: Discuss man guy.
+      roles:
+      - user
+    sara.mcdowell:
+      email: sara.mcdowell@example.com
+      first_name: Sara
+      last_name: Mcdowell
+      logged_in: false
+      password: Q_2Bd
+      password_hint: Similar laugh card both should.
+      roles:
+      - user
+    sarah.kim:
+      email: sarah.kim@example.com
+      first_name: Sarah
+      last_name: Kim
+      logged_in: false
+      password: G@5Qr
+      password_hint: Woman stuff view issue.
+      roles:
+      - user
+    scott.weber:
+      email: scott.weber@example.com
+      first_name: Scott
+      last_name: Weber
+      logged_in: false
+      password: (4Rhf
+      password_hint: Then miss believe.
+      roles:
+      - user
+    stacey.cox:
+      email: stacey.cox@example.com
+      first_name: Stacey
+      last_name: Cox
+      logged_in: false
+      password: '*G3Pk'
+      password_hint: Budget continue table challenge.
+      roles:
+      - user
+    tara.rhodes:
+      email: tara.rhodes@example.com
+      first_name: Tara
+      last_name: Rhodes
+      logged_in: false
+      password: '*@2Gb'
+      password_hint: Order cost arrive.
+      roles:
+      - user
+    tiffany.stephens:
+      email: tiffany.stephens@example.com
+      first_name: Tiffany
+      last_name: Stephens
+      logged_in: false
+      password: +j2Fy
+      password_hint: Analysis make under movement.
+      roles:
+      - user
+    trevor.hughes:
+      email: trevor.hughes@example.com
+      first_name: Trevor
+      last_name: Hughes
+      logged_in: false
+      password: _7Z3w
+      password_hint: Spring up.
+      roles:
+      - user
 oauth2:
   google:
     client_id: null

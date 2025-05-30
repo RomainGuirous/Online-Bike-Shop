@@ -1,8 +1,9 @@
-from db_api import DBConnection, ConnectionType
+from db_api import DBConnection, ConnectionType, create_connection
+from users.models import User
 import pandas as pd
+import yaml
 
-
-def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
+def get_user_list(db_connection: DBConnection) -> list[dict]:
     """
     Retrieve a DataFrame of all users from the database.
     This function fetches user data from the database and converts it into a DataFrame.
@@ -13,104 +14,57 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all users.
     """
+    users = []
     if db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM user"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
-        users = []
         for row in dataset:
             user = {
                 "user_id": row[0],
                 "first_name": row[1],
                 "last_name": row[2],
                 "email": row[3],
+                "username": row[4],
+                "hashed_password": row[5],
+                "password_hint": row[6],
+                "is_admin": row[7]
+
             }
             users.append(user)
-    elif db_connection.connection_type == ConnectionType.MONGODB:
+    #elif db_connection.connection_type == ConnectionType.MONGODB:
+    else:
         users_list = db_connection.new_query()["User"].find()
-        users = []
         for user in users_list:
             user_data = {
-                "user_id": user.get("user_id"),
+                "user_id": user.get("_id"),
                 "first_name": user.get("first_name"),
                 "last_name": user.get("last_name"),
                 "email": user.get("email"),
+                "username": user.get("username"),
+                "hashed_password": user.get("hashed_password"),
+                "password_hint": user.get("password_hint"),
+                "is_admin": user.get("is_admin")
             }
             users.append(user_data)
-    return pd.DataFrame(users)
+    return users
 
-
-def register_user(db_connection: DBConnection, user_data: dict) -> None:
-    """
-    Register a new user in the database.
-    This function inserts a new user record into the database.
-
-    Args:
-        db_connection (DBConnection): The database connection object.
-        user_data (dict): A dictionary containing user data with keys 'first_name', 'last_name', 'email'.
-
-    Returns:
-        None
-    """
-    if db_connection.connection_type == ConnectionType.SQLITE:
-        sql = "INSERT INTO user (first_name, last_name, email) VALUES (:first_name, :last_name, :email)"
-        db_connection.new_cursor().execute(sql, user_data)
-    elif db_connection.connection_type == ConnectionType.MONGODB:
-        db_connection.insert("user", user_data)
-
-
-def get_user_by_id(db_connection: DBConnection, user_id: int) -> dict:
-    """
-    Retrieve a user from the database by their ID.
-    This function fetches user data from the database and returns it as a dictionary.
-
-    Args:
-        db_connection (DBConnection): The database connection object.
-        user_id (int): The ID of the user to retrieve.
-
-    Returns:
-        dict: A dictionary containing user data or an empty dictionary if not found.
-    """
-    if db_connection.connection_type == ConnectionType.SQLITE:
-        sql = "SELECT * FROM user WHERE user_id = :user_id"
-        cursor = db_connection.new_cursor()
-        cursor.execute(sql, {"user_id": user_id})
-        row = cursor.fetchone()
-        if row:
-            return {
-                "user_id": row[0],
-                "first_name": row[1],
-                "last_name": row[2],
-                "email": row[3],
-            }
-    elif db_connection.connection_type == ConnectionType.MONGODB:
-        user = db_connection.find_one("user", {"user_id": user_id})
-        if user:
-            return {
-                "user_id": user.get("user_id"),
-                "first_name": user.get("first_name"),
-                "last_name": user.get("last_name"),
-                "email": user.get("email"),
-            }
-    return {}
-
-
-def update_user(db_connection: DBConnection, user_id: int, user_data: dict) -> None:
-    """
-    Update an existing user in the database.
-    This function updates user data in the database based on the provided user ID.
-
-    Args:
-        db_connection (DBConnection): The database connection object.
-        user_id (int): The ID of the user to update.
-        user_data (dict): A dictionary containing updated user data with keys 'first_name', 'last_name', 'email'.
-
-    Returns:
-        None
-    """
-    if db_connection.connection_type == ConnectionType.SQLITE:
-        sql = "UPDATE user SET first_name = :first_name, last_name = :last_name, email = :email WHERE user_id = :user_id"
-        user_data["user_id"] = user_id
-        db_connection.new_cursor().execute(sql, user_data)
-    elif db_connection.connection_type == ConnectionType.MONGODB:
-        db_connection.update("user", {"user_id": user_id}, user_data)
+def update_auth_config_froms_users(connection: DBConnection)-> None:
+    with open("config.yaml", "r") as file:
+        config: dict = yaml.safe_load(file)
+    config["credentials"]["usernames"] = {}
+    user_list = get_user_list(connection)
+    for user_dict in user_list:
+        user_yaml = {}
+        user_yaml["email"] = user_dict["email"]
+        user_yaml["first_name"] = user_dict["first_name"]
+        user_yaml["last_name"] = user_dict["last_name"]
+        user_yaml["logged_in"] = False
+        user_yaml["password"] = user_dict["hashed_password"]
+        user_yaml["password_hint"] = user_dict["password_hint"]
+        user_yaml["roles"] = ["user"]
+        if user_dict["is_admin"]:
+            user_yaml["roles"].append("admin")
+        config["credentials"]["usernames"][user_dict["username"]] = user_yaml
+    with open("config.yaml", "w") as file:
+        yaml.dump(config, file)

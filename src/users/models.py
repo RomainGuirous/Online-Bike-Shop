@@ -75,12 +75,12 @@ class User:
         self.__record.set_field("password_hint", value)
 
     @property
-    def roles(self):
-        return self.__record.get_field("roles")
-
-    @roles.setter
-    def roles(self, value):
-        self.__record.set_field("roles", value)
+    def is_admin(self):
+        return self.__record.get_field('is_admin')
+    
+    @is_admin.setter
+    def is_admin(self, value):
+        self.__record.set_field('is_admin', value)
 
     def save_to_db(self):
         self.__record.save()

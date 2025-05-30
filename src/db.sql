@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS User(
    username TEXT NOT NULL,
    hashed_password TEXT NOT NULL,
    password_hint TEXT,
-   roles TEXT,
+   is_admin INTEGER,
    PRIMARY KEY(user_id)
 );
 
