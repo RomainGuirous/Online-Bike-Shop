@@ -62,12 +62,14 @@ class OrderHead:
             detail.quantity = quantity
             self.__detail_records.append(detail)
         else:
-            self.__detail_records.append({'orderhead_id': self.orderhead_id, 'product_id': product_id, 'quantity': quantity})
+            self.__detail_records.append({'product_id': product_id, 'quantity': quantity})
 
     def details(self) -> list["OrderDetail"]|list[dict]:
         return self.__detail_records
 
     def save_to_db(self) -> None:
+        if self.__db_connection.connection_type == ConnectionType.MONGODB:
+            self.__record.set_field("OrderDetails", self.__detail_records)
         self.__record.save()
         if self.__db_connection.connection_type == ConnectionType.SQLITE:
             # we delete details in db then we recreate them (allows to remove OrderDetail(s) which have been deleted)

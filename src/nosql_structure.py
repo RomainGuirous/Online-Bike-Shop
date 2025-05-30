@@ -97,6 +97,8 @@ for orderhead_dico in orderhead_data:
 
     orderhead.save_to_db()
 
+conn.commit()
+
 # for collection in list_collections:
 #     locals()[f"{collection}_ids"] = locals()[f"{collection}_collection"].insert_many(
 #         locals()[f"{collection}_data"]
