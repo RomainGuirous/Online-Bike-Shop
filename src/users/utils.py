@@ -49,7 +49,17 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
             users.append(user_data)
     return users
 
-def update_auth_config_froms_users(connection: DBConnection)-> None:
+def get_user_id_from_username(connection: DBConnection,username: str)-> any:
+    if connection.connection_type == ConnectionType.SQLITE:
+        sql = "SELECT user_id FROM User WHERE username = ?"
+        for row in connection.new_query().execute(sql, (username,)):
+            return row[0]
+    else:
+        for row in connection.new_query()["User"].find({"username" : username}):
+            return row["_id"]
+    return None
+
+def update_auth_config_from_users(connection: DBConnection)-> None:
     with open("config.yaml", "r") as file:
         config: dict = yaml.safe_load(file)
     config["credentials"]["usernames"] = {}
