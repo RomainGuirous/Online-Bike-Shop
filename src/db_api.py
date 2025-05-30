@@ -9,7 +9,8 @@ from config import DB_FILE
 from pymongo import MongoClient
 from pymongo.database import Database
 
-ConnectionType = Enum('ConnectionType', 'SQLITE MONGODB')
+ConnectionType = Enum("ConnectionType", "SQLITE MONGODB")
+
 
 class DBConnection(ABC):
     def __init__(self, connection_type: ConnectionType):
@@ -17,11 +18,11 @@ class DBConnection(ABC):
         self.__connection = None
 
     @property
-    def connection_type(self)-> ConnectionType:
+    def connection_type(self) -> ConnectionType:
         return self.__connection_type
 
     @abstractmethod
-    def new_query(self)-> any:
+    def new_query(self) -> any:
         pass
 
     @abstractmethod
@@ -37,6 +38,7 @@ class DBConnection(ABC):
     @abstractmethod
     def delete_record(self, table_or_collection_name: str, primary_keys: any) -> None:
         pass
+
 
 class SQLiteConnection(DBConnection):
     """
@@ -95,16 +97,17 @@ class SQLiteConnection(DBConnection):
             and_keyword = " AND "
         self.new_query().execute(sql, primary_keys)
 
+
 class MongoDBConnection(DBConnection):
     def __init__(self, url: str, db_name: str):
         super().__init__(ConnectionType.MONGODB)
         self.__connection = MongoClient(url)[db_name]
 
-    def new_query(self)-> Database:
+    def new_query(self) -> Database:
         return self.__connection
 
     def commit(self) -> None:
-        pass # on gère les commits en MongoDB ?
+        pass  # on gère les commits en MongoDB ?
 
     def get_record_object(
         self, table_or_collection_name: str, primary_keys: any, is_new: bool
@@ -114,8 +117,8 @@ class MongoDBConnection(DBConnection):
     def delete_record(self, table_or_collection_name: str, primary_keys: any) -> None:
         pass
 
-class Record(ABC):
 
+class Record(ABC):
     def __init__(self, is_new: bool):
         self._is_new = is_new
 
@@ -135,6 +138,7 @@ class Record(ABC):
     def save(self, force_insert=False) -> None:
         pass
 
+
 class DBTableRecord(Record):
     """
     A class representing a record in a database table.
@@ -150,6 +154,7 @@ class DBTableRecord(Record):
         is_new: bool,
     ):
         super().__init__(is_new)
+
         def set_fieldnames_from_row_description(description) -> None:
             """
             Sets the field names for the record based on the row description.
@@ -298,20 +303,20 @@ class DBTableRecord(Record):
         cursor.close()
         self._is_new = False
 
-class DBDocument(Record):
 
+class DBDocument(Record):
     def __init__(
         self,
         mongodb_db_connection: MongoDBConnection,
         collection: str,
-        document_id: str|None,
+        document_id: str | None,
     ):
         super().__init__(document_id is None)
         self.__db_connection = mongodb_db_connection
         self.__collection = collection
         self.__document = {}
         if self.created:
-            collection = self.__db_connection.new_query[self.__collection]
+            collection = self.__db_connection.new_query()[self.__collection]
             self.__document = collection.find_one({"_id": document_id})
 
     @property
@@ -331,10 +336,14 @@ class DBDocument(Record):
         if "_id" in document_content:
             del document_content["_id"]
         if self._is_new:
-            response = self.__db_connection.new_query[self.__collection].insert_one(document_content)
-            self.__document['_id'] = response.inserted_id
+            response = self.__db_connection.new_query()[self.__collection].insert_one(
+                document_content
+            )
+            self.__document["_id"] = response.inserted_id
         else:
-            self.__db_connection.new_query[self.__collection].update_one({'_id' : self.__document['_id']}, {'$set': document_content})
+            self.__db_connection.new_query()[self.__collection].update_one(
+                {"_id": self.__document["_id"]}, {"$set": document_content}
+            )
         self._is_new = False
 
 
