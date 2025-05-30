@@ -39,7 +39,7 @@ def get_product_list(
         products = []
         for product in products_list:
             product_data = {
-                "product_id": product.get("product_id"),
+                "product_id": product.get("_id"),
                 "product_name": product.get("product_name"),
                 "product_description": product.get("product_description"),
                 "price": product.get("price"),
