@@ -1,5 +1,6 @@
 from db_api import ConnectionType, DBConnection
 
+
 class SpeTech:
     """
     SpeTech model representing technical specifications for any products in the database.
@@ -15,7 +16,9 @@ class SpeTech:
             )
         else:
             self.__id_field_name = "_id"
-            self.__record = db_connection.get_record_object('SpeTech', spetech_id, is_new)
+            self.__record = db_connection.get_record_object(
+                "SpeTech", spetech_id, is_new
+            )
 
     @property
     def spetech_id(self):

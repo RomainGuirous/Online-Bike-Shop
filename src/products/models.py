@@ -16,7 +16,9 @@ class Product:
             )
         else:
             self.__id_field_name = "_id"
-            self.__record = db_connection.get_record_object('Product', product_id, is_new)
+            self.__record = db_connection.get_record_object(
+                "Product", product_id, is_new
+            )
 
     @property
     def product_id(self):
