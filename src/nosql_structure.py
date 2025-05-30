@@ -33,9 +33,14 @@ orderhead_collection = db["Orderhead"]
 orderdetail_collection = db["Orderdetail"]
 
 # injection des data en DB Mongo
-list_collections = ["product", "user", "spetech", "orderhead", "orderdetail"]
+list_collections = ["user", "spetech", "product", "orderhead", "orderdetail"]
+user_ids = []
+spetech_ids = []
+product_ids = []
 for collection in list_collections:
-    locals()[f"{collection}_collection"].insert_many(locals()[f"{collection}_data"])
+    locals()[f"{collection}_ids"] = locals()[f"{collection}_collection"].insert_many(
+        locals()[f"{collection}_data"]
+    )
 
 # Insert into Product
 product_collection.insert_many(
