@@ -4,6 +4,8 @@ import yaml
 from yaml.loader import SafeLoader
 import streamlit_utils as st_utils
 from style.style import get_card_style
+from users.models import User
+from db_api import create_connection
 
 st.set_page_config(page_title="Register", page_icon="📝", layout="centered")
 get_card_style()
@@ -25,10 +27,24 @@ try:
     email_of_registered_user, username_of_registered_user, name_of_registered_user = (
         authenticator.register_user(roles=["user", "admin"])
     )
+
     if email_of_registered_user:
         st.success("User registered successfully")
+        
         with open("config.yaml", "w") as file:
             yaml.dump(config, file, default_flow_style=False, allow_unicode=True)
+        user = config['credentials']['usernames'][username_of_registered_user]
+
+        new_user = User(db_connection=create_connection(), is_new=True)
+        new_user.username = username_of_registered_user
+        new_user.first_name = user['first_name']
+        new_user.last_name = user['last_name']
+        new_user.email = email_of_registered_user
+        new_user.hashed_password = user['password']
+        new_user.roles = user['roles']
+        new_user.password_hint = user['password_hint']
+        new_user.save_to_db()
+        
         st.switch_page("pages/connection.py")
 except Exception as e:
     st.error(e)

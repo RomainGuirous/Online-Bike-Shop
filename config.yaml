@@ -44,6 +44,26 @@ credentials:
       password: $2b$12$GJKJ7GSxjWaEUGj3qFqHluE5xexAACd5OPjfm7TQRYqG4V5rJ2v6e
       roles:
       - user
+    test1:
+      email: test@test.com
+      first_name: test
+      last_name: testtt
+      logged_in: false
+      password: $2b$12$.q6EFg7C9t3fox4ngYnQZeWjc3UyKBt9VUTsQcjD8powN5kgQOoOW
+      password_hint: Test1234?
+      roles:
+      - user
+      - admin
+    testtest:
+      email: test2.test@test.com
+      first_name: test
+      last_name: test
+      logged_in: false
+      password: $2b$12$gGuSMFafRORTyRFtLDcMGulMHoF1ZSqADgfVMHO9AWJiSTUTy.o0G
+      password_hint: test1234?
+      roles:
+      - user
+      - admin
 oauth2:
   google:
     client_id: null

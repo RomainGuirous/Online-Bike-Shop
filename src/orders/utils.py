@@ -15,7 +15,7 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch orders from the collection
-        orders_list = db_connection.new_query()["OrderHead"].find()
+        orders_list = db_connection.new_query()["orderhead"].find()
         orders = []
         for order in orders_list:
             order_data = {
@@ -52,7 +52,7 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch order details from the collection
-        orders_list = db_connection.new_query()['OrderDetail'].find()
+        orders_list = db_connection.new_query()["orderdetail"].find()
         orders = []
         for order in orders_list:
             order_data = {
