@@ -4,7 +4,6 @@ from utils import (
     generate_fake_product,
     generate_fake_orderhead,
     generate_fake_spetech,
-    generate_fake_orderdetail,
 )
 from products.models import Product
 from spetech.models import SpeTech
@@ -30,7 +29,6 @@ user_data = generate_fake_user()
 product_data = generate_fake_product()
 orderhead_data = generate_fake_orderhead()
 spetech_data = generate_fake_spetech()
-orderdetail_data = generate_fake_orderdetail()
 
 
 # Création (ou accès) des collections (tables)
@@ -38,7 +36,6 @@ product_collection = db["Products"]
 user_collection = db["User"]
 spetech_collection = db["Spetech"]
 orderhead_collection = db["Orderhead"]
-orderdetail_collection = db["Orderdetail"]  # mettre dans Orderhead
 
 # injection des data en DB Mongo
 list_collections = ["user", "spetech", "product", "orderhead", "orderdetail"]
