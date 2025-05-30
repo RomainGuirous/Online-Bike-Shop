@@ -1,5 +1,6 @@
-from db_api import DBConnection, ConnectionType
+from db_api import DBConnection, ConnectionType, create_connection
 import pandas as pd
+import yaml
 
 def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
     """
@@ -37,3 +38,9 @@ def get_user_list(db_connection: DBConnection) -> pd.DataFrame:
             }
             users.append(user_data)
     return pd.DataFrame(users)
+
+
+def update_auth_config_froms_users()-> None:
+    with open("config.yaml", "r") as file:
+        config: dict = yaml.safe_load(file)
+    print(config)
