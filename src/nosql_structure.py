@@ -83,8 +83,11 @@ for user_dico in user_data:
     user.first_name = user_dico["first_name"]
     user.last_name = user_dico["last_name"]
     user.email = user_dico["email"]
-
-    user.save_to_db
+    user.username = user_dico["username"]
+    user.is_admin = user_dico["is_admin"]
+    user.hashed_password = user_dico["hashed_password"]
+    user.password_hint = user_dico["password_hint"]
+    user.save_to_db()
     user_ids.append(user.user_id)
 
 
