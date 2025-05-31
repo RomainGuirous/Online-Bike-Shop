@@ -1,4 +1,4 @@
-from db_api import ConnectionType, DBConnection
+from db_api import ConnectionType, DBConnection, MongoDBConnection
 
 
 class OrderHead:
@@ -96,20 +96,19 @@ class OrderHead:
         Save the order head and its details to the database.
         If using MongoDB, it sets the "OrderDetails" field with the detail records.
         If using SQLite, it deletes existing details and recreates them.
-
-        :raises Exception: If the order head has not been saved yet in SQLite.
         """
-        if self.__db_connection.connection_type == ConnectionType.MONGODB:
+        #if self.__db_connection.connection_type == ConnectionType.MONGODB:
+        if self.__db_connection.debug_type_str() == str(ConnectionType.MONGODB):
             self.__record.set_field("OrderDetails", self.__detail_records)
         self.__record.save()
-        if self.__db_connection.connection_type == ConnectionType.SQLITE:
+        #if self.__db_connection.connection_type == ConnectionType.SQLITE:
+        if self.__db_connection.debug_type_str() == str(ConnectionType.SQLITE):
             # we delete details in db then we recreate them (allows to remove OrderDetail(s) which have been deleted)
             self.__db_connection.delete_record(
                 "OrderDetail", {"orderhead_id": self.orderhead_id}
             )
             for detail_record in self.__detail_records:
                 detail_record.save_to_db()
-
 
 class OrderDetail:
     """

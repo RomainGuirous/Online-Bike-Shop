@@ -50,7 +50,6 @@ else:
                 if st.button(label="➕", key="qt+" + str(product.product_id)):
                     basket.add(product.product_id, 1)
                     st.switch_page("pages/basket.py")
-print(st.session_state)
 if st.button("Order now"):
     connection = create_connection()
     basket.create_order(connection, get_user_id_from_username(connection, st.session_state["username"]))

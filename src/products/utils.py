@@ -88,15 +88,16 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch best-selling products from the collection
-        products_list = db_connection.new_query()["OrderDetail"].find()
+        products_list = db_connection.new_query()["OrderHead"].find()
         product_sales = {}
         for order in products_list:
-            product_id = order.get("product_id")
-            quantity = order.get("quantity", 0)
-            if product_id in product_sales:
-                product_sales[product_id] += quantity
-            else:
-                product_sales[product_id] = quantity
+            for detail in order['OrderDetails']:
+                product_id = detail.get("product_id")
+                quantity = detail.get("quantity", 0)
+                if product_id in product_sales:
+                    product_sales[product_id] += quantity
+                else:
+                    product_sales[product_id] = quantity
 
         # Sort products by total quantity sold and get the top 4
         sorted_products = sorted(
@@ -105,10 +106,13 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
         product_ids = [product[0] for product in sorted_products]
 
         # Fetch product details for the top products
-        products = db_connection.new_query()["Product"].find(
-            {"product_id": {"$in": product_ids}}
-        )
-        return [product for product in products if product["product_id"] in product_ids]
+        # products = db_connection.new_query()["Product"].find(
+        #     {"product_id": {"$in": product_ids}}
+        # )
+        #return [product for product in products if product["product_id"] in product_ids]
+        return list(db_connection.new_query()["Product"].find(
+            {"_id": {"$in": product_ids}}
+        ))
 
     if db_connection.connection_type == ConnectionType.SQLITE:
         # SQL implementation to get best-selling products
