@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
 from src.db_api import create_connection
-from src.users.utils import update_auth_config_froms_users
+from src.users.utils import update_auth_config_from_users
 
 connection = create_connection()
 
@@ -18,4 +18,4 @@ connection = create_connection()
 # print(f"ID du produit : {produit_existant.get_field('_id')}")
 # print(f"Nom = {produit_existant.get_field('product_name')} Prix = {produit_existant.get_field('price')}")
 
-update_auth_config_froms_users(connection)
+update_auth_config_from_users(connection)

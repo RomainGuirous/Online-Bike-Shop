@@ -1,5 +1,6 @@
 import streamlit as st
 from db_api import create_connection
+from users.utils import get_user_id_from_username
 import streamlit_utils as st_utils
 from style.style import get_card_style
 
@@ -9,8 +10,9 @@ st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 
 st_utils.handle_access_rights("user", "Please sign in to access your orders.")
-
 connection = create_connection()
+user_id = get_user_id_from_username(connection, st.session_state["username"])
+
 sql = """\
     SELECT
         OrderHead.orderhead_id,
@@ -24,7 +26,7 @@ sql = """\
     WHERE
         OrderHead.user_id = ?
     ORDER BY OrderHead.orderhead_date DESC, OrderHead.orderhead_id DESC"""
-rows = connection.new_query().execute(sql, (8,)).fetchall()
+rows = connection.new_query().execute(sql, (user_id,)).fetchall()
 if len(rows) == 0:
     st.markdown("# No order yet...")
 else:

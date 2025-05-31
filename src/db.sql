@@ -48,6 +48,8 @@ CREATE TABLE IF NOT EXISTS OrderDetail(
    FOREIGN KEY(orderhead_id) REFERENCES Orderhead(orderhead_id)
 );
 
+/*
+
 -- Insert data into Product table
 INSERT OR REPLACE INTO Product (product_id, product_name, product_description, price, picture, spetech_id) VALUES
 (1, 'Mountain Bike', 'A rugged mountain bike for off-road adventures.', 499.99, 'https://www.serk.cc/wp-content/uploads/2022/10/DSCF2936.jpg', 1),
@@ -88,3 +90,5 @@ INSERT OR REPLACE INTO User (first_name, last_name, email, username, hashed_pass
 ('Alice', 'Johnson', 'alice.johnson@example.com', 'alicejohnson', '$2b$12$KIXQ1Q1Q1Q1Q1Q1Q1Q1Q1u', 'test', 'user'),
 ('Bob', 'Brown', 'bob.brown@example.com', 'bobbrown', '$2b$12$KIXQ1Q1Q1Q1Q1Q1Q1Q1Q1u', 'test', 'user'),
 ('Charlie', 'Davis', 'charlie.davis@example.com', 'charliedavis', '$2b$12$KIXQ1Q1Q1Q1Q1Q1Q1Q1Q1u', 'test', 'user');
+
+*/
