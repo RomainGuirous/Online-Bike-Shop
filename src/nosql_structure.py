@@ -99,10 +99,6 @@ for orderhead_dico in orderhead_data:
 
 conn.commit()
 
-# for collection in list_collections:
-#     locals()[f"{collection}_ids"] = locals()[f"{collection}_collection"].insert_many(
-#         locals()[f"{collection}_data"]
-#     )
 
 # # Insert into Product
 # product_collection.insert_many(

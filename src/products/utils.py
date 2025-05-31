@@ -5,8 +5,8 @@ import pandas as pd
 
 def get_product_list_model(db_connection: DBConnection, product_id: int = None) -> list:
     """
-    Retrieve a list of Product models from the database.
-    This function fetches product data from the database and converts it into a list of Product models.
+    Retrieve a list of products from the database using the Product model.
+    This function fetches product data from the database and returns it as a list of Product instances.
     If a product_id is provided, it retrieves only that specific product.
     If no product_id is provided, it retrieves all products.
 
@@ -15,7 +15,7 @@ def get_product_list_model(db_connection: DBConnection, product_id: int = None) 
         product_id (int, optional): The ID of the product to retrieve. Defaults to None.
 
     Returns:
-        list: A list of Product models.
+        list: A list of Product instances.
     """
     products = get_product_list(db_connection, product_id)
     return [Product(**product) for product in products]
@@ -26,13 +26,18 @@ def get_product_list(
 ) -> list[dict[str]]:
     """
     Retrieve a list of products from the database.
+    This function fetches product data from the database and returns it as a list of dictionaries.
+    If a product_id is provided, it retrieves only that specific product.
+    If no product_id is provided, it retrieves all products.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
         product_id (int, optional): The ID of the product to retrieve. Defaults to None.
 
     Returns:
-        list: A list of products.
+        list: A list of dictionaries containing product details.
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         products_list = db_connection.new_query()["Product"].find()
@@ -71,13 +76,15 @@ def get_product_list(
 def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     """
     Retrieve a list of the best-selling products from the database.
-    This function fetches the top 4 products based on the total quantity sold.
+    This function fetches the top 4 best-selling products based on the total quantity sold.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
 
     Returns:
-        list: A list of dictionaries containing product details.
+        list: A list of dictionaries containing details of the best-selling products.
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch best-selling products from the collection
@@ -152,13 +159,15 @@ def get_spetech_list(
     This function fetches spetech data from the database and returns it as a list of dictionaries.
     If a spetech_id is provided, it retrieves only that specific spetech.
     If no spetech_id is provided, it retrieves all spetechs.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
         spetech_id (int, optional): The ID of the spetech to retrieve. Defaults to None.
 
     Returns:
-        list: A list of spetechs.
+        list: A list of dictionaries containing spetech details.
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch spetechs from the collection
@@ -203,13 +212,15 @@ def get_product_dataframe(
     This function fetches product data from the database and returns it as a pandas DataFrame.
     If a product_id is provided, it retrieves only that specific product.
     If no product_id is provided, it retrieves all products.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
         product_id (int, optional): The ID of the product to retrieve. Defaults to None.
 
     Returns:
-        pd.DataFrame: A DataFrame containing product data.
+        pd.DataFrame: A DataFrame containing product details.
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch products from the collection
