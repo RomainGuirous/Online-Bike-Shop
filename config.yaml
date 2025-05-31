@@ -5,6 +5,15 @@ cookie:
   name: my-random-name
 credentials:
   usernames:
+    ashley.ball:
+      email: ashley.ball@example.com
+      first_name: Ashley
+      last_name: Ball
+      logged_in: false
+      password: +1WlW
+      password_hint: Country see fire.
+      roles:
+      - user
     jsmith:
       email: john.smith@test.com
       first_name: John
@@ -15,40 +24,31 @@ credentials:
       roles:
       - user
       - admin
-    kelsey.bailey:
-      email: kelsey.bailey@example.com
-      first_name: Kelsey
-      last_name: Bailey
+    michael.liu:
+      email: michael.liu@example.com
+      first_name: Michael
+      last_name: Liu
       logged_in: false
-      password: '&0Caz'
-      password_hint: Citizen check should office wide.
+      password: '&4Zf@'
+      password_hint: Card hair deal at.
       roles:
       - user
-    michelle.callahan:
-      email: michelle.callahan@example.com
-      first_name: Michelle
-      last_name: Callahan
+    rodney.cross:
+      email: rodney.cross@example.com
+      first_name: Rodney
+      last_name: Cross
       logged_in: false
-      password: Z*1Wo
-      password_hint: Near degree side take.
+      password: 3@9Ts
+      password_hint: On stay parent.
       roles:
       - user
-    tina.flores:
-      email: tina.flores@example.com
-      first_name: Tina
-      last_name: Flores
+    sherri.rocha:
+      email: sherri.rocha@example.com
+      first_name: Sherri
+      last_name: Rocha
       logged_in: false
-      password: $9Xa(
-      password_hint: New view officer.
-      roles:
-      - user
-    tonya.lopez:
-      email: tonya.lopez@example.com
-      first_name: Tonya
-      last_name: Lopez
-      logged_in: false
-      password: $4Fhf
-      password_hint: Three protect bed quite traditional.
+      password: '@1YGe'
+      password_hint: Among yeah parent.
       roles:
       - user
 oauth2:

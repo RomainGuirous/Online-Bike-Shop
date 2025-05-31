@@ -2,15 +2,12 @@ import dotenv
 import os
 from enum import Enum
 from abc import ABC, abstractmethod
-from sqlite3 import connect
-from sqlite3 import Cursor
-from sqlite3 import Error
+from sqlite3 import connect, Row, Cursor, Error
 from config import DB_FILE
 from pymongo import MongoClient
 from pymongo.database import Database
 
 ConnectionType = Enum("ConnectionType", "SQLITE MONGODB")
-
 
 class DBConnection(ABC):
     """
@@ -22,13 +19,17 @@ class DBConnection(ABC):
         connection_type (ConnectionType): The type of database connection (SQLITE or MONGODB).
     """
 
-    def __init__(self, connection_type: ConnectionType):
-        self.__connection_type = connection_type
+    def __init__(self, a_connection_type: ConnectionType):
+        self.__connection_type = a_connection_type
         self.__connection = None
 
     @property
     def connection_type(self) -> ConnectionType:
         return self.__connection_type
+    
+    def debug_type_str(self) -> str:
+        #print(str(self.__connection_type))
+        return str(self.__connection_type)
 
     @abstractmethod
     def new_query(self) -> any:
@@ -61,6 +62,7 @@ class SQLiteConnection(DBConnection):
         self.__connection = None
         try:
             self.__connection = connect(db_file)
+            self.__connection.row_factory = Row
         except Error as e:
             print(e)
 
