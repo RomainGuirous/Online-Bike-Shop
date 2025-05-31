@@ -19,8 +19,8 @@ def get_product_card(product) -> str:
     return f"""
     <div class="product-card-wide">
         <img src="{product["picture"]}" alt="Bike Image">
-        <div class="product-title">{product["product_name"]}</div>
-        <div class="product-price">{product["price"]}</div>
+        <div class="product-title">{product["product_name"].capitalize()}</div>
+        <div class="product-price">{product["price"]} ¥</div>
     </div>
     """
 
@@ -28,8 +28,17 @@ def get_product_card(product) -> str:
 def main():
     """
     Main function to run the Streamlit application.
-    This function sets up the page configuration, initializes the database connection,
-    retrieves the best-selling products, and displays them in a responsive layout.
+    This function sets up the page configuration, connects to the database,
+    retrieves the best-selling products, and displays them in a responsive layout
+    with interactive buttons for adding to cart and viewing details.
+    It also includes global styles and a background image for the app.
+    The products are displayed in a grid format with cards that include product images,
+    names, and prices. Each product card has buttons for adding the product to the cart
+    and viewing more details, which switch to the product detail page when clicked.
+    The page is designed to be responsive and visually appealing, with a focus on user experience.
+    It also handles session state to maintain user interactions across different pages.
+
+    :return: None
     """
 
     st.set_page_config(

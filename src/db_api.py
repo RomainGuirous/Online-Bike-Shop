@@ -13,6 +13,15 @@ ConnectionType = Enum("ConnectionType", "SQLITE MONGODB")
 
 
 class DBConnection(ABC):
+    """
+    An abstract base class for database connections.
+    This class defines the interface for creating new queries, committing transactions,
+    and managing records in the database.
+
+    Attributes:
+        connection_type (ConnectionType): The type of database connection (SQLITE or MONGODB).
+    """
+
     def __init__(self, connection_type: ConnectionType):
         self.__connection_type = connection_type
         self.__connection = None
@@ -62,6 +71,17 @@ class SQLiteConnection(DBConnection):
         self.__connection.commit()
 
     def executescript(self, filename: str) -> None:
+        """
+        Executes a script from the specified file on the database.
+
+        Args:
+            filename (str): The path to the file containing the SQL script to execute.
+
+        Raises:
+            FileNotFoundError: If the specified file does not exist.
+
+        Returns:
+            None"""
         contenu = open(filename, "r").read()
         self.new_query().executescript(contenu)
 
@@ -69,7 +89,18 @@ class SQLiteConnection(DBConnection):
         self, table_or_collection_name: str, primary_keys: dict, is_new: bool
     ) -> "DBTableRecord":
         """
-        Creates a new DBTableRecord instance for the specified table and primary keys.
+        Creates a new record object for the specified table or collection.
+
+        Args:
+            table_or_collection_name (str): The name of the table or collection.
+            primary_keys (dict): A dictionary containing the primary key fields and their values.
+            is_new (bool): Indicates whether the record is new or existing.
+
+        Raises:
+            Exception: If no primary keys are provided or if the primary key value is unknown.
+
+        Returns:
+            DBTableRecord: An instance of the DBTableRecord class representing the record.
         """
         return DBTableRecord(self, table_or_collection_name, primary_keys, is_new)
 
@@ -99,6 +130,39 @@ class SQLiteConnection(DBConnection):
 
 
 class MongoDBConnection(DBConnection):
+    """
+    A class to manage the connection to a MongoDB database.
+    This class provides methods to create a new query, commit changes,
+    get a record object, and delete records in a MongoDB collection.
+    It inherits from the abstract base class DBConnection.
+    It uses the pymongo library to interact with the MongoDB database.
+
+    Attributes:
+        url (str): The URL of the MongoDB server.
+        db_name (str): The name of the database to connect to.
+        __connection (Database): The MongoDB database connection object.
+
+    Methods:
+        new_query() -> Database:
+            Returns a new query object for the MongoDB database.
+
+        commit() -> None:
+            Commits changes to the MongoDB database (not applicable in MongoDB).
+
+        get_record_object(table_or_collection_name: str, primary_keys: any, is_new: bool) -> DBDocument:
+            Returns a DBDocument object representing a record in the specified collection.
+
+        delete_record(table_or_collection_name: str, primary_keys: any) -> None:
+            Deletes a record from the specified collection using the provided primary keys.
+
+    Args:
+        url (str): The URL of the MongoDB server.
+        db_name (str): The name of the database to connect to.
+
+    Raises:
+        Exception: If the connection to the MongoDB server fails or if the specified database does not exist.
+    """
+
     def __init__(self, url: str, db_name: str):
         super().__init__(ConnectionType.MONGODB)
         self.__connection = MongoClient(url)[db_name]
@@ -112,6 +176,20 @@ class MongoDBConnection(DBConnection):
     def get_record_object(
         self, table_or_collection_name: str, primary_keys: any, is_new: bool
     ) -> "DBDocument":
+        """
+        Creates a new DBDocument object for the specified collection.
+
+        Args:
+            table_or_collection_name (str): The name of the collection.
+            primary_keys (any): The primary key value(s) for the document.
+            is_new (bool): Indicates whether the document is new or existing.
+
+        Raises:
+            Exception: If no primary keys are provided or if the primary key value is unknown.
+
+        Returns:
+            DBDocument: An instance of the DBDocument class representing the document.
+        """
         return DBDocument(self, table_or_collection_name, primary_keys)
 
     def delete_record(self, table_or_collection_name: str, primary_keys: any) -> None:
@@ -119,6 +197,16 @@ class MongoDBConnection(DBConnection):
 
 
 class Record(ABC):
+    """
+    An abstract base class representing a record in a database.
+    This class provides methods to get and set field values, save the record,
+    and check if the record is newly created or already exists.
+
+    Attributes:
+        _is_new (bool): Indicates whether the record is new or already exists.
+        created (bool): A property that returns True if the record is newly created, False otherwise.
+    """
+
     def __init__(self, is_new: bool):
         self._is_new = is_new
 
@@ -244,16 +332,16 @@ class DBTableRecord(Record):
 
     def save(self, force_insert=False) -> None:
         """
-        Saves the current record to the database.
-        If the record is new, it performs an INSERT operation.
-        If the record already exists, it performs an UPDATE operation.
-        If `force_insert` is set to True, it forces an INSERT operation regardless of the record's state.
+        Saves the record to the database.
+        If the record is new, it performs an insert operation.
+        If the record already exists, it performs an update operation.
+        If force_insert is True, it forces the record to be treated as new.
 
         Args:
-            force_insert (bool): If True, forces an INSERT operation even if the record already exists.
+            force_insert (bool): If True, forces the record to be treated as new.
 
         Raises:
-            Exception: If the record is not new and no primary keys are set.
+            Exception: If the record is new and no primary key values are provided.
 
         Returns:
             None
@@ -305,6 +393,12 @@ class DBTableRecord(Record):
 
 
 class DBDocument(Record):
+    """
+    A class representing a document in a MongoDB collection.
+    This class provides methods to get and set field values, save the document,
+    and manage the document's ID.
+    """
+
     def __init__(
         self,
         mongodb_db_connection: MongoDBConnection,
@@ -334,6 +428,21 @@ class DBDocument(Record):
         self.__document[field_name] = new_value
 
     def save(self, force_insert=False) -> None:
+        """
+        Saves the document to the MongoDB collection.
+        If the document is new, it performs an insert operation.
+        If the document already exists, it performs an update operation.
+        If force_insert is True, it forces the document to be treated as new.
+
+        Args:
+            force_insert (bool): If True, forces the document to be treated as new.
+
+        Raises:
+            Exception: If the document is new and no primary key values are provided.
+
+        Returns:
+            None
+        """
         if force_insert:
             self._is_new = True
         document_content = dict(self.__document)

@@ -55,19 +55,19 @@ def show_global_menu() -> None:
 
     col_1, col_2, col_3, col_4, col_5 = streamlit.columns(5)
     with col_1:
-        if streamlit.button("Home"):
+        if streamlit.button("Home", use_container_width=True):
             streamlit.switch_page("main.py")
     with col_2:
-        if streamlit.button("Catalogue"):
+        if streamlit.button("Catalogue", use_container_width=True):
             streamlit.switch_page("pages/catalogue.py")
     with col_3:
-        if streamlit.button("Basket"):
+        if streamlit.button("Basket", use_container_width=True):
             streamlit.switch_page("pages/basket.py")
     with col_4:
-        if streamlit.button("Orders"):
+        if streamlit.button("Orders", use_container_width=True):
             streamlit.switch_page("pages/orders.py")
     with col_5:
-        if streamlit.button("Admin"):
+        if streamlit.button("Admin", use_container_width=True):
             streamlit.switch_page("pages/admin.py")
 
 
@@ -92,6 +92,9 @@ def event_add_to_basket(product_id: int) -> None:
 
     Args:
         product_id (int): The ID of the product to add to the basket.
+
+    Returns:
+        None
     """
     streamlit.session_state["product_to_add_to_basket"] = product_id
     streamlit.switch_page("pages/basket.py")

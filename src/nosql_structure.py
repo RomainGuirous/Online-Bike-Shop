@@ -116,10 +116,6 @@ conn.commit()
 # we generate config.yaml for connections rights
 update_auth_config_from_users(conn)
 
-# for collection in list_collections:
-#     locals()[f"{collection}_ids"] = locals()[f"{collection}_collection"].insert_many(
-#         locals()[f"{collection}_data"]
-#     )
 
 # # Insert into Product
 # product_collection.insert_many(

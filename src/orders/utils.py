@@ -5,13 +5,15 @@ import pandas as pd
 
 def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     """
-    Retrieve a DataFrame of all orders from the database.
+    Retrieve a DataFrame of all order heads from the database.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
 
     Returns:
-        pd.DataFrame: A DataFrame containing all orders.
+        pd.DataFrame: A DataFrame containing all order heads.
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch orders from the collection
@@ -42,13 +44,15 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
 
 def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     """
-    Retrieve a DataFrame of all orders from the database.
+    Retrieve a DataFrame of all order details from the database.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
 
     Returns:
-        pd.DataFrame: A DataFrame containing all orders.
+        pd.DataFrame: A DataFrame containing all order details.
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch order details from the collection
@@ -74,13 +78,15 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
 
 def get_order_list(db: DBConnection) -> pd.DataFrame:
     """
-    Merge order head and order detail DataFrames.
+    Retrieve a DataFrame of all orders by merging order heads and order details.
+    This function fetches order heads and details from the database,
+    merges them on their respective IDs, and returns the combined DataFrame.
 
     Args:
         db (DBConnection): The database connection object.
 
     Returns:
-        pd.DataFrame: A merged DataFrame containing all orders.
+        pd.DataFrame: A DataFrame containing merged order heads and details.
     """
 
     orders_head = get_orderhead_list(db)

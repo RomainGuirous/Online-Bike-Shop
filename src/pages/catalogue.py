@@ -105,38 +105,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# for i in range(len(list_data_product)):
-#     with cols[i % 2]:
-#         card(
-#             title=list_data_product[i]["product_name"],
-#             text=list_data_product[i]["product_description"],
-#             image=list_data_product[i]["picture"],
-#             on_click=lambda: click(i),
-#             styles={
-#                 "card": {
-#                     "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",
-#                 },
-#                 "filter": {
-#                     "background-color": "transparent",
-#                 },
-#             },
-#         )
 
 cols_per_row = 4
 
-# for i in range(0, len(list_data_product), cols_per_row):
-#     row = st.columns(cols_per_row)
-#     for j in range(cols_per_row):
-#         if i + j < len(list_data_product):
-#             product = list_data_product[i + j]
-#             with row[j]:
-#                 st.markdown(get_product_card(product), unsafe_allow_html=True)
-#                 if st.button(
-#                     f"Voir {product['product_name'].capitalize()}",
-#                     key=f"btn_{product['product_id']}",
-#                 ):
-#                     st.session_state["id"] = product["product_id"]
-#                     st.switch_page("pages/product.py")
 
 for i in range(0, len(list_data_product), cols_per_row):
     row = st.columns(cols_per_row)
