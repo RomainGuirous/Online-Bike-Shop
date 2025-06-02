@@ -97,11 +97,11 @@ class OrderHead:
         If using MongoDB, it sets the "OrderDetails" field with the detail records.
         If using SQLite, it deletes existing details and recreates them.
         """
-        #if self.__db_connection.connection_type == ConnectionType.MONGODB:
+        # if self.__db_connection.connection_type == ConnectionType.MONGODB:
         if self.__db_connection.debug_type_str() == str(ConnectionType.MONGODB):
             self.__record.set_field("OrderDetails", self.__detail_records)
         self.__record.save()
-        #if self.__db_connection.connection_type == ConnectionType.SQLITE:
+        # if self.__db_connection.connection_type == ConnectionType.SQLITE:
         if self.__db_connection.debug_type_str() == str(ConnectionType.SQLITE):
             # we delete details in db then we recreate them (allows to remove OrderDetail(s) which have been deleted)
             self.__db_connection.delete_record(
@@ -109,6 +109,7 @@ class OrderHead:
             )
             for detail_record in self.__detail_records:
                 detail_record.save_to_db()
+
 
 class OrderDetail:
     """

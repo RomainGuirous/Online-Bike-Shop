@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS OrderDetail(
    FOREIGN KEY(orderhead_id) REFERENCES Orderhead(orderhead_id)
 );
 
-/*
+/* Data exemple
 
 -- Insert data into Product table
 INSERT OR REPLACE INTO Product (product_id, product_name, product_description, price, picture, spetech_id) VALUES

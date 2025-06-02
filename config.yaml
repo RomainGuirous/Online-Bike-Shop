@@ -5,31 +5,13 @@ cookie:
   name: my-random-name
 credentials:
   usernames:
-    bailey.henderson:
-      email: bailey.henderson@example.com
-      first_name: Bailey
-      last_name: Henderson
+    evelyn.ramirez:
+      email: evelyn.ramirez@example.com
+      first_name: Evelyn
+      last_name: Ramirez
       logged_in: false
-      password: '#4CGa'
-      password_hint: Break wind nation shoulder several.
-      roles:
-      - user
-    douglas.ramos:
-      email: douglas.ramos@example.com
-      first_name: Douglas
-      last_name: Ramos
-      logged_in: false
-      password: j@8Cm
-      password_hint: Despite daughter because.
-      roles:
-      - user
-    elizabeth.williams:
-      email: elizabeth.williams@example.com
-      first_name: Elizabeth
-      last_name: Williams
-      logged_in: false
-      password: a^6Yc
-      password_hint: Republican best camera lose.
+      password: (1Iq#
+      password_hint: Voice attention discover add.
       roles:
       - user
     jsmith:
@@ -42,13 +24,31 @@ credentials:
       roles:
       - user
       - admin
-    michael.kramer:
-      email: michael.kramer@example.com
-      first_name: Michael
-      last_name: Kramer
+    rebecca.jones:
+      email: rebecca.jones@example.com
+      first_name: Rebecca
+      last_name: Jones
       logged_in: false
-      password: '&4Io6'
-      password_hint: Activity itself.
+      password: '*r9Ri'
+      password_hint: Him than area when paper.
+      roles:
+      - user
+    seth.smith:
+      email: seth.smith@example.com
+      first_name: Seth
+      last_name: Smith
+      logged_in: false
+      password: o%1Ve
+      password_hint: Responsibility ask station big.
+      roles:
+      - user
+    susan.price:
+      email: susan.price@example.com
+      first_name: Susan
+      last_name: Price
+      logged_in: false
+      password: '!@2Jx'
+      password_hint: Admit would contain state.
       roles:
       - user
 oauth2:

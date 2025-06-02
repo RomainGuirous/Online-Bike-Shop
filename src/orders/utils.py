@@ -29,19 +29,10 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
             }
 
             orders.append(order_data)
-        # for order in orders:
-        #     for detail in order["OrderDetails"]:
-        #         order_detail = {
-        #             "product_id": detail.get("product_id"),
-        #             "quantity": detail.get("quantity"),
-        #         }
-        #         order_details.append(order_detail)
-        #     del order["OrderDetails"]
-        # return pd.DataFrame(orders), pd.DataFrame(order_details)
         orders = pd.json_normalize(
             orders,
-            record_path=['OrderDetails'],
-            meta=['orderhead_id', 'orderhead_date', 'user_id']
+            record_path=["OrderDetails"],
+            meta=["orderhead_id", "orderhead_date", "user_id"],
         )
 
         return orders

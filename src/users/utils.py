@@ -1,6 +1,7 @@
 from db_api import DBConnection, ConnectionType
 import yaml
 
+
 def get_user_list(db_connection: DBConnection) -> list[dict]:
     """
     Retrieve a DataFrame of all users from the database.
@@ -26,11 +27,10 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
                 "username": row[4],
                 "hashed_password": row[5],
                 "password_hint": row[6],
-                "is_admin": row[7]
-
+                "is_admin": row[7],
             }
             users.append(user)
-    #elif db_connection.connection_type == ConnectionType.MONGODB:
+    # elif db_connection.connection_type == ConnectionType.MONGODB:
     else:
         users_list = db_connection.new_query()["User"].find()
         for user in users_list:
@@ -42,22 +42,24 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
                 "username": user.get("username"),
                 "hashed_password": user.get("hashed_password"),
                 "password_hint": user.get("password_hint"),
-                "is_admin": user.get("is_admin")
+                "is_admin": user.get("is_admin"),
             }
             users.append(user_data)
     return users
 
-def get_user_id_from_username(connection: DBConnection,username: str)-> any:
+
+def get_user_id_from_username(connection: DBConnection, username: str) -> any:
     if connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT user_id FROM User WHERE username = ?"
         for row in connection.new_query().execute(sql, (username,)):
             return row[0]
     else:
-        for row in connection.new_query()["User"].find({"username" : username}):
+        for row in connection.new_query()["User"].find({"username": username}):
             return row["_id"]
     return None
 
-def update_auth_config_from_users(connection: DBConnection)-> None:
+
+def update_auth_config_from_users(connection: DBConnection) -> None:
     with open("config.yaml", "r") as file:
         config: dict = yaml.safe_load(file)
     config["credentials"]["usernames"] = {}
