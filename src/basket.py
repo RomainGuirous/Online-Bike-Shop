@@ -153,7 +153,7 @@ class Basket:
         order = OrderHead(connection, True)
         order.user_id = user_id
         order.orderhead_date = datetime.today().strftime("%Y-%m-%d")
-        if connection.connection_type == ConnectionType.SQLITE:
+        if connection.is_of_type(ConnectionType.SQLITE):
             order.save_to_db()  # we need to save before adding details (we must know the new order's id to continue...)
         for basket_detail in self.__detail_list:
             order.add_product(basket_detail.product_id, basket_detail.quantity)

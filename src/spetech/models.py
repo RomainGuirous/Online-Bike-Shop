@@ -9,7 +9,7 @@ class SpeTech:
     def __init__(
         self, db_connection: DBConnection, is_new: bool, spetech_id: int = None
     ):
-        if db_connection.connection_type == ConnectionType.SQLITE:
+        if db_connection.is_of_type(ConnectionType.SQLITE):
             self.__id_field_name = "spetech_id"
             self.__record = db_connection.get_record_object(
                 "SpeTech", {"spetech_id": spetech_id}, is_new

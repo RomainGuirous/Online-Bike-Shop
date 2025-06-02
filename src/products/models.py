@@ -17,7 +17,7 @@ class Product:
         :param product_id: The ID of the product. If None, a new product will be created.
         :raises ValueError: If product_id is None and is_new is False.
         """
-        if db_connection.connection_type == ConnectionType.SQLITE:
+        if db_connection.is_of_type(ConnectionType.SQLITE):
             self.__id_field_name = "product_id"
             self.__record = db_connection.get_record_object(
                 "Product", {"product_id": product_id}, is_new

@@ -39,7 +39,7 @@ def get_product_list(
     Returns:
         list: A list of dictionaries containing product details.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         products_list = db_connection.new_query()["Product"].find()
         products = []
         for product in products_list:
@@ -53,7 +53,7 @@ def get_product_list(
             }
             products.append(product_data)
         return products
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM product"
         if product_id:
             sql += f" WHERE product_id = {product_id}"
@@ -86,7 +86,7 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     Returns:
         list: A list of dictionaries containing details of the best-selling products.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch best-selling products from the collection
         products_list = db_connection.new_query()["OrderHead"].find()
         product_sales = {}
@@ -114,7 +114,7 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
             {"_id": {"$in": product_ids}}
         ))
 
-    if db_connection.connection_type == ConnectionType.SQLITE:
+    if db_connection.is_of_type(ConnectionType.SQLITE):
         # SQL implementation to get best-selling products
         # Get the top 4 products based on total quantity sold
         sql = """
@@ -173,7 +173,7 @@ def get_spetech_list(
     Returns:
         list: A list of dictionaries containing spetech details.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch spetechs from the collection
         spetechs_list = db_connection.new_query()["SpeTech"].find()
         spetechs = []
@@ -188,7 +188,7 @@ def get_spetech_list(
             }
             if not spetech_id or spetech_data["spetech_id"] == spetech_id:
                 spetechs.append(spetech_data)
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM SpeTech"
         if spetech_id:
             sql += f" WHERE spetech_id = {spetech_id}"
@@ -226,7 +226,7 @@ def get_product_dataframe(
     Returns:
         pd.DataFrame: A DataFrame containing product details.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch products from the collection
         products_list = db_connection.new_query()["Product"].find()
         products = []
@@ -242,7 +242,7 @@ def get_product_dataframe(
                 "spetech": product.get("spetech_id"),
             }
             products.append(product_data)
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM product"
         if product_id:
             sql += f" WHERE product_id = {product_id}"

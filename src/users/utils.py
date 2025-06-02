@@ -14,7 +14,7 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
         pd.DataFrame: A DataFrame containing all users.
     """
     users = []
-    if db_connection.connection_type == ConnectionType.SQLITE:
+    if db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM user"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
@@ -30,7 +30,7 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
                 "is_admin": row[7],
             }
             users.append(user)
-    # elif db_connection.connection_type == ConnectionType.MONGODB:
+    # elif db_connection.is_of_type(ConnectionType.MONGODB):
     else:
         users_list = db_connection.new_query()["User"].find()
         for user in users_list:
@@ -49,7 +49,7 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
 
 
 def get_user_id_from_username(connection: DBConnection, username: str) -> any:
-    if connection.connection_type == ConnectionType.SQLITE:
+    if connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT user_id FROM User WHERE username = ?"
         for row in connection.new_query().execute(sql, (username,)):
             return row[0]

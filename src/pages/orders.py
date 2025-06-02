@@ -12,7 +12,7 @@ st_utils.show_global_menu()
 st_utils.handle_access_rights("user", "Please sign in to access your orders.")
 connection = create_connection()
 user_id = get_user_id_from_username(connection, st.session_state["username"])
-if connection.connection_type == ConnectionType.SQLITE:
+if connection.is_of_type(ConnectionType.SQLITE):
     sql = """\
         SELECT
             OrderHead.orderhead_id,
