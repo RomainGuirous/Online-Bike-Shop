@@ -1,6 +1,4 @@
-from db_api import DBConnection, ConnectionType, create_connection
-from users.models import User
-import pandas as pd
+from db_api import DBConnection, ConnectionType
 import yaml
 
 def get_user_list(db_connection: DBConnection) -> list[dict]:
