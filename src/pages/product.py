@@ -11,6 +11,7 @@ st.set_page_config(page_title="Product", page_icon="🚲")
 st_utils.hide_sidebar_pages()
 st_utils.show_global_menu()
 
+
 css = """
     <style>
         .stApp {
@@ -47,10 +48,10 @@ elif st.session_state["id"]:
     <div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <h1>{product.product_name.capitalize()}</h1>
         <p>{product.product_description}</p>
-        <p><strong>Price: </strong>{product.price}</p>
+        <p><strong>Price: </strong>{product.price} ¥</p>
         <p><strong>Brand: </strong>{spetech.brand}</p>
         <p><strong>Type :</strong>{spetech.spetech_type}</p>
-        <p><strong>Weight :</strong>{spetech.spetech_weight}</p>
+        <p><strong>Weight :</strong>{spetech.spetech_weight} lbs</p>
         <p><strong>Frame Size :</strong>{spetech.frame_size}</p>
     </div>
     """

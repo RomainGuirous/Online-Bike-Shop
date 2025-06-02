@@ -5,27 +5,38 @@ import pandas as pd
 
 def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     """
-    Retrieve a DataFrame of all orders from the database.
+    Retrieve a DataFrame of all order heads from the database.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
 
     Returns:
-        pd.DataFrame: A DataFrame containing all orders.
+        pd.DataFrame: A DataFrame containing all order heads.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch orders from the collection
-        orders_list = db_connection.new_query()["orderhead"].find()
+        orders_list = db_connection.new_query()["OrderHead"].find()
         orders = []
+        # order_details = []
         for order in orders_list:
             order_data = {
                 "orderhead_id": order.get("_id"),
                 "orderhead_date": order.get("orderhead_date"),
                 "user_id": order.get("user_id"),
+                "OrderDetails": order.get("OrderDetails", []),
             }
+
             orders.append(order_data)
-        return pd.DataFrame(orders)
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+        orders = pd.json_normalize(
+            orders,
+            record_path=["OrderDetails"],
+            meta=["orderhead_id", "orderhead_date", "user_id"],
+        )
+
+        return orders
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM orderhead"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
@@ -42,15 +53,17 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
 
 def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     """
-    Retrieve a DataFrame of all orders from the database.
+    Retrieve a DataFrame of all order details from the database.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
 
     Returns:
-        pd.DataFrame: A DataFrame containing all orders.
+        pd.DataFrame: A DataFrame containing all order details.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch order details from the collection
         orders_list = db_connection.new_query()["orderdetail"].find()
         orders = []
@@ -61,7 +74,7 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
                 "quantity": order.get("quantity"),
             }
             orders.append(order_data)
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM orderdetail"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
@@ -74,13 +87,15 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
 
 def get_order_list(db: DBConnection) -> pd.DataFrame:
     """
-    Merge order head and order detail DataFrames.
+    Retrieve a DataFrame of all orders by merging order heads and order details.
+    This function fetches order heads and details from the database,
+    merges them on their respective IDs, and returns the combined DataFrame.
 
     Args:
         db (DBConnection): The database connection object.
 
     Returns:
-        pd.DataFrame: A merged DataFrame containing all orders.
+        pd.DataFrame: A DataFrame containing merged order heads and details.
     """
 
     orders_head = get_orderhead_list(db)

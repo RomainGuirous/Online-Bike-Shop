@@ -1,5 +1,5 @@
 from orders.models import OrderHead
-from db_api import DBConnection
+from db_api import DBConnection, ConnectionType
 from datetime import datetime
 
 
@@ -10,8 +10,6 @@ class BasketDetail:
     It allows adding to the quantity of the product.
     """
 
-
-class BasketDetail:
     def __init__(self, product_id: int):
         self.__product_id = product_id
         self.__quantity = 0
@@ -32,10 +30,9 @@ class Basket:
     """
     A class representing a shopping basket.
     It allows adding, removing, and managing products in the basket.
-    It can also create an order from the basket contents."""
+    It can also create an order from the basket contents.
+    """
 
-
-class Basket:
     def __init__(self):
         self.__detail_list: list[BasketDetail] = []
 
@@ -101,6 +98,16 @@ class Basket:
         return [detail.product_id for detail in self.__detail_list]
 
     def get_quantity(self, product_id: int) -> int:
+        """
+        Returns the quantity of a specific product in the basket.
+        If the product is not found, it returns 0.
+
+        Args:
+            product_id (int): The ID of the product to check.
+
+        Returns:
+            int: The quantity of the product in the basket, or 0 if not found.
+        """
         detail = self.__get_detail(product_id)
         if detail is None:
             return 0
@@ -108,6 +115,16 @@ class Basket:
             return detail.quantity
 
     def remove(self, product_id: int) -> None:
+        """
+        Removes a product from the basket by its product ID.
+        If the product is not found, it does nothing.
+
+        Args:
+            product_id (int): The ID of the product to remove.
+
+        Returns:
+            None
+        """
         detail = self.__get_detail(product_id)
         if detail is not None:
             self.__detail_list.remove(detail)
@@ -118,25 +135,26 @@ class Basket:
     def create_order(self, connection: DBConnection, user_id: int) -> OrderHead:
         """
         Creates an order from the basket contents.
-        This method creates an OrderHead instance, adds all products from the basket,
-        and saves the order to the database.
+        This method initializes a new OrderHead, sets the user ID and order date,
+        and adds each product in the basket as an order detail.
 
         Args:
             connection (DBConnection): The database connection object.
             user_id (int): The ID of the user creating the order.
 
-        Raises:
-            Exception: If the basket is empty.
-
         Returns:
-            OrderHead: The created OrderHead instance.
+            OrderHead: The created order head object.
+
+        Raises:
+            Exception: If the basket is empty, indicating that no order can be created.
         """
         if not self.__detail_list:
             raise Exception("Order creation impossible. The basket is empty.")
         order = OrderHead(connection, True)
         order.user_id = user_id
         order.orderhead_date = datetime.today().strftime("%Y-%m-%d")
-        order.save_to_db()  # we need to save before adding details (we must know the new order's id to continue...)
+        if connection.is_of_type(ConnectionType.SQLITE):
+            order.save_to_db()  # we need to save before adding details (we must know the new order's id to continue...)
         for basket_detail in self.__detail_list:
             order.add_product(basket_detail.product_id, basket_detail.quantity)
         order.save_to_db()

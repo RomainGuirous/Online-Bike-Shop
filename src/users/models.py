@@ -9,7 +9,7 @@ class User:
     """
 
     def __init__(self, db_connection: DBConnection, is_new: bool, user_id: int = None):
-        if db_connection.connection_type == ConnectionType.SQLITE:
+        if db_connection.is_of_type(ConnectionType.SQLITE):
             self.__id_field_name = "user_id"
             self.__record = db_connection.get_record_object(
                 "User", {"user_id": user_id}, is_new

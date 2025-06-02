@@ -1,8 +1,8 @@
 import streamlit as st
-from orders.utils import get_order_list
+from orders.utils import get_orderhead_list, get_order_list
 from products.utils import get_product_dataframe
 from users.utils import get_user_list
-from db_api import create_connection
+from db_api import create_connection, ConnectionType
 import plotly.express as px
 import streamlit_utils as st_utils
 import pandas as pd
@@ -19,25 +19,38 @@ st_utils.handle_access_rights("admin")
 
 tabs = st.tabs(["📦 Orders", "🛍️ Products", "👤 Users"])
 
-order_df = get_order_list(conn)
-product_df = get_product_dataframe(conn)
-user_list = get_user_list(conn)
-user_df = pd.DataFrame(user_list)
+if conn.is_of_type(ConnectionType.SQLITE):
+    order_df = get_order_list(conn)
+    product_df = get_product_dataframe(conn)
+    user_df = pd.DataFrame(get_user_list(conn))
 
-st.dataframe(order_df)
-st.dataframe(product_df)
-st.dataframe(user_df)
+    product_df["price"] = (
+        product_df["price"].astype(str).str.replace(r"[^\d\.\-]", "", regex=True)
+    )
+    product_df["price"] = pd.to_numeric(product_df["price"], errors="coerce")
+    product_df = product_df.dropna(subset=["price"])
+    order_df = order_df.merge(
+        product_df[["product_id", "price"]], on="product_id", how="left"
+    )
 
-product_df["price"] = (
-    product_df["price"].astype(str).str.replace(r"[^\d\.\-]", "", regex=True)
-)
-product_df["price"] = pd.to_numeric(product_df["price"], errors="coerce")
-product_df = product_df.dropna(subset=["price"])
-order_df = order_df.merge(
-    product_df[["product_id", "price"]], on="product_id", how="left"
-)
+    order_df["total"] = order_df["quantity"] * order_df["price"]
 
-order_df["total"] = order_df["quantity"] * order_df["price"]
+elif conn.is_of_type(ConnectionType.MONGODB):
+    order_df_ = get_orderhead_list(conn)
+    product_df = get_product_dataframe(conn)
+    user_df = pd.DataFrame(get_user_list(conn))
+    
+    product_df["price"] = (
+        product_df["price"].astype(str).str.replace(r"[^\d\.\-]", "", regex=True)
+    )
+    product_df["price"] = pd.to_numeric(product_df["price"], errors="coerce")
+    product_df = product_df.dropna(subset=["price"])
+
+    order_df = order_df_.merge(
+        product_df[["product_id", "price"]], on="product_id", how="left"
+    )
+
+    order_df["total"] = order_df["quantity"] * order_df["price"]
 
 # --- ORDERS ---
 with tabs[0]:
@@ -51,9 +64,9 @@ with tabs[0]:
         st.markdown("#### 📊 Order Stats")
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Total Orders", len(order_df.groupby("orderhead_id")))
+            st.metric("Total Orders", len(order_df.groupby("product_id")))
         with col2:
-            st.metric("Total Revenue", f"{order_df['total'].sum():,.2f}€")
+            st.metric("Total Revenue", f"{order_df['total'].sum():,.2f}¥")
 
         # Time-based sales chart
         if "orderhead_date" in order_df.columns:

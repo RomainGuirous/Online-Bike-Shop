@@ -25,7 +25,6 @@ def generate_fake_user(nbr_users: int = NBR_USERS) -> list[dict[str, str]]:
         list: A list of dictionaries containing fake user data.
     """
     fake = fk.Faker()
-    liste_roles = ["admin", "user"]
     fake_users = []
     for _ in range(nbr_users):
         user = {
@@ -33,10 +32,12 @@ def generate_fake_user(nbr_users: int = NBR_USERS) -> list[dict[str, str]]:
             "last_name": fake.last_name(),
             "is_admin": False,
             "hashed_password": fake.password(5),
-            "password_hint": fake.sentence(4)
+            "password_hint": fake.sentence(4),
         }
-        user["email"] = (user["first_name"] + '.' + user["last_name"] + '@example.com').lower()
-        user["username"] = (user["first_name"] + '.' + user["last_name"]).lower()
+        user["email"] = (
+            user["first_name"] + "." + user["last_name"] + "@example.com"
+        ).lower()
+        user["username"] = (user["first_name"] + "." + user["last_name"]).lower()
         fake_users.append(user)
     return fake_users
 
@@ -53,6 +54,7 @@ def generate_fake_product(
     Args:
         nbr_product (int): The number of fake products to generate.
         nbr_spetech (int): The number of fake specifications to generate.
+        mongo (bool): If True, the function will not include spetech_id in the product data.
 
     Returns:
         list: A list of dictionaries containing fake product data.
@@ -63,9 +65,9 @@ def generate_fake_product(
     fake_products = []
     for i in range(nbr_product):
         product = {
-            "product_name": fake.word(),
+            "product_name": f"{fake.word()} {fake.pyint(1, 10) * 100}",
             "product_description": fake.text(),
-            "price": fake.pyint(),
+            "price": fake.pyint(1, 1000000),
             "picture": liste_img[i],
         }
         if not mongo:
@@ -88,6 +90,7 @@ def generate_fake_orderhead(
     Args:
         nbr_orders (int): The number of fake orders to generate.
         nbr_user (int): The number of fake users to generate.
+        mongo (bool): If True, the function will not include user_id in the order data.
 
     Returns:
         list: A list of dictionaries containing fake order data.

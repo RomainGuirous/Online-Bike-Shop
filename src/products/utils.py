@@ -5,8 +5,8 @@ import pandas as pd
 
 def get_product_list_model(db_connection: DBConnection, product_id: int = None) -> list:
     """
-    Retrieve a list of Product models from the database.
-    This function fetches product data from the database and converts it into a list of Product models.
+    Retrieve a list of products from the database using the Product model.
+    This function fetches product data from the database and returns it as a list of Product instances.
     If a product_id is provided, it retrieves only that specific product.
     If no product_id is provided, it retrieves all products.
 
@@ -15,7 +15,7 @@ def get_product_list_model(db_connection: DBConnection, product_id: int = None) 
         product_id (int, optional): The ID of the product to retrieve. Defaults to None.
 
     Returns:
-        list: A list of Product models.
+        list: A list of Product instances.
     """
     products = get_product_list(db_connection, product_id)
     return [Product(**product) for product in products]
@@ -26,15 +26,20 @@ def get_product_list(
 ) -> list[dict[str]]:
     """
     Retrieve a list of products from the database.
+    This function fetches product data from the database and returns it as a list of dictionaries.
+    If a product_id is provided, it retrieves only that specific product.
+    If no product_id is provided, it retrieves all products.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
         product_id (int, optional): The ID of the product to retrieve. Defaults to None.
 
     Returns:
-        list: A list of products.
+        list: A list of dictionaries containing product details.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         products_list = db_connection.new_query()["Product"].find()
         products = []
         for product in products_list:
@@ -48,7 +53,7 @@ def get_product_list(
             }
             products.append(product_data)
         return products
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM product"
         if product_id:
             sql += f" WHERE product_id = {product_id}"
@@ -71,25 +76,28 @@ def get_product_list(
 def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
     """
     Retrieve a list of the best-selling products from the database.
-    This function fetches the top 4 products based on the total quantity sold.
+    This function fetches the top 4 best-selling products based on the total quantity sold.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
 
     Returns:
-        list: A list of dictionaries containing product details.
+        list: A list of dictionaries containing details of the best-selling products.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch best-selling products from the collection
-        products_list = db_connection.new_query()["OrderDetail"].find()
+        products_list = db_connection.new_query()["OrderHead"].find()
         product_sales = {}
         for order in products_list:
-            product_id = order.get("product_id")
-            quantity = order.get("quantity", 0)
-            if product_id in product_sales:
-                product_sales[product_id] += quantity
-            else:
-                product_sales[product_id] = quantity
+            for detail in order['OrderDetails']:
+                product_id = detail.get("product_id")
+                quantity = detail.get("quantity", 0)
+                if product_id in product_sales:
+                    product_sales[product_id] += quantity
+                else:
+                    product_sales[product_id] = quantity
 
         # Sort products by total quantity sold and get the top 4
         sorted_products = sorted(
@@ -98,12 +106,15 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
         product_ids = [product[0] for product in sorted_products]
 
         # Fetch product details for the top products
-        products = db_connection.new_query()["Product"].find(
-            {"product_id": {"$in": product_ids}}
-        )
-        return [product for product in products if product["product_id"] in product_ids]
+        # products = db_connection.new_query()["Product"].find(
+        #     {"product_id": {"$in": product_ids}}
+        # )
+        #return [product for product in products if product["product_id"] in product_ids]
+        return list(db_connection.new_query()["Product"].find(
+            {"_id": {"$in": product_ids}}
+        ))
 
-    if db_connection.connection_type == ConnectionType.SQLITE:
+    if db_connection.is_of_type(ConnectionType.SQLITE):
         # SQL implementation to get best-selling products
         # Get the top 4 products based on total quantity sold
         sql = """
@@ -152,15 +163,17 @@ def get_spetech_list(
     This function fetches spetech data from the database and returns it as a list of dictionaries.
     If a spetech_id is provided, it retrieves only that specific spetech.
     If no spetech_id is provided, it retrieves all spetechs.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
         spetech_id (int, optional): The ID of the spetech to retrieve. Defaults to None.
 
     Returns:
-        list: A list of spetechs.
+        list: A list of dictionaries containing spetech details.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch spetechs from the collection
         spetechs_list = db_connection.new_query()["SpeTech"].find()
         spetechs = []
@@ -175,7 +188,7 @@ def get_spetech_list(
             }
             if not spetech_id or spetech_data["spetech_id"] == spetech_id:
                 spetechs.append(spetech_data)
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM SpeTech"
         if spetech_id:
             sql += f" WHERE spetech_id = {spetech_id}"
@@ -203,15 +216,17 @@ def get_product_dataframe(
     This function fetches product data from the database and returns it as a pandas DataFrame.
     If a product_id is provided, it retrieves only that specific product.
     If no product_id is provided, it retrieves all products.
+    If using NoSQL, it fetches from the MongoDB collection.
+    If using SQL, it executes a query to fetch from the SQLite database.
 
     Args:
         db_connection (DBConnection): The database connection object.
         product_id (int, optional): The ID of the product to retrieve. Defaults to None.
 
     Returns:
-        pd.DataFrame: A DataFrame containing product data.
+        pd.DataFrame: A DataFrame containing product details.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch products from the collection
         products_list = db_connection.new_query()["Product"].find()
         products = []
@@ -219,15 +234,15 @@ def get_product_dataframe(
             if product_id and product.get("product_id") != product_id:
                 continue
             product_data = {
-                "product_id": product.get("product_id"),
+                "product_id": product.get("_id"),
                 "product_name": product.get("product_name"),
                 "product_description": product.get("product_description"),
                 "price": product.get("price"),
                 "picture": product.get("picture"),
-                "spetech": product.get("spetech"),
+                "spetech": product.get("spetech_id"),
             }
             products.append(product_data)
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM product"
         if product_id:
             sql += f" WHERE product_id = {product_id}"

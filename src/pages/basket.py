@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_card import card
 from db_api import create_connection
+from users.utils import get_user_id_from_username
 from products.models import Product
 import streamlit_utils as st_utils
 from style.style import get_card_style
@@ -51,6 +52,6 @@ else:
                     st.switch_page("pages/basket.py")
 if st.button("Order now"):
     connection = create_connection()
-    basket.create_order(connection, 8)
+    basket.create_order(connection, get_user_id_from_username(connection, st.session_state["username"]))
     connection.commit()
     st.switch_page("pages/orders.py")

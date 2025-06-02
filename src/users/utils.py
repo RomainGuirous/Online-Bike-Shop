@@ -1,6 +1,7 @@
 from db_api import DBConnection, ConnectionType
 import yaml
 
+
 def get_user_list(db_connection: DBConnection) -> list[dict]:
     """
     Retrieve a DataFrame of all users from the database.
@@ -13,7 +14,7 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
         pd.DataFrame: A DataFrame containing all users.
     """
     users = []
-    if db_connection.connection_type == ConnectionType.SQLITE:
+    if db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM user"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
@@ -26,11 +27,10 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
                 "username": row[4],
                 "hashed_password": row[5],
                 "password_hint": row[6],
-                "is_admin": row[7]
-
+                "is_admin": row[7],
             }
             users.append(user)
-    #elif db_connection.connection_type == ConnectionType.MONGODB:
+    # elif db_connection.is_of_type(ConnectionType.MONGODB):
     else:
         users_list = db_connection.new_query()["User"].find()
         for user in users_list:
@@ -42,12 +42,61 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
                 "username": user.get("username"),
                 "hashed_password": user.get("hashed_password"),
                 "password_hint": user.get("password_hint"),
-                "is_admin": user.get("is_admin")
+                "is_admin": user.get("is_admin"),
             }
             users.append(user_data)
     return users
 
-def update_auth_config_froms_users(connection: DBConnection)-> None:
+def get_user_from_username(connection: DBConnection, username: str) -> dict:
+    """
+    Retrieve user information from the database based on the username.
+
+    Args:
+        connection (DBConnection): The database connection object.
+        username (str): The username of the user to retrieve.
+
+    Returns:
+        dict: A dictionary containing user information, or None if not found.
+    """
+    if connection.is_of_type(ConnectionType.SQLITE):
+        sql = "SELECT * FROM User WHERE username = ?"
+        for row in connection.new_query().execute(sql, (username,)):
+            return {
+                "user_id": row[0],
+                "first_name": row[1],
+                "last_name": row[2],
+                "email": row[3],
+                "username": row[4],
+                "hashed_password": row[5],
+                "password_hint": row[6],
+                "is_admin": row[7],
+            }
+    else:
+        for user in connection.new_query()["User"].find({"username": username}):
+            return {
+                "user_id": user["_id"],
+                "first_name": user["first_name"],
+                "last_name": user["last_name"],
+                "email": user["email"],
+                "username": user["username"],
+                "hashed_password": user["hashed_password"],
+                "password_hint": user["password_hint"],
+                "is_admin": user["is_admin"],
+            }
+    return None
+
+def get_user_id_from_username(connection: DBConnection, username: str) -> any:
+    if connection.is_of_type(ConnectionType.SQLITE):
+        sql = "SELECT user_id FROM User WHERE username = ?"
+        for row in connection.new_query().execute(sql, (username,)):
+            return row[0]
+    else:
+        for row in connection.new_query()["User"].find({"username": username}):
+            return row["_id"]
+    return None
+
+
+def update_auth_config_from_users(connection: DBConnection) -> None:
     with open("config.yaml", "r") as file:
         config: dict = yaml.safe_load(file)
     config["credentials"]["usernames"] = {}

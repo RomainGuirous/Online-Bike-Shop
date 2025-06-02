@@ -6,6 +6,7 @@ import streamlit_utils as st_utils
 from style.style import get_card_style
 from users.models import User
 from db_api import create_connection
+from users.utils import get_user_id_from_username
 
 
 st.set_page_config(page_title="modifier utilisateur")
@@ -25,18 +26,20 @@ authenticator = stauth.Authenticate(
 )
 
 if st.session_state.get("authentication_status"):
-    try:
-        if authenticator.update_user_details(st.session_state.get("username")):
-            with open("config.yaml", "w") as file:
-                yaml.dump(config, file, default_flow_style=False, allow_unicode=True)
-            conn = create_connection()
-            user = config["credentials"]["usernames"][st.session_state.get("username")]
-            user_model = User(db_connection=conn, is_new=False, user_id=st.session_state.get("user_id"))
-            user_model.first_name = user["first_name"]
-            user_model.last_name = user["last_name"]
-            user_model.email = user["email"]
-            user_model.save_to_db()
-            conn.commit()
-            st.success("Entries updated successfully")
-    except Exception as e:
-        st.error(e)
+    # try:
+    if authenticator.update_user_details(st.session_state.get("username")):
+        with open("config.yaml", "w") as file:
+            yaml.dump(config, file, default_flow_style=False, allow_unicode=True)
+        conn = create_connection()
+        user_id = get_user_id_from_username(conn, st.session_state.get("username"))
+        
+        user = config["credentials"]["usernames"][st.session_state.get("username")]
+        user_model = User(db_connection=conn, is_new=False, user_id=user_id)
+        user_model.first_name = user["first_name"]
+        user_model.last_name = user["last_name"]
+        user_model.email = user["email"]
+        user_model.save_to_db()
+        conn.commit()
+        st.success("Entries updated successfully")
+    # except Exception as e:
+    #     st.error(e)
