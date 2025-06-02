@@ -15,7 +15,7 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all order heads.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch orders from the collection
         orders_list = db_connection.new_query()["OrderHead"].find()
         orders = []
@@ -36,7 +36,7 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
         )
 
         return orders
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM orderhead"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)
@@ -63,7 +63,7 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A DataFrame containing all order details.
     """
-    if db_connection.connection_type == ConnectionType.MONGODB:
+    if db_connection.is_of_type(ConnectionType.MONGODB):
         # If using NoSQL, fetch order details from the collection
         orders_list = db_connection.new_query()["orderdetail"].find()
         orders = []
@@ -74,7 +74,7 @@ def get_orderdetails_list(db_connection: DBConnection) -> pd.DataFrame:
                 "quantity": order.get("quantity"),
             }
             orders.append(order_data)
-    elif db_connection.connection_type == ConnectionType.SQLITE:
+    elif db_connection.is_of_type(ConnectionType.SQLITE):
         sql = "SELECT * FROM orderdetail"
         cursor = db_connection.new_query()
         dataset = cursor.execute(sql)

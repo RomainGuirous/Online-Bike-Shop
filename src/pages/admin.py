@@ -19,7 +19,7 @@ st_utils.handle_access_rights("admin")
 
 tabs = st.tabs(["📦 Orders", "🛍️ Products", "👤 Users"])
 
-if conn.connection_type == ConnectionType.SQLITE:
+if conn.is_of_type(ConnectionType.SQLITE):
     order_df = get_order_list(conn)
     product_df = get_product_dataframe(conn)
     user_df = pd.DataFrame(get_user_list(conn))
@@ -35,7 +35,7 @@ if conn.connection_type == ConnectionType.SQLITE:
 
     order_df["total"] = order_df["quantity"] * order_df["price"]
 
-elif conn.connection_type == ConnectionType.MONGODB:
+elif conn.is_of_type(ConnectionType.MONGODB):
     order_df_ = get_orderhead_list(conn)
     product_df = get_product_dataframe(conn)
     user_df = pd.DataFrame(get_user_list(conn))
@@ -67,7 +67,7 @@ with tabs[0]:
         with col1:
             st.metric("Total Orders", len(order_df.groupby("product_id")))
         with col2:
-            st.metric("Total Revenue", f"{order_df['total'].sum():,.2f}€")
+            st.metric("Total Revenue", f"{order_df['total'].sum():,.2f}¥")
 
         # Time-based sales chart
         if "orderhead_date" in order_df.columns:

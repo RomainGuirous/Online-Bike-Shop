@@ -5,13 +5,13 @@ cookie:
   name: my-random-name
 credentials:
   usernames:
-    evelyn.ramirez:
-      email: evelyn.ramirez@example.com
-      first_name: Evelyn
-      last_name: Ramirez
+    jill.pearson:
+      email: jill.pearson@example.com
+      first_name: Jill
+      last_name: Pearson
       logged_in: false
-      password: (1Iq#
-      password_hint: Voice attention discover add.
+      password: '@7Xz#'
+      password_hint: Treat school fact he authority.
       roles:
       - user
     jsmith:
@@ -24,31 +24,31 @@ credentials:
       roles:
       - user
       - admin
-    rebecca.jones:
-      email: rebecca.jones@example.com
-      first_name: Rebecca
-      last_name: Jones
+    lawrence.gordon:
+      email: lawrence.gordon@example.com
+      first_name: Lawrence
+      last_name: Gordon
       logged_in: false
-      password: '*r9Ri'
-      password_hint: Him than area when paper.
+      password: t#6Sk
+      password_hint: Price food do pay plant.
       roles:
       - user
-    seth.smith:
-      email: seth.smith@example.com
-      first_name: Seth
-      last_name: Smith
+    tammy.sanchez:
+      email: tammy.sanchez@example.com
+      first_name: Tammy
+      last_name: Sanchez
       logged_in: false
-      password: o%1Ve
-      password_hint: Responsibility ask station big.
+      password: '*76Ov'
+      password_hint: Lawyer however summer population.
       roles:
       - user
-    susan.price:
-      email: susan.price@example.com
-      first_name: Susan
-      last_name: Price
+    veronica.dillon:
+      email: veronica.dillon@example.com
+      first_name: Veronica
+      last_name: Dillon
       logged_in: false
-      password: '!@2Jx'
-      password_hint: Admit would contain state.
+      password: $9Wah
+      password_hint: Option light report law side.
       roles:
       - user
 oauth2:

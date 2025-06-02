@@ -80,7 +80,7 @@ def main():
         unsafe_allow_html=True,
     )
 
-    if conn.connection_type == ConnectionType.MONGODB:
+    if conn.is_of_type(ConnectionType.MONGODB):
         product_id_name = '_id'
     else:
         product_id_name = 'product_id'

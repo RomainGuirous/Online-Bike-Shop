@@ -14,7 +14,7 @@ from db_api import create_connection, ConnectionType
 from random import randint
 
 conn = create_connection()
-if conn.connection_type == ConnectionType.SQLITE:
+if conn.is_of_type(ConnectionType.SQLITE):
     conn.executescript('src/db.sql')
 
 # liste des dico
@@ -88,7 +88,7 @@ for orderhead_dico in orderhead_data:
     orderhead = OrderHead(conn, True)
     orderhead.user_id = random_element_list(user_ids)
     orderhead.orderhead_date = orderhead_dico["orderhead_date"]
-    if conn.connection_type == ConnectionType.SQLITE:
+    if conn.is_of_type(ConnectionType.SQLITE):
         orderhead.save_to_db()
     orderhead.add_product(random_element_list(product_ids), randint(1, 3))
     orderhead.save_to_db()

@@ -16,8 +16,8 @@ class OrderHead:
         :param orderhead_id: The ID of the order head. If None, a new order head will be created.
         """
         self.__db_connection = db_connection
-        self.__detail_records: list[OrderDetail] = []
-        if db_connection.connection_type == ConnectionType.SQLITE:
+        self.__detail_records = []
+        if db_connection.is_of_type(ConnectionType.SQLITE):
             self.__id_field_name = "orderhead_id"
             self.__record = db_connection.get_record_object(
                 "OrderHead", {"orderhead_id": orderhead_id}, is_new
@@ -75,7 +75,7 @@ class OrderHead:
         :param quantity: The quantity of the product to add.
         :raises Exception: If the order head has not been saved yet in SQLite.
         """
-        if self.__db_connection.connection_type == ConnectionType.SQLITE:
+        if self.__db_connection.is_of_type(ConnectionType.SQLITE):
             if not self.__record.created:
                 raise Exception("The order's head must be saved before adding details")
             detail = OrderDetail(
@@ -97,12 +97,10 @@ class OrderHead:
         If using MongoDB, it sets the "OrderDetails" field with the detail records.
         If using SQLite, it deletes existing details and recreates them.
         """
-        # if self.__db_connection.connection_type == ConnectionType.MONGODB:
-        if self.__db_connection.debug_type_str() == str(ConnectionType.MONGODB):
+        if self.__db_connection.is_of_type(ConnectionType.MONGODB):
             self.__record.set_field("OrderDetails", self.__detail_records)
         self.__record.save()
-        # if self.__db_connection.connection_type == ConnectionType.SQLITE:
-        if self.__db_connection.debug_type_str() == str(ConnectionType.SQLITE):
+        if self.__db_connection.is_of_type(ConnectionType.SQLITE):
             # we delete details in db then we recreate them (allows to remove OrderDetail(s) which have been deleted)
             self.__db_connection.delete_record(
                 "OrderDetail", {"orderhead_id": self.orderhead_id}

@@ -19,17 +19,12 @@ class DBConnection(ABC):
         connection_type (ConnectionType): The type of database connection (SQLITE or MONGODB).
     """
 
-    def __init__(self, a_connection_type: ConnectionType):
-        self.__connection_type = a_connection_type
+    def __init__(self, connection_type: ConnectionType):
+        self.__connection_type = connection_type
         self.__connection = None
-
-    @property
-    def connection_type(self) -> ConnectionType:
-        return self.__connection_type
     
-    def debug_type_str(self) -> str:
-        #print(str(self.__connection_type))
-        return str(self.__connection_type)
+    def is_of_type(self, connection_type: ConnectionType)-> bool:
+        return str(self.__connection_type) == str(connection_type)
 
     @abstractmethod
     def new_query(self) -> any:
