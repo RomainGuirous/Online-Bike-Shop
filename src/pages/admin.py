@@ -21,7 +21,12 @@ tabs = st.tabs(["📦 Orders", "🛍️ Products", "👤 Users"])
 
 order_df = get_order_list(conn)
 product_df = get_product_dataframe(conn)
-user_df = get_user_list(conn)
+user_list = get_user_list(conn)
+user_df = pd.DataFrame(user_list)
+
+st.dataframe(order_df)
+st.dataframe(product_df)
+st.dataframe(user_df)
 
 product_df["price"] = (
     product_df["price"].astype(str).str.replace(r"[^\d\.\-]", "", regex=True)
