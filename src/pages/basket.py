@@ -52,6 +52,8 @@ else:
                     st.switch_page("pages/basket.py")
 if st.button("Order now"):
     connection = create_connection()
-    basket.create_order(connection, get_user_id_from_username(connection, st.session_state["username"]))
+    basket.create_order(
+        connection, get_user_id_from_username(connection, st.session_state["username"])
+    )
     connection.commit()
     st.switch_page("pages/orders.py")

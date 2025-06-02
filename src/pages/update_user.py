@@ -32,7 +32,7 @@ if st.session_state.get("authentication_status"):
             yaml.dump(config, file, default_flow_style=False, allow_unicode=True)
         conn = create_connection()
         user_id = get_user_id_from_username(conn, st.session_state.get("username"))
-        
+
         user = config["credentials"]["usernames"][st.session_state.get("username")]
         user_model = User(db_connection=conn, is_new=False, user_id=user_id)
         user_model.first_name = user["first_name"]

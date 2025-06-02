@@ -47,6 +47,7 @@ def get_user_list(db_connection: DBConnection) -> list[dict]:
             users.append(user_data)
     return users
 
+
 def get_user_from_username(connection: DBConnection, username: str) -> dict:
     """
     Retrieve user information from the database based on the username.
@@ -84,6 +85,7 @@ def get_user_from_username(connection: DBConnection, username: str) -> dict:
                 "is_admin": user["is_admin"],
             }
     return None
+
 
 def get_user_id_from_username(connection: DBConnection, username: str) -> any:
     if connection.is_of_type(ConnectionType.SQLITE):

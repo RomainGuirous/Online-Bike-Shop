@@ -76,11 +76,11 @@ class User:
 
     @property
     def is_admin(self):
-        return self.__record.get_field('is_admin')
-    
+        return self.__record.get_field("is_admin")
+
     @is_admin.setter
     def is_admin(self, value):
-        self.__record.set_field('is_admin', value)
+        self.__record.set_field("is_admin", value)
 
     def save_to_db(self):
         self.__record.save()

@@ -91,7 +91,7 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
         products_list = db_connection.new_query()["OrderHead"].find()
         product_sales = {}
         for order in products_list:
-            for detail in order['OrderDetails']:
+            for detail in order["OrderDetails"]:
                 product_id = detail.get("product_id")
                 quantity = detail.get("quantity", 0)
                 if product_id in product_sales:
@@ -109,10 +109,10 @@ def get_best_selling_products(db_connection: DBConnection) -> list[dict[str]]:
         # products = db_connection.new_query()["Product"].find(
         #     {"product_id": {"$in": product_ids}}
         # )
-        #return [product for product in products if product["product_id"] in product_ids]
-        return list(db_connection.new_query()["Product"].find(
-            {"_id": {"$in": product_ids}}
-        ))
+        # return [product for product in products if product["product_id"] in product_ids]
+        return list(
+            db_connection.new_query()["Product"].find({"_id": {"$in": product_ids}})
+        )
 
     if db_connection.is_of_type(ConnectionType.SQLITE):
         # SQL implementation to get best-selling products
