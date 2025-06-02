@@ -17,16 +17,34 @@ def get_orderhead_list(db_connection: DBConnection) -> pd.DataFrame:
     """
     if db_connection.connection_type == ConnectionType.MONGODB:
         # If using NoSQL, fetch orders from the collection
-        orders_list = db_connection.new_query()["orderhead"].find()
+        orders_list = db_connection.new_query()["OrderHead"].find()
         orders = []
+        # order_details = []
         for order in orders_list:
             order_data = {
                 "orderhead_id": order.get("_id"),
                 "orderhead_date": order.get("orderhead_date"),
                 "user_id": order.get("user_id"),
+                "OrderDetails": order.get("OrderDetails", []),
             }
+
             orders.append(order_data)
-        return pd.DataFrame(orders)
+        # for order in orders:
+        #     for detail in order["OrderDetails"]:
+        #         order_detail = {
+        #             "product_id": detail.get("product_id"),
+        #             "quantity": detail.get("quantity"),
+        #         }
+        #         order_details.append(order_detail)
+        #     del order["OrderDetails"]
+        # return pd.DataFrame(orders), pd.DataFrame(order_details)
+        orders = pd.json_normalize(
+            orders,
+            record_path=['OrderDetails'],
+            meta=['orderhead_id', 'orderhead_date', 'user_id']
+        )
+
+        return orders
     elif db_connection.connection_type == ConnectionType.SQLITE:
         sql = "SELECT * FROM orderhead"
         cursor = db_connection.new_query()

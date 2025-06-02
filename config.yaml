@@ -5,13 +5,31 @@ cookie:
   name: my-random-name
 credentials:
   usernames:
-    ashley.ball:
-      email: ashley.ball@example.com
-      first_name: Ashley
-      last_name: Ball
+    bailey.henderson:
+      email: bailey.henderson@example.com
+      first_name: Bailey
+      last_name: Henderson
       logged_in: false
-      password: +1WlW
-      password_hint: Country see fire.
+      password: '#4CGa'
+      password_hint: Break wind nation shoulder several.
+      roles:
+      - user
+    douglas.ramos:
+      email: douglas.ramos@example.com
+      first_name: Douglas
+      last_name: Ramos
+      logged_in: false
+      password: j@8Cm
+      password_hint: Despite daughter because.
+      roles:
+      - user
+    elizabeth.williams:
+      email: elizabeth.williams@example.com
+      first_name: Elizabeth
+      last_name: Williams
+      logged_in: false
+      password: a^6Yc
+      password_hint: Republican best camera lose.
       roles:
       - user
     jsmith:
@@ -24,31 +42,13 @@ credentials:
       roles:
       - user
       - admin
-    michael.liu:
-      email: michael.liu@example.com
+    michael.kramer:
+      email: michael.kramer@example.com
       first_name: Michael
-      last_name: Liu
+      last_name: Kramer
       logged_in: false
-      password: '&4Zf@'
-      password_hint: Card hair deal at.
-      roles:
-      - user
-    rodney.cross:
-      email: rodney.cross@example.com
-      first_name: Rodney
-      last_name: Cross
-      logged_in: false
-      password: 3@9Ts
-      password_hint: On stay parent.
-      roles:
-      - user
-    sherri.rocha:
-      email: sherri.rocha@example.com
-      first_name: Sherri
-      last_name: Rocha
-      logged_in: false
-      password: '@1YGe'
-      password_hint: Among yeah parent.
+      password: '&4Io6'
+      password_hint: Activity itself.
       roles:
       - user
 oauth2:

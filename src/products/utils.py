@@ -234,12 +234,12 @@ def get_product_dataframe(
             if product_id and product.get("product_id") != product_id:
                 continue
             product_data = {
-                "product_id": product.get("product_id"),
+                "product_id": product.get("_id"),
                 "product_name": product.get("product_name"),
                 "product_description": product.get("product_description"),
                 "price": product.get("price"),
                 "picture": product.get("picture"),
-                "spetech": product.get("spetech"),
+                "spetech": product.get("spetech_id"),
             }
             products.append(product_data)
     elif db_connection.connection_type == ConnectionType.SQLITE:
