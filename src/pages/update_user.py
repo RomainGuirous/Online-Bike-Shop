@@ -26,7 +26,6 @@ authenticator = stauth.Authenticate(
 )
 
 if st.session_state.get("authentication_status"):
-    # try:
     if authenticator.update_user_details(st.session_state.get("username")):
         with open("config.yaml", "w") as file:
             yaml.dump(config, file, default_flow_style=False, allow_unicode=True)
@@ -41,5 +40,3 @@ if st.session_state.get("authentication_status"):
         user_model.save_to_db()
         conn.commit()
         st.success("Entries updated successfully")
-    # except Exception as e:
-    #     st.error(e)
