@@ -9,6 +9,7 @@ from pymongo.database import Database
 
 ConnectionType = Enum("ConnectionType", "SQLITE MONGODB")
 
+
 class DBConnection(ABC):
     """
     An abstract base class for database connections.
@@ -22,8 +23,8 @@ class DBConnection(ABC):
     def __init__(self, connection_type: ConnectionType):
         self.__connection_type = connection_type
         self.__connection = None
-    
-    def is_of_type(self, connection_type: ConnectionType)-> bool:
+
+    def is_of_type(self, connection_type: ConnectionType) -> bool:
         return str(self.__connection_type) == str(connection_type)
 
     @abstractmethod

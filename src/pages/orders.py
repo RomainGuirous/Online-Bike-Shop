@@ -28,20 +28,26 @@ if connection.is_of_type(ConnectionType.SQLITE):
         ORDER BY OrderHead.orderhead_date DESC, OrderHead.orderhead_id DESC"""
     rows = connection.new_query().execute(sql, (user_id,)).fetchall()
 else:
-    order_list = connection.new_query()['OrderHead'].find({'user_id': user_id}).sort("orderhead_date", -1)
+    order_list = (
+        connection.new_query()["OrderHead"]
+        .find({"user_id": user_id})
+        .sort("orderhead_date", -1)
+    )
     rows = []
     for order in order_list:
-        for detail in order['OrderDetails']:
+        for detail in order["OrderDetails"]:
             row = {}
-            row['orderhead_id'] = order['_id']
-            row['orderhead_date'] = order['orderhead_date']
-            row['product_id'] = detail['product_id']
-            product_row = list(connection.new_query()['Product'].find({'_id': detail['product_id']}))[0]
+            row["orderhead_id"] = order["_id"]
+            row["orderhead_date"] = order["orderhead_date"]
+            row["product_id"] = detail["product_id"]
+            product_row = list(
+                connection.new_query()["Product"].find({"_id": detail["product_id"]})
+            )[0]
             if product_row:
-                row['product_name'] = product_row['product_name']
+                row["product_name"] = product_row["product_name"]
             else:
-                row['product_name'] = '???'
-            row['quantity'] = detail['quantity']
+                row["product_name"] = "???"
+            row["quantity"] = detail["quantity"]
             rows.append(row)
 if len(rows) == 0:
     st.markdown("# No order yet...")
@@ -49,7 +55,9 @@ else:
     st.markdown("# Orders")
 prior_order_id = 0
 for row in rows:
-    if row['orderhead_id'] != prior_order_id:
+    if row["orderhead_id"] != prior_order_id:
         st.markdown(f"## Order n°{row['orderhead_id']} date : {row['orderhead_date']}")
-    prior_order_id = row['orderhead_id']
-    st.markdown(f"* Product n°{row['product_id']} — {row['product_name']} Qt : {row['quantity']}")
+    prior_order_id = row["orderhead_id"]
+    st.markdown(
+        f"* Product n°{row['product_id']} — {row['product_name']} Qt : {row['quantity']}"
+    )

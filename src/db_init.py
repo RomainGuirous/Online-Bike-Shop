@@ -15,7 +15,7 @@ from random import randint
 
 conn = create_connection()
 if conn.is_of_type(ConnectionType.SQLITE):
-    conn.executescript('src/db.sql')
+    conn.executescript("src/db.sql")
 
 # liste des dico
 user_data = generate_fake_user()
@@ -27,8 +27,10 @@ user_ids = []
 spetech_ids = []
 product_ids = []
 
+
 def random_element_list(liste_elmt: list) -> any:
     return liste_elmt[randint(0, len(liste_elmt) - 1)]
+
 
 # injection products
 for spetech_dico in spetech_data:
@@ -60,13 +62,13 @@ for product_dico in product_data:
 
 # first, we create a user used to connect to the shop...
 user = User(conn, is_new=True)
-user.first_name = 'John'
-user.last_name = 'Smith'
-user.email = 'john.smith@test.com'
-user.username = 'jsmith'
+user.first_name = "John"
+user.last_name = "Smith"
+user.email = "john.smith@test.com"
+user.username = "jsmith"
 user.is_admin = True
-user.hashed_password = '123'
-user.password_hint = 'A very simple number...'
+user.hashed_password = "123"
+user.password_hint = "A very simple number..."
 user.save_to_db()
 user_ids.append(user.user_id)
 

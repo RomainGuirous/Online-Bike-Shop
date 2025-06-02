@@ -39,8 +39,7 @@ elif conn.is_of_type(ConnectionType.MONGODB):
     order_df_ = get_orderhead_list(conn)
     product_df = get_product_dataframe(conn)
     user_df = pd.DataFrame(get_user_list(conn))
-    st.write(order_df_)
-    
+
     product_df["price"] = (
         product_df["price"].astype(str).str.replace(r"[^\d\.\-]", "", regex=True)
     )

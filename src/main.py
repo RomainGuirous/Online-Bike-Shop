@@ -81,9 +81,9 @@ def main():
     )
 
     if conn.is_of_type(ConnectionType.MONGODB):
-        product_id_name = '_id'
+        product_id_name = "_id"
     else:
-        product_id_name = 'product_id'
+        product_id_name = "product_id"
 
     # Display cards in a 4-column responsive layout
     cols_per_row = 4
