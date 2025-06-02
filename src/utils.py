@@ -65,9 +65,9 @@ def generate_fake_product(
     fake_products = []
     for i in range(nbr_product):
         product = {
-            "product_name": fake.word(),
+            "product_name": f"{fake.word()} {fake.pyint(1, 10) * 100}",
             "product_description": fake.text(),
-            "price": fake.pyint(),
+            "price": fake.pyint(1, 1000000),
             "picture": liste_img[i],
         }
         if not mongo:

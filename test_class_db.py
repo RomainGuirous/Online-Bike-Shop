@@ -4,9 +4,6 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
 from src.db_api import create_connection
 
-# from src.users.models import User
-from src.orders.models import OrderHead, OrderDetail
-
 from src.utils import (
     generate_fake_orderhead,
     generate_fake_product,

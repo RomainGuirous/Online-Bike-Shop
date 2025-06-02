@@ -5,13 +5,13 @@ cookie:
   name: my-random-name
 credentials:
   usernames:
-    ashley.ball:
-      email: ashley.ball@example.com
-      first_name: Ashley
-      last_name: Ball
+    evelyn.ramirez:
+      email: evelyn.ramirez@example.com
+      first_name: Evelyn
+      last_name: Ramirez
       logged_in: false
-      password: +1WlW
-      password_hint: Country see fire.
+      password: (1Iq#
+      password_hint: Voice attention discover add.
       roles:
       - user
     jsmith:
@@ -24,31 +24,31 @@ credentials:
       roles:
       - user
       - admin
-    michael.liu:
-      email: michael.liu@example.com
-      first_name: Michael
-      last_name: Liu
+    rebecca.jones:
+      email: rebecca.jones@example.com
+      first_name: Rebecca
+      last_name: Jones
       logged_in: false
-      password: '&4Zf@'
-      password_hint: Card hair deal at.
+      password: '*r9Ri'
+      password_hint: Him than area when paper.
       roles:
       - user
-    rodney.cross:
-      email: rodney.cross@example.com
-      first_name: Rodney
-      last_name: Cross
+    seth.smith:
+      email: seth.smith@example.com
+      first_name: Seth
+      last_name: Smith
       logged_in: false
-      password: 3@9Ts
-      password_hint: On stay parent.
+      password: o%1Ve
+      password_hint: Responsibility ask station big.
       roles:
       - user
-    sherri.rocha:
-      email: sherri.rocha@example.com
-      first_name: Sherri
-      last_name: Rocha
+    susan.price:
+      email: susan.price@example.com
+      first_name: Susan
+      last_name: Price
       logged_in: false
-      password: '@1YGe'
-      password_hint: Among yeah parent.
+      password: '!@2Jx'
+      password_hint: Admit would contain state.
       roles:
       - user
 oauth2:

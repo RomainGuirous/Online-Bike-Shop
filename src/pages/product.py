@@ -51,7 +51,7 @@ elif st.session_state["id"]:
         <p><strong>Price: </strong>{product.price} ¥</p>
         <p><strong>Brand: </strong>{spetech.brand}</p>
         <p><strong>Type :</strong>{spetech.spetech_type}</p>
-        <p><strong>Weight :</strong>{spetech.spetech_weight}</p>
+        <p><strong>Weight :</strong>{spetech.spetech_weight} lbs</p>
         <p><strong>Frame Size :</strong>{spetech.frame_size}</p>
     </div>
     """
